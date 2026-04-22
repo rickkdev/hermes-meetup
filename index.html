@@ -438,27 +438,48 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Sync with ob sync and keep automations low-noise (no-op silent).">
+        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Hermes already has native Obsidian support via the obsidian skill + markdown/wiki conventions.||Sync with ob sync and keep automations low-noise (no-op silent).">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Our Build)</h1>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Native + Our Build)</h1>
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHAT WE RECOMMEND</p>
+                <p class="mono text-primary">NATIVE HERMES SUPPORT</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• set <span class="mono">~/wiki</span> as vault</li>
-                  <li>• agent curates markdown, Obsidian visualizes it</li>
-                  <li>• regular maintenance (ingest/lint/update)</li>
+                  <li>• built-in <span class="mono">obsidian</span> skill (read/search/create notes)</li>
+                  <li>• wiki markdown works as Obsidian vault out of the box</li>
+                  <li>• keep <span class="mono">OBSIDIAN_VAULT_PATH=~/wiki</span> for shared path</li>
                   <li>• sync with <span class="mono">ob sync --path ~/wiki</span></li>
                 </ul>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">SPECIAL SAUCE</p>
+                <p class="mono text-primary">WHAT WE RECOMMEND ON TOP</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• set <span class="mono">~/wiki</span> as vault</li>
+                  <li>• agent curates markdown, Obsidian visualizes it</li>
+                  <li>• regular maintenance (ingest/lint/update)</li>
                   <li>• mirror Hermes local profile snapshots into wiki notes</li>
-                  <li>• only sync when content changed (low-noise)</li>
-                  <li>• optional watcher + cron fallback</li>
+                  <li>• only sync when content changed (low-noise no-op)</li>
                 </ul>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="DIY Blueprint" data-notes="Follow-up to Obsidian slide: exact replication checklist.||Close line: from prompts to a compounding agent system.">
+          <div class="slide-canvas flex flex-col justify-between p-margin">
+            <div>
+              <h1 class="text-5xl uppercase tracking-tight text-white">How To Do This Yourself</h1>
+              <ol class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-white/75">
+                <li class="l-bracket p-stack-md">1. Install Hermes + choose provider</li>
+                <li class="l-bracket p-stack-md">2. Create wiki schema/index/log</li>
+                <li class="l-bracket p-stack-md">3. Use native obsidian skill + connect Obsidian sync</li>
+                <li class="l-bracket p-stack-md">4. Add scheduled ingest + lint + sync</li>
+                <li class="l-bracket p-stack-md">5. Add profile mirror automation</li>
+                <li class="l-bracket p-stack-md">6. Enforce no-op silent runs</li>
+              </ol>
+            </div>
+            <div class="l-bracket-cyan p-stack-lg">
+              <p class="text-2xl text-white">From prompts to a compounding agent system.</p>
             </div>
           </div>
         </section>
@@ -598,26 +619,6 @@ hermes</pre>
                   <li>• same agent across CLI + messaging</li>
                 </ul>
               </div>
-            </div>
-          </div>
-        </section>
-
-
-        <section class="slide w-full" data-title="DIY Blueprint" data-notes="Walk audience through replication checklist.||Close line: from prompts to a compounding agent system.">
-          <div class="slide-canvas flex flex-col justify-between p-margin">
-            <div>
-              <h1 class="text-5xl uppercase tracking-tight text-white">How To Do This Yourself</h1>
-              <ol class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-white/75">
-                <li class="l-bracket p-stack-md">1. Install Hermes + choose provider</li>
-                <li class="l-bracket p-stack-md">2. Create wiki schema/index/log</li>
-                <li class="l-bracket p-stack-md">3. Connect Obsidian or obsidian-headless</li>
-                <li class="l-bracket p-stack-md">4. Add scheduled ingest + lint + sync</li>
-                <li class="l-bracket p-stack-md">5. Add profile mirror automation</li>
-                <li class="l-bracket p-stack-md">6. Enforce no-op silent runs</li>
-              </ol>
-            </div>
-            <div class="l-bracket-cyan p-stack-lg">
-              <p class="text-2xl text-white">From prompts to a compounding agent system.</p>
             </div>
           </div>
         </section>

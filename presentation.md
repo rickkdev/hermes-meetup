@@ -182,6 +182,11 @@ Practical setup:
 - Keep it markdown-native so both humans and agent can operate on it.
 - Sync with Obsidian (`ob sync --path ~/wiki`).
 
+Native Hermes support worth saying explicitly:
+- Hermes has a built-in `obsidian` skill (read/search/create notes in vault).
+- LLM Wiki markdown format is Obsidian-vault compatible out of the box (`[[wikilinks]]`, frontmatter, assets).
+- Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill operations and wiki automation point to the same place.
+
 Recommended architecture:
 - Hermes curates and updates wiki pages.
 - Obsidian provides graph/backlinks/human editing UX.
@@ -191,6 +196,19 @@ Special pattern from our build:
 - Mirror local Hermes profile snapshots into wiki notes.
 - Sync only on actual change.
 - Optional watcher + cron fallback for reliability.
+
+---
+
+## 4.8) How To Do This Yourself (quick follow-up)
+1. Install Hermes and choose provider/model
+2. Create wiki structure (schema/index/log)
+3. Use native `obsidian` skill + connect Obsidian or `obsidian-headless` sync
+4. Add scheduled ingest/lint/sync tasks
+5. Add local profile mirror automation
+6. Enforce silent no-op behavior
+
+Transition line into next section:
+- “Now that knowledge is connected, here’s how Hermes compounds capability over time.”
 
 ---
 
@@ -307,19 +325,6 @@ Hermes-specific layer:
 Framing:
 - Codex/Claude Code style = strong execution sessions.
 - Hermes = execution sessions + durable operational memory + orchestration.
-
----
-
-## 8) DIY Blueprint (replication checklist)
-1. Install Hermes and choose provider/model
-2. Create wiki structure (schema/index/log)
-3. Connect Obsidian or obsidian-headless sync
-4. Add scheduled ingest/lint/sync tasks
-5. Add local profile mirror automation
-6. Enforce silent no-op behavior
-
-Closing line:
-- “We moved from prompt interactions to a compounding agent system.”
 
 ---
 
