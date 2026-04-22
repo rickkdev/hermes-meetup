@@ -394,6 +394,50 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="RAG vs No-RAG" data-notes="Simple framing: No-RAG is enough for most personal assistant and small-team workflows.||Use vector search extension when scale or fuzzy language makes keyword recall miss too much.||Give buyers an easy rule: accuracy-at-scale need => enable extension.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">RAG vs No-RAG: When To Use Extensions</h1>
+            <p class="mt-stack-sm text-white/65">Both are valid. Pick based on scale and recall quality needs, not hype.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">NO-RAG (DEFAULT)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• best for personal assistants + small teams</li>
+                  <li>• works from file memory + chat history DB (FTS5)</li>
+                  <li>• easier to audit, cheaper to run, less maintenance</li>
+                  <li>• choose this when data size is manageable</li>
+                </ul>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">RAG / VECTOR EXTENSION</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• best for employee knowledge across large document sets</li>
+                  <li>• helps when users ask fuzzy/synonym-heavy questions</li>
+                  <li>• better recall at scale, but more infra + tuning</li>
+                  <li>• choose this when keyword recall starts missing answers</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">FOR INDIVIDUALS</p>
+                <p class="mt-stack-sm text-white/75">Start no-RAG. Add vector search only if your notes/docs grow large and retrieval quality drops.</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">FOR EMPLOYEE WORKFLOWS</p>
+                <p class="mt-stack-sm text-white/75">If many teams need consistent answers across scattered docs, enable a vector memory extension early.</p>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg">
+              <p class="mono text-primary">ONE-LINE DECISION RULE</p>
+              <p class="mt-stack-sm text-white">If your team says “we have the docs but can’t find the answer fast,” enable vector-search extensions.</p>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Self Improvement Loop" data-notes="Step 1: execute and verify real work (tests/checks).||Step 2: extract reusable procedure into a skill.||Step 3: reload skill automatically when trigger matches.||Step 4: patch skill immediately when stale.||Memory stores facts; skills store procedures.||Compounding means session N+1 starts stronger than session N.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Self-Improvement Loop</h1>

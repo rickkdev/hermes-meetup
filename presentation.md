@@ -130,6 +130,52 @@ Practical trigger rule for the talk:
 
 ---
 
+## 4.6) RAG vs No-RAG (when to use vector extensions)
+Goal: give a non-technical decision framework for both individuals and employee workflows.
+
+Simple framing:
+- No-RAG is not “worse.” It is the simpler default and works great for many cases.
+- Vector RAG is a scale/retrieval upgrade, not a mandatory baseline.
+
+No-RAG default (Hermes out of the box):
+- Uses file memory + SQLite FTS recall (`state.db`) + summarization.
+- Benefits:
+  - lower complexity/cost
+  - easier to audit and explain
+  - less infra maintenance
+- Best for:
+  - personal assistants
+  - small teams with moderate docs
+  - environments where explainability matters more than max semantic recall
+
+RAG/vector extension:
+- Adds semantic similarity retrieval (via external memory providers/plugins).
+- Benefits:
+  - better recall across large, messy, synonym-heavy corpora
+  - stronger retrieval when exact keywords are unknown
+- Costs:
+  - extra setup/ops (indexing, tuning, monitoring)
+  - more moving parts to debug
+- Best for:
+  - employee knowledge systems across many teams and documents
+  - large policy/wiki/support corpora
+  - recurring “we know this exists but nobody can find it quickly” complaints
+
+Decision matrix (easy to say on stage):
+- If your problem is “keep context stable and practical” → stay No-RAG.
+- If your problem is “find the right answer in huge, scattered docs” → enable vector extension.
+
+Non-technical one-liner:
+- No-RAG = “organized notebook + search.”
+- RAG = “semantic librarian for very large libraries.”
+
+Rollout recommendation:
+1. Start with No-RAG.
+2. Measure misses (how often users fail to find known answers).
+3. Enable vector extension only when misses become a business problem.
+
+---
+
 ## 5) Self-Improvement Loop (in-depth)
 This is the core “why Hermes” section.
 
