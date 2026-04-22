@@ -375,6 +375,16 @@ Flow:
 - Write/patch a custom skill for repeatable procedure.
 - Write memory only for stable facts (preferences, environment, conventions).
 
+Concrete custom-skill example (use on slide):
+- Example skill: `mirror-hermes-local-to-obsidian`
+- Prompt: "When local Hermes profile files change, mirror them into wiki snapshot notes and sync only on real changes."
+- Captured reusable procedure:
+  1. Detect changes in `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md`
+  2. Update `~/wiki/hermes/soul.md` and `~/wiki/hermes/user-profile-live.md` under `## current contents`
+  3. If content changed, append log + run `ob sync --path ~/wiki`
+  4. If nothing changed, return `[SILENT]`
+- Why this is a skill (not memory): it is a repeatable workflow with checks, not just a fact.
+
 What should NOT be written:
 - One-off outputs with no repeat value.
 - Unverified guesses or temporary hacks.
