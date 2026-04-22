@@ -438,6 +438,30 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="LLM Wiki + Obsidian" data-notes="Bridge slide before implementation details.||LLM Wiki = agent workflow for ingest/synthesize/link/lint.||Obsidian = human-facing interface over the same markdown vault.||Reference Karpathy tweet screenshot as origin story.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">What Is LLM Wiki + Obsidian?</h1>
+            <p class="mt-stack-sm text-white/65">Agent builds and maintains the knowledge graph; humans browse/edit it in Obsidian.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WORKS AS A TWO-LAYER SYSTEM</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• <span class="text-white">LLM Wiki</span>: compiles sources into linked markdown pages</li>
+                  <li>• keeps <span class="mono">SCHEMA.md</span>, <span class="mono">index.md</span>, <span class="mono">log.md</span> consistent</li>
+                  <li>• runs ingest + lint so knowledge stays current over time</li>
+                  <li>• <span class="text-white">Obsidian</span>: graph/backlinks/edit UX on the exact same files</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">ORIGIN / INSPIRATION</p>
+                <img src="karpathy-llm-wiki-tweet.png" alt="Karpathy introducing LLM Wiki" style="margin-top: 12px; width: 100%; max-height: 56vh; object-fit: contain; border: 1px solid rgba(255,255,255,0.18);" />
+                <p class="mt-stack-sm text-white/65 text-sm">Karpathy tweet introducing the LLM Wiki pattern.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Hermes already has native Obsidian support via the obsidian skill + markdown/wiki conventions.||Sync with ob sync and keep automations low-noise (no-op silent).">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Native + Our Build)</h1>

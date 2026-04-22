@@ -176,7 +176,26 @@ Rollout recommendation:
 
 ---
 
-## 4.7) Obsidian Integration (what we built)
+## 4.7) What Is LLM Wiki + Obsidian?
+Simple framing:
+- LLM Wiki is the agent-side knowledge workflow.
+- Obsidian is the human-side interface on the same markdown files.
+
+Explain as two layers:
+- Layer 1 (`llm-wiki`): ingest sources, synthesize pages, enforce schema, maintain links, run lint.
+- Layer 2 (`obsidian` + Sync): browse graph, backlinks, edit manually, keep devices in sync.
+
+Why this combo works:
+- Agent does heavy curation and consistency work.
+- Humans keep transparency and editorial control.
+- No lock-in database: plain markdown vault.
+
+On this slide:
+- Show the Karpathy tweet screenshot (`karpathy-llm-wiki-tweet.png`) as origin/inspiration.
+
+---
+
+## 4.8) Obsidian Integration (what we built)
 Practical setup:
 - Use `~/wiki` as the working knowledgebase path.
 - Keep it markdown-native so both humans and agent can operate on it.
@@ -199,7 +218,7 @@ Special pattern from our build:
 
 ---
 
-## 4.8) How To Do This Yourself (quick follow-up)
+## 4.9) How To Do This Yourself (quick follow-up)
 1. Install Hermes and choose provider/model
 2. Create wiki structure (`SCHEMA.md`, `index.md`, `log.md`)
 3. Use `llm-wiki` for knowledge workflow + `obsidian` for vault UX/sync
@@ -207,7 +226,7 @@ Special pattern from our build:
 5. Add local profile mirror automation
 6. Enforce silent no-op behavior
 
-### 4.8.1 What “wiki schema/index/log” means (plain English)
+### 4.9.1 What “wiki schema/index/log” means (plain English)
 - `SCHEMA.md` = your wiki rules: naming, tags, page format, update policy.
 - `index.md` = table of contents for all pages.
 - `log.md` = append-only changelog of what Hermes updated and when.
@@ -225,7 +244,7 @@ Minimal starter:
   queries/
 ```
 
-### 4.8.2 Which skill does what (`llm-wiki` vs `obsidian`)
+### 4.9.2 Which skill does what (`llm-wiki` vs `obsidian`)
 Use both together:
 - `llm-wiki` = Karpathy-style wiki system (SCHEMA/index/log, ingest, lint, cross-linking).
 - `obsidian` = vault note operations + Obsidian Sync plumbing.
@@ -241,7 +260,7 @@ Cron style (explicit skills):
 Path alignment (important):
 - Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill actions and sync target the same vault.
 
-### 4.8.3 What “scheduled ingest/lint/sync” means
+### 4.9.3 What “scheduled ingest/lint/sync” means
 - Ingest: pull new source material into `raw/` and update wiki pages.
 - Lint: check broken links, orphan pages, missing frontmatter/tags, stale pages.
 - Sync: run `ob sync --path ~/wiki` to push/pull with Obsidian Sync.
@@ -251,14 +270,14 @@ Typical cadence:
 - Lint daily
 - Sync every 15–60m
 
-### 4.8.4 What “profile mirror automation” means
+### 4.9.4 What “profile mirror automation” means
 - Copy selected local Hermes profile files into human-readable wiki snapshot notes.
 - Example mapping:
   - `~/.hermes/SOUL.md` → `~/wiki/hermes/soul.md`
   - `~/.hermes/memories/USER.md` → `~/wiki/hermes/user-profile-live.md`
 - Only update the `## current contents` section, keep note structure/frontmatter.
 
-### 4.8.5 What “no-op silent runs” means
+### 4.9.5 What “no-op silent runs” means
 - If a run finds no content changes, it should do nothing noisy:
   - no new log entry
   - no sync call
