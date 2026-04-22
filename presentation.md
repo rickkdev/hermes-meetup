@@ -467,6 +467,50 @@ For long-running spawned agents:
 ### 6.6 Example prompt for audience (copy/paste)
 - “Split this feature into 3 parallel workers: backend, frontend, and tests. Use subagent delegation for each task, keep contexts isolated, then return one merged summary with integration risks and next steps.”
 
+### 6.7 Subagent spawn process flow (exact decision logic)
+Use this verbal flow on stage:
+1) Intake the task.
+2) Ask: can this be split into independent chunks without tight shared state?
+3) Ask: does splitting produce real speed/quality gain?
+4) Ask: does any chunk need isolation because it would flood context?
+
+If answers are mostly yes -> spawn `delegate_task` workers.
+If no -> keep execution in the main session.
+
+“Spawn” triggers (good candidates):
+- independent subtasks (A/B/C) with clear boundaries
+- reasoning-heavy analysis that would bloat parent context
+- comparative/research workstreams that can run in parallel
+
+“Don’t spawn” triggers (bad candidates):
+- one fast linear tool call
+- work that depends on continuously shared in-memory state
+- high-turn interactive loops needing constant user clarification
+
+Execution path when spawned:
+- Parent builds explicit context packet per child (`goal` + `context` + toolsets)
+- Child runs in isolated conversation
+- Child returns final summary only
+- Parent integrates summaries and performs final verification
+
+### 6.8 If I open multiple Hermes terminals and do separate things
+Important behavior:
+- Each terminal window is a separate Hermes session.
+- They do not share live chat context turn-by-turn.
+- If both use the same profile, they still share profile-level state over time:
+  - same memory files
+  - same installed skills
+  - same underlying filesystem access
+- If they use different profiles, state is isolated (separate sessions/memory/config/state DB).
+
+Practical implications:
+- Two terminals can work on unrelated tasks safely.
+- Two terminals editing the same repo/files can conflict unless you isolate branches/worktrees.
+- For parallel coding, use `hermes -w` per terminal to reduce collisions.
+
+Simple audience line:
+- “Two terminals = two independent brains in separate conversations; same profile means shared long-term house, not shared live thoughts.”
+
 ---
 
 ## 7) Coding Workflow vs Codex/Claude Code Sessions

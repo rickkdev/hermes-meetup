@@ -655,6 +655,45 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Subagent Spawn Flow" data-notes="Process slide: when Hermes spawns delegate_task workers vs when it stays single-threaded.||Also explain multiple terminal behavior: separate sessions, shared profile state unless different profile is used.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">When Hermes Spawns Subagents (and When It Doesn't)</h1>
+            <p class="mt-stack-sm text-white/65">Think of this as a routing decision: delegate for parallel isolated work, stay local for linear/stateful work.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">SPAWN SUBAGENTS (<span class="mono">delegate_task</span>)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• task can be split into independent chunks</li>
+                  <li>• parallel speedup is worth context handoff</li>
+                  <li>• subtask is reasoning-heavy and would flood main context</li>
+                  <li>• isolated worker context reduces cross-task confusion</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">DO NOT SPAWN</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• simple linear workflow in one thread is faster</li>
+                  <li>• one-tool actions (no decomposition needed)</li>
+                  <li>• task requires tight shared state continuity</li>
+                  <li>• task depends on live user back-and-forth decisions</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">FLOW</p>
+                <p class="mt-stack-sm text-white/75">Intake → can split safely? → yes: spawn workers with explicit context → collect summaries → integrate + verify. No: execute directly in main session.</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">MULTIPLE TERMINALS OPEN?</p>
+                <p class="mt-stack-sm text-white/75">Each terminal is a separate Hermes session. Same profile = shared memory/skills/filesystem, but not shared live chat context. Different profiles = isolated state. Parallel edits to same files still need git/worktree discipline.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Coding Workflow" data-notes="Feels like Codex/Claude Code in terminal loop.||Difference: persistent skills + memory + multi-surface continuity.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow</h1>
