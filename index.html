@@ -566,7 +566,7 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Prompt → Result → Improvement" data-notes="Answer the question directly: yes, these are mostly custom skills plus memory updates.||Not every result should become an improvement; we gate by reuse + stability + evidence.||If one-off or unverified, do not write a skill.||If recurring and validated, write or patch skill immediately.||Concrete example: mirror-hermes-local-to-obsidian captures repeatable profile-sync steps and no-op silence behavior.">
+        <section class="slide w-full" data-title="Prompt → Result → Improvement" data-notes="Answer the question directly: yes, these are mostly custom skills plus memory updates.||Not every result should become an improvement; we gate by reuse + stability + evidence.||If one-off or unverified, do not write a skill.||If recurring and validated, write or patch skill immediately.||Concrete example: X bookmarks workflow — retrieve export, normalize inconsistent fields, and format output exactly to user preference as a reusable skill.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Prompt → Result → Improvement</h1>
             <p class="mt-stack-sm text-white/65">How Hermes decides whether an output becomes durable improvement.</p>
@@ -598,7 +598,7 @@ hermes</pre>
                   <li>• <span class="text-white">Skill patch</span> when existing process is stale or wrong</li>
                   <li>• <span class="text-white">Memory fact</span> for stable preferences/environment conventions</li>
                 </ul>
-                <p class="mt-stack-sm text-white/55" style="font-size:11px; line-height:1.35;">Example custom skill (small): “mirror-hermes-local-to-obsidian” — after solving profile sync once, Hermes saves the repeatable steps (detect file change → update `~/wiki/hermes/*` current-contents → sync only if changed → return `[SILENT]` on no-op).</p>
+                <p class="mt-stack-sm text-white/60" style="font-size:12.5px; line-height:1.45;">Example custom skill: X bookmarks workflow — user asks for bookmarks in a specific format; Hermes imports/retrieves the export, detects field inconsistencies, normalizes the data, then outputs it in the exact structure the user prefers. That repeatable formatting pipeline gets saved as a custom skill.</p>
               </div>
               <div class="l-bracket p-stack-lg">
                 <p class="mono text-primary">WHAT DOESN'T</p>

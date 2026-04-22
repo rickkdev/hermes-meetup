@@ -376,14 +376,18 @@ Flow:
 - Write memory only for stable facts (preferences, environment, conventions).
 
 Concrete custom-skill example (use on slide):
-- Example skill: `mirror-hermes-local-to-obsidian`
-- Prompt: "When local Hermes profile files change, mirror them into wiki snapshot notes and sync only on real changes."
-- Captured reusable procedure:
-  1. Detect changes in `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md`
-  2. Update `~/wiki/hermes/soul.md` and `~/wiki/hermes/user-profile-live.md` under `## current contents`
-  3. If content changed, append log + run `ob sync --path ~/wiki`
-  4. If nothing changed, return `[SILENT]`
-- Why this is a skill (not memory): it is a repeatable workflow with checks, not just a fact.
+- Example skill: `x-bookmarks-export-to-wiki` (or equivalent custom formatter skill)
+- Prompt: "Get my X/Twitter bookmarks, fix inconsistent fields, and output them in the exact format I prefer."
+- What happened in the run:
+  1. Hermes retrieved/imported the bookmark export
+  2. Detected inconsistent source fields (missing/variant metadata)
+  3. Normalized records into a consistent schema
+  4. Rendered output in the user’s preferred structure
+- What got saved as a skill:
+  - repeatable normalization rules
+  - target output template
+  - validation checks before final output
+- Why this is a skill (not memory): it is a reusable transformation workflow, not a single fact.
 
 What should NOT be written:
 - One-off outputs with no repeat value.
