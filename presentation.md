@@ -397,19 +397,75 @@ What should NOT be written:
 ---
 
 ## 6) Parallel Sessions and Multi-Agent Execution
-Two parallel modes:
-- Lightweight: delegated subtasks (quick and isolated)
-- Heavyweight: independent Hermes processes (long-running)
+This section should remove confusion clearly:
+- Hermes does support subagents.
+- But Hermes subagents are task-scoped workers, not permanent side-agent personalities.
 
+### 6.1 Two parallel models in Hermes
+
+Model A — `delegate_task` subagents (ephemeral workers)
+- Spawned for a specific subtask with isolated context.
+- Return a summary/result to the parent agent.
+- Lifecycle: create -> run bounded turns -> return -> terminate.
+- Best for:
+  - parallel research questions
+  - code review chunks
+  - isolated debugging branches
+
+Model B — spawned full Hermes processes (long-running agents)
+- Separate Hermes process/session (often tmux + optional worktree mode).
+- Can run much longer and act like an independent project track.
+- Best for:
+  - heavy implementation streams
+  - long background jobs
+  - multi-hour autonomous runs
+
+Simple line for audience:
+- Subagent = short-lived specialist.
+- Spawned process = long-lived independent worker.
+
+### 6.2 Myth busting (OpenClaw comparison confusion)
+Common confusion: “Hermes has no subagents.”
+- Incorrect.
+- Hermes has subagent delegation via `delegate_task`.
+- What Hermes does NOT do by default is keep a permanent named subagent alive forever inside one parent turn loop.
+
+So both statements can sound true unless you separate them:
+- “Has subagents?” -> Yes (ephemeral delegated workers).
+- “Has permanent always-on child agents by default?” -> No.
+
+### 6.3 Practical orchestration pattern
 Typical coding split:
-- Agent A: backend
-- Agent B: frontend
+- Agent A: backend/API
+- Agent B: frontend/UI
 - Agent C: tests/CI
-- Merge validated outputs
+- Parent orchestrator merges decisions and final outputs.
 
-Why worktree mode matters:
-- Parallel coding agents can conflict in git.
-- Isolated worktrees reduce branch collisions and broken state.
+Coordinator responsibilities:
+- define scope per worker (avoid overlap)
+- pass only needed context to each worker
+- collect outputs and resolve conflicts
+- run final integration checks
+
+### 6.4 Guardrails and limits to mention
+For delegated subagents (`delegate_task`):
+- fresh context per task (good for focus)
+- bounded iteration budget
+- returns summary, not full raw transcript
+- no user clarification from child itself (parent handles that)
+
+For long-running spawned agents:
+- process isolation is stronger, but coordination overhead is higher
+- needs explicit context relays between agents
+- use git worktree isolation (`-w`) for parallel coding to avoid branch/file collisions
+
+### 6.5 Decision rule (easy to present)
+- Need quick parallel thinking/execution on isolated tasks? -> use `delegate_task`.
+- Need long-running independent tracks? -> spawn full Hermes processes.
+- For most teams: start with `delegate_task`, escalate to spawned agents only when runtime/scope demands it.
+
+### 6.6 Example prompt for audience (copy/paste)
+- “Split this feature into 3 parallel workers: backend, frontend, and tests. Use subagent delegation for each task, keep contexts isolated, then return one merged summary with integration risks and next steps.”
 
 ---
 

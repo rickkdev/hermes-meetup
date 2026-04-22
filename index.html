@@ -616,26 +616,41 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Two modes: delegated subtasks for speed, full spawned agents for long jobs.||Use worktree mode for parallel coding to avoid git collisions.">
+        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Clarify confusion: Hermes does have subagents via delegate_task, but they are ephemeral workers, not permanent personalities.||Second mode is full spawned Hermes processes for long-running independent jobs.||Use worktree mode for parallel coding to avoid git collisions.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions</h1>
-            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions: How It Actually Works</h1>
+            <p class="mt-stack-sm text-white/65">Two parallel models: ephemeral delegated workers and long-running full agent processes.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">FAST PATH</p>
-                <p class="mt-stack-sm text-white/75">delegate_task for short, isolated subtasks.</p>
+                <p class="mono text-primary">MODE A — SUBAGENT DELEGATION (<span class="mono">delegate_task</span>)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• yes, Hermes has subagents (fresh isolated worker contexts)</li>
+                  <li>• great for short reasoning/code/research subtasks</li>
+                  <li>• lifecycle: spawn → solve specific task → return summary → end</li>
+                  <li>• not permanent, no persistent “always-on” subagent identity</li>
+                </ul>
               </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">HEAVY PATH</p>
-                <p class="mt-stack-sm text-white/75">spawn full Hermes processes for long jobs.</p>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">SAFE CODING</p>
-                <p class="mt-stack-sm text-white/75">use worktree mode (-w) to avoid git collisions.</p>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">MODE B — SPAWN FULL HERMES PROCESS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• independent long-running agent process (minutes to hours)</li>
+                  <li>• can run in separate shell/tmux/worktree for heavy jobs</li>
+                  <li>• best for large implementation tracks and background missions</li>
+                  <li>• coordination is explicit (you relay context / merge outcomes)</li>
+                </ul>
               </div>
             </div>
-            <div class="mt-stack-lg l-bracket p-stack-lg">
-              <p class="mono text-primary">EXAMPLE</p>
-              <p class="mt-stack-sm text-white/75">Agent A: backend API · Agent B: frontend UI · Agent C: tests/CI · then merge results.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">MYTH BUSTER</p>
+                <p class="mt-stack-sm text-white/75">"No subagents" is wrong. Hermes has subagents, but they’re task-scoped workers, not permanent sidekicks.</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">CODING SPLIT EXAMPLE</p>
+                <p class="mt-stack-sm text-white/75">A: backend API · B: frontend UI · C: tests/CI. Run in parallel, then merge validated outputs.</p>
+              </div>
             </div>
           </div>
         </section>
