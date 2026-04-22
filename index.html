@@ -549,8 +549,7 @@ hermes</pre>
 
       function updateNotes() {
         const raw = slides[current].dataset.notes || "No notes for this slide.";
-        const lines = raw.split("||").map((s) => `• ${s.trim()}`).join("
-");
+        const lines = raw.split("||").map((s) => `• ${s.trim()}`).join("\n");
         notesBody.textContent = lines;
       }
 
