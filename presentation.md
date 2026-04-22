@@ -64,6 +64,29 @@ Takeaway line:
 
 ---
 
+## 4.5) Native Memory: How It Works (before self-improvement)
+This section should appear before the self-improvement loop.
+
+Built-in memory (default):
+- `~/.hermes/memories/MEMORY.md` → environment/project facts
+- `~/.hermes/memories/USER.md` → user profile/preferences
+
+How injection works:
+- These files are loaded into the system prompt as a frozen snapshot at session start.
+- Mid-session writes persist immediately on disk but do not mutate the current prompt snapshot.
+- Updates become active on the next session.
+
+Why this design:
+- Stable prompt prefix = better cache behavior and more predictable runs.
+- Memory stays explicit and auditable (plain markdown files).
+
+Important clarification:
+- Built-in native memory is not default vector RAG.
+- It's curated, file-backed memory with explicit writes.
+- Vector/graph retrieval is optional via external memory providers.
+
+---
+
 ## 5) Self-Improvement Loop (in-depth)
 This is the core “why Hermes” section.
 
@@ -180,16 +203,34 @@ Framing:
 
 ---
 
-## 8) Knowledgebase by Default
-Use the LLM Wiki framing (Karpathy-style):
-- Raw source layer (immutable)
-- Curated knowledge pages (entities/concepts/comparisons)
-- Governance/meta layer (schema + index + log)
+## 8) Knowledgebase by Default (Files + DB context assembly)
+Explain this concretely:
 
-Why this beats naive RAG for ongoing domains:
-- Synthesis accumulates over time.
-- Cross-links are authored once and reused.
-- Contradictions can be surfaced and tracked explicitly.
+System prompt context layers:
+1. Identity file
+- `~/.hermes/SOUL.md`
+
+2. Project context file (priority, first match wins)
+- `.hermes.md` (or `HERMES.md`) from cwd up to git root
+- else `AGENTS.md`
+- else `CLAUDE.md`
+- else `.cursorrules` / `.cursor/rules/*.mdc`
+
+3. Native memory snapshot
+- `~/.hermes/memories/MEMORY.md`
+- `~/.hermes/memories/USER.md`
+
+4. Skills index
+- Built from `~/.hermes/skills/` (plus optional external skill dirs)
+
+5. Session recall path (on demand, tool-driven)
+- `~/.hermes/state.db` (SQLite + FTS5)
+- `session_search` does keyword recall, then summarizes relevant sessions
+
+Direct answer on “RAG?”
+- Default is file-first prompt assembly + SQLite full-text recall.
+- Not always-on vector RAG by default.
+- Vector/semantic retrieval is optional via external memory plugins.
 
 ---
 

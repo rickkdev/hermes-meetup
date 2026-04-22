@@ -333,6 +333,43 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Native Memory (Built-in)" data-notes="Native memory is explicit and file-backed, not hidden magic.||Built-in stores are memories/MEMORY.md + memories/USER.md.||These are injected as a frozen snapshot at session start; mid-session writes persist but don't mutate cached system prompt.||No default vector RAG for built-in memory; retrieval is direct entries + explicit tools.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Native Memory: How It Actually Works</h1>
+            <p class="mt-stack-sm text-white/65">Hermes uses explicit durable stores, then injects a stable snapshot into the system prompt.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">BUILT-IN STORES (FILES)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• <span class="mono">~/.hermes/memories/MEMORY.md</span> → environment + conventions</li>
+                  <li>• <span class="mono">~/.hermes/memories/USER.md</span> → user preferences/profile</li>
+                  <li>• updates happen through the <span class="mono">memory</span> tool (add/replace/remove)</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">INJECTION MODEL</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• loaded once at session start as frozen prompt blocks</li>
+                  <li>• writes are durable immediately, but refresh next session</li>
+                  <li>• keeps prompt caching stable and predictable</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">DEFAULT: NOT VECTOR RAG</p>
+                <p class="mt-stack-sm text-white/75">Built-in memory is curated markdown facts, not automatic embedding retrieval.</p>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">EXTENSIONS</p>
+                <p class="mt-stack-sm text-white/75">You can attach external memory providers (e.g. Honcho/Mem0/Hindsight) for richer retrieval, but that is optional.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Self Improvement Loop" data-notes="Step 1: execute and verify real work (tests/checks).||Step 2: extract reusable procedure into a skill.||Step 3: reload skill automatically when trigger matches.||Step 4: patch skill immediately when stale.||Memory stores facts; skills store procedures.||Compounding means session N+1 starts stronger than session N.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Self-Improvement Loop</h1>
@@ -472,25 +509,32 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Knowledgebase Default" data-notes="Use LLM wiki pattern: raw sources, curated pages, schema/index/log governance.||This compounds synthesis over time better than rediscovering context every query.">
+        <section class="slide w-full" data-title="Knowledgebase Default" data-notes="Explain context assembly exactly: identity + context files + memory files + skills index + session db recall.||State clearly: default stack is file-first plus SQLite FTS5 recall, not always-on vector RAG.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Knowledgebase by Default</h1>
-            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Knowledgebase by Default (Files + DB)</h1>
+            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack text-sm">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">LAYER 1</p>
-                <p class="mt-stack-sm text-white/75">raw sources (immutable)</p>
+                <p class="mono text-primary">FILES IN PROMPT</p>
+                <p class="mt-stack-sm text-white/75"><span class="mono">SOUL.md</span> identity + one project context source (<span class="mono">.hermes.md</span> OR <span class="mono">AGENTS.md</span> OR <span class="mono">CLAUDE.md</span> OR <span class="mono">.cursorrules</span>).</p>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">LAYER 2</p>
-                <p class="mt-stack-sm text-white/75">entity/concept pages (curated)</p>
+                <p class="mono text-primary">MEMORY + SKILLS</p>
+                <p class="mt-stack-sm text-white/75"><span class="mono">memories/MEMORY.md</span> and <span class="mono">memories/USER.md</span> snapshot + generated skills catalog from <span class="mono">~/.hermes/skills/</span>.</p>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">LAYER 3</p>
-                <p class="mt-stack-sm text-white/75">schema + index + log (governance)</p>
+                <p class="mono text-primary">DB RECALL PATH</p>
+                <p class="mt-stack-sm text-white/75"><span class="mono">~/.hermes/state.db</span> with SQLite FTS5 powers <span class="mono">session_search</span>; results are summarized and injected on demand.</p>
               </div>
             </div>
-            <div class="mt-stack-lg l-bracket p-stack-lg">
-              <p class="text-white/75">This follows Karpathy’s LLM wiki pattern: compile once, keep current, and let synthesis compound over time.</p>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">DEFAULT RETRIEVAL MODE</p>
+                <p class="mt-stack-sm text-white/75">File-first prompt assembly + keyword full-text recall. Reliable, inspectable, cheap.</p>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">ABOUT "RAG"</p>
+                <p class="mt-stack-sm text-white/75">Not default vector RAG. Vector/graph retrieval comes only if you enable external memory plugins.</p>
+              </div>
             </div>
           </div>
         </section>
