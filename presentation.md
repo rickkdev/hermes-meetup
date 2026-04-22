@@ -224,8 +224,7 @@ System prompt context layers:
 - Built from `~/.hermes/skills/` (plus optional external skill dirs)
 
 5. Session recall path (on demand, tool-driven)
-- `~/.hermes/state.db` (SQLite + FTS5)
-- `session_search` does keyword recall, then summarizes relevant sessions
+- `~/.hermes/state.db` (SQLite) stores session/chat history and powers FTS5 recall for `session_search`
 
 Direct answer on “RAG?”
 - Default is file-first prompt assembly + SQLite full-text recall.
