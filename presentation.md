@@ -218,71 +218,62 @@ Special pattern from our build:
 
 ---
 
-## 4.9) How To Do This Yourself (quick follow-up)
+## 4.9) How To Do This Yourself (with copy/paste prompts)
 1. Install Hermes and choose provider/model
-2. Create wiki structure (`SCHEMA.md`, `index.md`, `log.md`)
-3. Use `llm-wiki` for knowledge workflow + `obsidian` for vault UX/sync
-4. Add scheduled ingest/lint/sync tasks
-5. Add local profile mirror automation
-6. Enforce silent no-op behavior
+2. Run `llm-wiki` to initialize `~/wiki` (schema/index/log)
+3. Run `obsidian` to connect `~/wiki` to Obsidian Sync
+4. Schedule upkeep jobs (ingest, lint, sync)
+5. Automate profile snapshot mirroring into wiki notes
+6. Enforce quiet no-change runs (`[SILENT]`)
 
-### 4.9.1 What “wiki schema/index/log” means (plain English)
-- `SCHEMA.md` = your wiki rules: naming, tags, page format, update policy.
-- `index.md` = table of contents for all pages.
-- `log.md` = append-only changelog of what Hermes updated and when.
+### 4.9.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
+What this means:
+- Ask Hermes to set up the wiki at `~/wiki` using the LLM Wiki convention.
+- That includes `SCHEMA.md`, `index.md`, `log.md`, and standard folders.
 
-Minimal starter:
-```text
-~/wiki/
-  SCHEMA.md
-  index.md
-  log.md
-  raw/
-  entities/
-  concepts/
-  comparisons/
-  queries/
-```
+Prompt to Hermes:
+- “Use the `llm-wiki` skill. Initialize a new wiki at `~/wiki` for Hermes operations. Create `SCHEMA.md`, `index.md`, `log.md`, and folders `raw/`, `entities/`, `concepts/`, `comparisons/`, `queries/`. Then confirm files created.”
 
-### 4.9.2 Which skill does what (`llm-wiki` vs `obsidian`)
-Use both together:
-- `llm-wiki` = Karpathy-style wiki system (SCHEMA/index/log, ingest, lint, cross-linking).
-- `obsidian` = vault note operations + Obsidian Sync plumbing.
+### 4.9.2 Step 3 — Connect Obsidian with `obsidian` skill
+What this means:
+- `llm-wiki` manages the knowledge workflow.
+- `obsidian` connects and operates the vault UX/sync side.
 
-How to tell Hermes explicitly:
-Direct prompt style:
-- “Use `llm-wiki` + `obsidian`. Maintain the wiki in `~/wiki`, then sync.”
+Prompt to Hermes:
+- “Use the `obsidian` skill. Set vault path to `~/wiki`, run Obsidian Sync setup with `ob`, verify status, and run one sync.”
 
-Cron style (explicit skills):
-- `/cron create --skill llm-wiki --skill obsidian ...`
-- or API: `skills=["llm-wiki","obsidian"]`
+If you want both in one request:
+- “Use `llm-wiki` + `obsidian`: keep knowledge curation in `~/wiki` and keep Obsidian Sync connected.”
 
-Path alignment (important):
-- Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill actions and sync target the same vault.
+### 4.9.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
+What this means:
+- Ingest = add/update knowledge from new sources.
+- Lint = quality checks (broken links, missing metadata, stale pages).
+- Sync = publish latest vault state to Obsidian Sync.
 
-### 4.9.3 What “scheduled ingest/lint/sync” means
-- Ingest: pull new source material into `raw/` and update wiki pages.
-- Lint: check broken links, orphan pages, missing frontmatter/tags, stale pages.
-- Sync: run `ob sync --path ~/wiki` to push/pull with Obsidian Sync.
+Prompt to Hermes:
+- “Create recurring jobs for `~/wiki`: ingest every 2 hours, lint daily at 09:00, and `ob sync --path ~/wiki` every 30 minutes. Keep output concise and include job IDs.”
 
-Typical cadence:
-- Ingest every 1–4h
-- Lint daily
-- Sync every 15–60m
-
-### 4.9.4 What “profile mirror automation” means
-- Copy selected local Hermes profile files into human-readable wiki snapshot notes.
-- Example mapping:
+### 4.9.4 Step 5 — Profile mirror automation (what gets mirrored)
+What this means:
+- Keep human-readable snapshots of core Hermes profile files inside the wiki.
+- Typical mapping:
   - `~/.hermes/SOUL.md` → `~/wiki/hermes/soul.md`
   - `~/.hermes/memories/USER.md` → `~/wiki/hermes/user-profile-live.md`
-- Only update the `## current contents` section, keep note structure/frontmatter.
 
-### 4.9.5 What “no-op silent runs” means
-- If a run finds no content changes, it should do nothing noisy:
-  - no new log entry
-  - no sync call
-  - no chat notification
-- In cron/chat setups, return exactly `[SILENT]` on no-op.
+Prompt to Hermes:
+- “Use `mirror-hermes-local-to-obsidian`. Set up automatic mirroring from `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md` into `~/wiki/hermes/` snapshot notes, updating only the `## current contents` section.”
+
+### 4.9.5 Step 6 — No-op silent runs (how it works)
+What this means:
+- If a scheduled run detects no content change, it should not spam.
+- Behavior on no-change:
+  - skip log update
+  - skip sync
+  - return exactly `[SILENT]`
+
+Prompt to Hermes:
+- “For all wiki maintenance jobs, enforce no-op silence: if nothing changed, return exactly `[SILENT]`, do not append logs, and do not run sync.”
 
 Transition line into next section:
 - “Now that knowledge is connected, here’s how Hermes compounds capability over time.”

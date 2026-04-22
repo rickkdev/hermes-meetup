@@ -489,17 +489,17 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="DIY Blueprint" data-notes="Follow-up to Obsidian slide: exact replication checklist.||Close line: from prompts to a compounding agent system.">
+        <section class="slide w-full" data-title="DIY Blueprint" data-notes="Follow-up to Obsidian slide with plain language + copy/paste prompts.||Step 2 prompt: Use llm-wiki. Initialize ~/wiki and create SCHEMA.md, index.md, log.md and standard folders.||Step 3 prompt: Use obsidian skill. Set OBSIDIAN_VAULT_PATH=~/wiki and connect ob sync to my vault.||Step 4 prompt: Create cron jobs: ingest sources every 2h, lint daily, ob sync every 30m.||Step 5 prompt: Use mirror-hermes-local-to-obsidian to mirror SOUL.md and USER.md into ~/wiki/hermes notes on change.||Step 6 prompt: In all scheduled jobs, if no content changed return exactly [SILENT] and skip sync/log updates.||Close line: from prompts to a compounding agent system.">
           <div class="slide-canvas flex flex-col justify-between p-margin">
             <div>
               <h1 class="text-5xl uppercase tracking-tight text-white">How To Do This Yourself</h1>
               <ol class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-white/75">
                 <li class="l-bracket p-stack-md">1. Install Hermes + choose provider (get baseline agent running)</li>
-                <li class="l-bracket p-stack-md">2. Make wiki skeleton: <span class="mono">SCHEMA.md</span>, <span class="mono">index.md</span>, <span class="mono">log.md</span></li>
-                <li class="l-bracket p-stack-md">3. Use <span class="mono">llm-wiki</span> for wiki workflow + <span class="mono">obsidian</span> for vault UX/sync</li>
-                <li class="l-bracket p-stack-md">4. Schedule maintenance: ingest new sources, lint links/tags, then sync</li>
-                <li class="l-bracket p-stack-md">5. Auto-mirror Hermes profile files into wiki snapshot notes</li>
-                <li class="l-bracket p-stack-md">6. No-op silent rule: if nothing changed, log nothing + send nothing</li>
+                <li class="l-bracket p-stack-md">2. Run <span class="mono">llm-wiki</span> to initialize <span class="mono">~/wiki</span> (schema + index + log)</li>
+                <li class="l-bracket p-stack-md">3. Run <span class="mono">obsidian</span> to connect that same path to Obsidian Sync</li>
+                <li class="l-bracket p-stack-md">4. Schedule upkeep jobs: ingest new sources, lint wiki quality, then sync vault</li>
+                <li class="l-bracket p-stack-md">5. Mirror Hermes profile files into wiki snapshot notes automatically</li>
+                <li class="l-bracket p-stack-md">6. Quiet no-change runs: return <span class="mono">[SILENT]</span> when nothing changed</li>
               </ol>
             </div>
             <div class="l-bracket-cyan p-stack-lg">
