@@ -616,7 +616,7 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Clarify confusion: Hermes does have subagents via delegate_task, but they are ephemeral workers, not permanent personalities.||Second mode is full spawned Hermes processes for long-running independent jobs.||Use worktree mode for parallel coding to avoid git collisions.">
+        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Clarify confusion: Hermes does have subagents via delegate_task, but they are ephemeral workers, not permanent personalities.||Second mode is full spawned Hermes processes for long-running independent jobs.||Tell audience why this matters: speed, cleaner context, and better decomposition.||Give practical prompt patterns they can use immediately.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions: How It Actually Works</h1>
             <p class="mt-stack-sm text-white/65">Two parallel models: ephemeral delegated workers and long-running full agent processes.</p>
@@ -644,12 +644,20 @@ hermes</pre>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">MYTH BUSTER</p>
-                <p class="mt-stack-sm text-white/75">"No subagents" is wrong. Hermes has subagents, but they’re task-scoped workers, not permanent sidekicks.</p>
+                <p class="mono text-primary">WHY YOU SHOULD CARE</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• speed: independent chunks finish in parallel</li>
+                  <li>• cleaner thinking: each worker has focused context</li>
+                  <li>• better quality: compare multiple approaches before merge</li>
+                </ul>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">CODING SPLIT EXAMPLE</p>
-                <p class="mt-stack-sm text-white/75">A: backend API · B: frontend UI · C: tests/CI. Run in parallel, then merge validated outputs.</p>
+                <p class="mono text-primary">HOW TO USE THIS TO WORK BETTER</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• phrase requests as split tasks with clear boundaries</li>
+                  <li>• ask for one merged summary + risks + next actions</li>
+                  <li>• use worktrees when workers touch the same repo</li>
+                </ul>
               </div>
             </div>
           </div>

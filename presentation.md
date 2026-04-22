@@ -464,10 +464,25 @@ For long-running spawned agents:
 - Need long-running independent tracks? -> spawn full Hermes processes.
 - For most teams: start with `delegate_task`, escalate to spawned agents only when runtime/scope demands it.
 
-### 6.6 Example prompt for audience (copy/paste)
-- “Split this feature into 3 parallel workers: backend, frontend, and tests. Use subagent delegation for each task, keep contexts isolated, then return one merged summary with integration risks and next steps.”
+### 6.6 Why people should care about subagents
+This is the practical value, not architecture trivia:
+- Speed: independent chunks run in parallel instead of waiting in one long queue.
+- Cleaner context: each worker stays focused, so the parent session is less noisy.
+- Better decisions: you can compare competing approaches before committing.
 
-### 6.7 Subagent spawn process flow (exact decision logic)
+Simple stage line:
+- “Subagents let you trade one overloaded brain for a coordinated specialist team.”
+
+### 6.7 How to use this knowledge to get better Hermes results
+Tell people to change how they prompt:
+- Ask for decomposition explicitly: “Split this into 3 independent workers with clear scope.”
+- Ask for bounded outputs: “Return one merged summary with risks and next actions.”
+- Ask for comparison when useful: “Worker A and B propose alternatives, parent picks.”
+
+Good default prompt pattern:
+- “Decompose this task into independent chunks, delegate with isolated contexts, then merge outputs with a final recommendation and verification checklist.”
+
+### 6.8 Subagent spawn process flow (exact decision logic)
 Use this verbal flow on stage:
 1) Intake the task.
 2) Ask: can this be split into independent chunks without tight shared state?
@@ -493,7 +508,7 @@ Execution path when spawned:
 - Child returns final summary only
 - Parent integrates summaries and performs final verification
 
-### 6.8 If I open multiple Hermes terminals and do separate things
+### 6.9 If I open multiple Hermes terminals and do separate things
 Important behavior:
 - Each terminal window is a separate Hermes session.
 - They do not share live chat context turn-by-turn.
