@@ -176,6 +176,24 @@ Rollout recommendation:
 
 ---
 
+## 4.7) Obsidian Integration (what we built)
+Practical setup:
+- Use `~/wiki` as the working knowledgebase path.
+- Keep it markdown-native so both humans and agent can operate on it.
+- Sync with Obsidian (`ob sync --path ~/wiki`).
+
+Recommended architecture:
+- Hermes curates and updates wiki pages.
+- Obsidian provides graph/backlinks/human editing UX.
+- Automation keeps state current with low-noise no-op runs.
+
+Special pattern from our build:
+- Mirror local Hermes profile snapshots into wiki notes.
+- Sync only on actual change.
+- Optional watcher + cron fallback for reliability.
+
+---
+
 ## 5) Self-Improvement Loop (in-depth)
 This is the core “why Hermes” section.
 
@@ -292,57 +310,7 @@ Framing:
 
 ---
 
-## 8) Knowledgebase by Default (Files + DB context assembly)
-Explain this concretely:
-
-System prompt context layers:
-1. Identity file
-- `~/.hermes/SOUL.md`
-
-2. Project context file (priority, first match wins)
-- `.hermes.md` (or `HERMES.md`) from cwd up to git root
-- else `AGENTS.md`
-- else `CLAUDE.md`
-- else `.cursorrules` / `.cursor/rules/*.mdc`
-
-3. Native memory snapshot
-- `~/.hermes/memories/MEMORY.md`
-- `~/.hermes/memories/USER.md`
-
-4. Skills index
-- Built from `~/.hermes/skills/` (plus optional external skill dirs)
-
-5. Session recall path (on demand, tool-driven)
-- `~/.hermes/state.db` (SQLite) stores session/chat history and powers FTS5 recall for `session_search`
-
-Direct answer on “RAG?”
-- Default stack = file-first prompt assembly + SQLite FTS5 recall from `state.db`.
-- `session_search` is keyword/full-text retrieval first, then LLM summarization.
-- That means: retrieval exists by default, but it is not embedding-vector RAG.
-- Embedding/semantic RAG is opt-in through external memory providers.
-- Once enabled, retrieval strategy depends on provider implementation (semantic-only or hybrid semantic+keyword+graph).
-
----
-
-## 9) Obsidian Integration (what we built)
-Practical setup:
-- Use `~/wiki` as the working knowledgebase path.
-- Keep it markdown-native so both humans and agent can operate on it.
-- Sync with Obsidian (`ob sync --path ~/wiki`).
-
-Recommended architecture:
-- Hermes curates and updates wiki pages.
-- Obsidian provides graph/backlinks/human editing UX.
-- Automation keeps state current with low-noise no-op runs.
-
-Special pattern from our build:
-- Mirror local Hermes profile snapshots into wiki notes.
-- Sync only on actual change.
-- Optional watcher + cron fallback for reliability.
-
----
-
-## 10) DIY Blueprint (replication checklist)
+## 8) DIY Blueprint (replication checklist)
 1. Install Hermes and choose provider/model
 2. Create wiki structure (schema/index/log)
 3. Connect Obsidian or obsidian-headless sync

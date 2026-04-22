@@ -438,6 +438,31 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Sync with ob sync and keep automations low-noise (no-op silent).">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Our Build)</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHAT WE RECOMMEND</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• set <span class="mono">~/wiki</span> as vault</li>
+                  <li>• agent curates markdown, Obsidian visualizes it</li>
+                  <li>• regular maintenance (ingest/lint/update)</li>
+                  <li>• sync with <span class="mono">ob sync --path ~/wiki</span></li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">SPECIAL SAUCE</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• mirror Hermes local profile snapshots into wiki notes</li>
+                  <li>• only sync when content changed (low-noise)</li>
+                  <li>• optional watcher + cron fallback</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Self Improvement Loop" data-notes="Step 1: execute and verify real work (tests/checks).||Step 2: extract reusable procedure into a skill.||Step 3: reload skill automatically when trigger matches.||Step 4: patch skill immediately when stale.||Memory stores facts; skills store procedures.||Compounding means session N+1 starts stronger than session N.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Self-Improvement Loop</h1>
@@ -577,60 +602,6 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Knowledgebase Default" data-notes="Explain context assembly exactly: identity + context files + memory files + skills index + session db recall.||State clearly: default stack is file-first plus SQLite FTS5 recall, not always-on vector RAG.">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Knowledgebase by Default (Files + DB)</h1>
-            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack text-sm">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">FILES IN PROMPT</p>
-                <p class="mt-stack-sm text-white/75"><span class="mono">SOUL.md</span> identity + one project context source (<span class="mono">.hermes.md</span> OR <span class="mono">AGENTS.md</span> OR <span class="mono">CLAUDE.md</span> OR <span class="mono">.cursorrules</span>).</p>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">MEMORY + SKILLS</p>
-                <p class="mt-stack-sm text-white/75"><span class="mono">memories/MEMORY.md</span> and <span class="mono">memories/USER.md</span> snapshot + generated skills catalog from <span class="mono">~/.hermes/skills/</span>.</p>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">DB RECALL PATH</p>
-                <p class="mt-stack-sm text-white/75"><span class="text-white">Yes, there is a DB:</span> <span class="mono">~/.hermes/state.db</span> (SQLite). It stores session/chat history, and SQLite FTS5 powers <span class="mono">session_search</span> recall.</p>
-              </div>
-            </div>
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">DEFAULT RETRIEVAL MODE</p>
-                <p class="mt-stack-sm text-white/75">File-first prompt assembly + keyword full-text recall. Reliable, inspectable, cheap.</p>
-              </div>
-              <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">ABOUT "RAG"</p>
-                <p class="mt-stack-sm text-white/75">Not default vector RAG. Vector/graph retrieval comes only if you enable external memory plugins.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Sync with ob sync and keep automations low-noise (no-op silent).">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Our Build)</h1>
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHAT WE RECOMMEND</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• set <span class="mono">~/wiki</span> as vault</li>
-                  <li>• agent curates markdown, Obsidian visualizes it</li>
-                  <li>• regular maintenance (ingest/lint/update)</li>
-                  <li>• sync with <span class="mono">ob sync --path ~/wiki</span></li>
-                </ul>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">SPECIAL SAUCE</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• mirror Hermes local profile snapshots into wiki notes</li>
-                  <li>• only sync when content changed (low-noise)</li>
-                  <li>• optional watcher + cron fallback</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
 
         <section class="slide w-full" data-title="DIY Blueprint" data-notes="Walk audience through replication checklist.||Close line: from prompts to a compounding agent system.">
           <div class="slide-canvas flex flex-col justify-between p-margin">
