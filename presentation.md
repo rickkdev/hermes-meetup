@@ -101,6 +101,33 @@ Important clarification:
 - Not always-on vector RAG by default.
 - Vector/graph retrieval is optional via external memory providers.
 
+### 4.5.1) Exactly when embeddings are used (and when they are not)
+This is the part people usually misunderstand.
+
+By default (no external memory provider enabled):
+- No embedding pipeline runs for native memory files.
+- `MEMORY.md` and `USER.md` are plain text blocks injected at session start.
+- `session_search` uses SQLite FTS5 keyword matching on `state.db`.
+- So recall is lexical/full-text + LLM summarization, not vector similarity.
+
+What happens when `session_search` runs (default path):
+1. Query is matched against `messages_fts` in `~/.hermes/state.db` (FTS5).
+2. Top matching sessions/messages are selected.
+3. Relevant transcript windows are assembled.
+4. An auxiliary model summarizes those sessions for the current task.
+5. That summary is returned to the main agent as context.
+
+This is retrieval, but not embedding-RAG.
+
+When embeddings/semantic retrieval enter the system:
+- Only after enabling an external memory provider plugin.
+- Typical providers expose semantic/vector retrieval (for example Mem0, Honcho, Hindsight, Supermemory, etc.).
+- In that mode, retrieval behavior is provider-specific (some mix semantic + keyword + graph/entity logic).
+
+Practical trigger rule for the talk:
+- "Out of the box: file memory + SQLite FTS recall."
+- "Embeddings appear only when you explicitly turn on a semantic memory provider."
+
 ---
 
 ## 5) Self-Improvement Loop (in-depth)
@@ -243,9 +270,11 @@ System prompt context layers:
 - `~/.hermes/state.db` (SQLite) stores session/chat history and powers FTS5 recall for `session_search`
 
 Direct answer on “RAG?”
-- Default is file-first prompt assembly + SQLite full-text recall.
-- Not always-on vector RAG by default.
-- Vector/semantic retrieval is optional via external memory plugins.
+- Default stack = file-first prompt assembly + SQLite FTS5 recall from `state.db`.
+- `session_search` is keyword/full-text retrieval first, then LLM summarization.
+- That means: retrieval exists by default, but it is not embedding-vector RAG.
+- Embedding/semantic RAG is opt-in through external memory providers.
+- Once enabled, retrieval strategy depends on provider implementation (semantic-only or hybrid semantic+keyword+graph).
 
 ---
 
