@@ -202,7 +202,7 @@ Special pattern from our build:
 ## 4.8) How To Do This Yourself (quick follow-up)
 1. Install Hermes and choose provider/model
 2. Create wiki structure (`SCHEMA.md`, `index.md`, `log.md`)
-3. Use native `obsidian` skill + connect Obsidian or `obsidian-headless` sync
+3. Use `llm-wiki` for knowledge workflow + `obsidian` for vault UX/sync
 4. Add scheduled ingest/lint/sync tasks
 5. Add local profile mirror automation
 6. Enforce silent no-op behavior
@@ -225,13 +225,18 @@ Minimal starter:
   queries/
 ```
 
-### 4.8.2 How to tell Hermes to use the `obsidian` skill
+### 4.8.2 Which skill does what (`llm-wiki` vs `obsidian`)
+Use both together:
+- `llm-wiki` = Karpathy-style wiki system (SCHEMA/index/log, ingest, lint, cross-linking).
+- `obsidian` = vault note operations + Obsidian Sync plumbing.
+
+How to tell Hermes explicitly:
 Direct prompt style:
-- “Use the obsidian skill. Create/update notes in `~/wiki` and keep wikilinks.”
+- “Use `llm-wiki` + `obsidian`. Maintain the wiki in `~/wiki`, then sync.”
 
 Cron style (explicit skills):
-- `/cron create --skill obsidian ...`
-- or API: `skills=["obsidian"]`
+- `/cron create --skill llm-wiki --skill obsidian ...`
+- or API: `skills=["llm-wiki","obsidian"]`
 
 Path alignment (important):
 - Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill actions and sync target the same vault.
