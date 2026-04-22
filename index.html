@@ -374,6 +374,55 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Prompt → Result → Improvement" data-notes="Answer the question directly: yes, these are mostly custom skills plus memory updates.||Not every result should become an improvement; we gate by reuse + stability + evidence.||If one-off or unverified, do not write a skill.||If recurring and validated, write or patch skill immediately.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Prompt → Result → Improvement</h1>
+            <p class="mt-stack-sm text-white/65">How Hermes decides whether an output becomes durable improvement.</p>
+
+            <div class="mt-stack-lg grid grid-cols-4 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">1) PROMPT</p>
+                <p class="mt-stack-sm text-white/75">User asks for outcome, constraints, and quality bar.</p>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">2) EXECUTION RESULT</p>
+                <p class="mt-stack-sm text-white/75">Hermes runs tools, edits, tests, and verifies reality.</p>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">3) IMPROVEMENT GATE</p>
+                <p class="mt-stack-sm text-white/75">Reusable? Stable? Verified? If no, stop. If yes, capture.</p>
+              </div>
+              <div class="l-bracket-cyan p-stack-md">
+                <p class="mono text-primary">4) WRITE LEARNING</p>
+                <p class="mt-stack-sm text-white/75">Add/patch skill + store durable facts in memory.</p>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHAT GETS WRITTEN</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• <span class="text-white">Custom skill</span> when workflow repeats (triggers, steps, pitfalls, checks)</li>
+                  <li>• <span class="text-white">Skill patch</span> when existing process is stale or wrong</li>
+                  <li>• <span class="text-white">Memory fact</span> for stable preferences/environment conventions</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHAT DOESN'T</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• one-off outputs with no reuse value</li>
+                  <li>• unverified guesses or half-working hacks</li>
+                  <li>• temporary task progress (belongs in session history)</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg">
+              <p class="text-white">Short answer: yes, it’s mostly <span class="mono">custom skills</span> + targeted memory updates. Improvement is gated, not automatic logging.</p>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Parallel Sessions" data-notes="Two modes: delegated subtasks for speed, full spawned agents for long jobs.||Use worktree mode for parallel coding to avoid git collisions.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions</h1>

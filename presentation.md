@@ -120,6 +120,29 @@ Compounding only works with discipline:
 Good one-liner:
 - “Hermes improves by operationalizing lessons, not by hoping the model remembers.”
 
+### 5.5 Prompt → Result → Improvement (decision flow)
+Direct answer to the audience question: yes, improvement is mostly custom skills + targeted memory updates.
+
+Flow:
+1) Prompt
+- User request includes goal + constraints + quality bar.
+
+2) Result
+- Hermes executes with tools and verifies output.
+
+3) Improvement gate
+- Ask three checks: reusable? stable? verified?
+- If any check fails, do not write durable learning.
+
+4) Write learning (only if gate passes)
+- Write/patch a custom skill for repeatable procedure.
+- Write memory only for stable facts (preferences, environment, conventions).
+
+What should NOT be written:
+- One-off outputs with no repeat value.
+- Unverified guesses or temporary hacks.
+- Temporary task progress (that belongs in session history, not memory).
+
 ---
 
 ## 6) Parallel Sessions and Multi-Agent Execution
