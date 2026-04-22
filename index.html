@@ -702,25 +702,45 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Coding Workflow" data-notes="Feels like Codex/Claude Code in terminal loop.||Difference: persistent skills + memory + multi-surface continuity.">
+        <section class="slide w-full" data-title="Coding Workflow" data-notes="Start with the real objection: won’t Hermes bloat context vs fresh Claude Code loops?||Answer: only if you run it lazily. Use story-scoped sessions and extract durable lessons into skills/memory.||Fresh loops are cleaner per task but pay repeated setup cost. Hermes wins when continuity and reuse matter.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow</h1>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow: The Context-Bloat Question</h1>
+            <p class="mt-stack-sm text-white/65">Concern: “If I keep coding in Hermes, won’t context bloat vs fresh Claude Code per story?”</p>
+
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">SIMILAR TO CODEX / CLAUDE CODE</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• terminal-first coding loop</li>
-                  <li>• edits + tests + iteration</li>
-                  <li>• direct command execution</li>
+                <p class="mono text-primary">SHORT ANSWER</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• yes, bloat happens if you never reset scope</li>
+                  <li>• no, if you run story-scoped sessions + clean handoffs</li>
+                  <li>• Hermes is “fresh execution + selective persistence”</li>
+                </ul>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">FRESH LOOP VS HERMES</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• fresh loops: minimal context, repeated onboarding every time</li>
+                  <li>• Hermes: keep reusable knowledge, discard transient noise</li>
+                  <li>• result: less re-explaining standards, tests, and architecture</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHEN FRESH LOOPS WIN</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• tiny one-off fixes with zero continuity needs</li>
+                  <li>• throwaway experiments</li>
+                  <li>• unknown repo where setup cost is trivial</li>
                 </ul>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">HERMES ADVANTAGE</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• toolset controls + approvals/yolo</li>
-                  <li>• session resume/branching</li>
-                  <li>• skills + memory persistence</li>
-                  <li>• same agent across CLI + messaging</li>
+                <p class="mono text-primary">HOW TO AVOID BLOAT IN HERMES</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• one session per story, not one mega-thread forever</li>
+                  <li>• summarize and close; save only stable facts</li>
+                  <li>• promote repeated fixes into skills, not chat history</li>
                 </ul>
               </div>
             </div>

@@ -528,21 +528,66 @@ Simple audience line:
 
 ---
 
-## 7) Coding Workflow vs Codex/Claude Code Sessions
-Common ground:
-- Terminal-centric
-- Edit/test/iterate loop
-- Tool-assisted coding
+## 7) Coding Workflow: the context-bloat objection (start here)
+Main concern to lead with:
+- “If I code in Hermes continuously, won’t context bloat beat me vs starting fresh Claude Code loops per story?”
 
-Hermes-specific layer:
-- Toolset controls and approval gates
-- Session branching and recovery
-- Skills + memory persistence
-- Cross-platform continuity (same agent reachable in messaging)
+Short honest answer:
+- Yes, bloat is real if you keep one giant thread forever.
+- No, if you operate Hermes correctly: fresh execution scopes + selective persistence.
 
-Framing:
-- Codex/Claude Code style = strong execution sessions.
-- Hermes = execution sessions + durable operational memory + orchestration.
+### 7.1 Fresh-loop model vs Hermes model
+Fresh-loop model (Claude/Codex style per story):
+- Pro: very clean context window per task.
+- Con: repeated onboarding every single time (repo conventions, test commands, architecture constraints).
+
+Hermes model:
+- Keep execution sessions scoped (don’t run one mega-session forever).
+- Persist only durable value (skills + memory), not transient chatter.
+- Result: less repetitive setup while keeping context quality high.
+
+Stage one-liner:
+- “Hermes done right is not one infinite context; it’s many fresh contexts plus a durable brain.”
+
+### 7.2 When fresh loops are genuinely better
+Use fresh loops when:
+- tiny one-off changes with no continuity value
+- throwaway experiments
+- quick probes in unknown codebases where setup knowledge won’t be reused
+
+### 7.3 When Hermes is better
+Use Hermes when:
+- project standards repeat (tests, lint flow, release steps)
+- similar bugs/feature patterns recur
+- you want the agent to stop relearning your stack every day
+
+### 7.4 Anti-bloat operating pattern (practical)
+1) Run one session per story or milestone.
+2) End with a clean summary (what changed, what remains, risks).
+3) Save stable facts to memory (preferences, environment truths).
+4) Save repeatable procedures as skills (not ad-hoc chat logs).
+5) Start the next story fresh, loading only what matters.
+
+This gives you:
+- fresh local context quality
+- less repeated prompting
+- better long-term throughput
+
+### 7.5 Prompt patterns to teach audience
+Pattern A (scoped story):
+- “Treat this as one isolated story. Do not drag prior irrelevant context. Complete implementation + tests + concise wrap-up.”
+
+Pattern B (capture only durable value):
+- “After finishing, save only durable lessons: one memory entry for stable project facts and one skill patch for repeatable workflow improvements.”
+
+Pattern C (parallel for complex stories):
+- “Split this story into backend/frontend/tests workers, keep contexts isolated, then merge outputs with integration risks and final checklist.”
+
+### 7.6 Bottom-line framing
+- Fresh Claude loop every time optimizes for local cleanliness.
+- Hermes optimizes for cleanliness plus cumulative operational learning.
+- If you treat Hermes like a never-ending chat, you lose.
+- If you treat it like scoped runs + curated persistence, you win.
 
 ---
 
