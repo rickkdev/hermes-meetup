@@ -702,7 +702,7 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Coding Workflow" data-notes="Start with the real objection: won’t Hermes bloat context vs fresh Claude Code loops?||Answer: only if you run it lazily. Use story-scoped sessions and extract durable lessons into skills/memory.||Fresh loops are cleaner per task but pay repeated setup cost. Hermes wins when continuity and reuse matter.">
+        <section class="slide w-full" data-title="Coding Workflow" data-notes="Start with the real objection: won’t Hermes bloat context vs fresh Claude Code loops?||Answer: only if you run it lazily. Use story-scoped sessions and extract durable lessons into skills/memory.||Explicitly explain HOW to reset scope in Hermes: end story, open new Hermes session, pass compact brief only.||Fresh loops are cleaner per task but pay repeated setup cost. Hermes wins when continuity and reuse matter.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow: The Context-Bloat Question</h1>
             <p class="mt-stack-sm text-white/65">Concern: “If I keep coding in Hermes, won’t context bloat vs fresh Claude Code per story?”</p>
@@ -713,7 +713,7 @@ hermes</pre>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
                   <li>• yes, bloat happens if you never reset scope</li>
                   <li>• no, if you run story-scoped sessions + clean handoffs</li>
-                  <li>• Hermes is “fresh execution + selective persistence”</li>
+                  <li>• reset scope = close story, start new Hermes session, pass short brief</li>
                 </ul>
               </div>
               <div class="l-bracket-cyan p-stack-lg">
@@ -721,7 +721,7 @@ hermes</pre>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
                   <li>• fresh loops: minimal context, repeated onboarding every time</li>
                   <li>• Hermes: keep reusable knowledge, discard transient noise</li>
-                  <li>• result: less re-explaining standards, tests, and architecture</li>
+                  <li>• same cleanliness if you reset each story into a new session</li>
                 </ul>
               </div>
             </div>
@@ -739,7 +739,7 @@ hermes</pre>
                 <p class="mono text-primary">HOW TO AVOID BLOAT IN HERMES</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
                   <li>• one session per story, not one mega-thread forever</li>
-                  <li>• summarize and close; save only stable facts</li>
+                  <li>• reset scope in practice: new terminal tab, run Hermes again, give 5-line brief</li>
                   <li>• promote repeated fixes into skills, not chat history</li>
                 </ul>
               </div>

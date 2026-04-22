@@ -546,6 +546,11 @@ Hermes model:
 - Persist only durable value (skills + memory), not transient chatter.
 - Result: less repetitive setup while keeping context quality high.
 
+How to reset scope in Hermes (say this explicitly):
+- End the current story with a concise summary.
+- Start a new Hermes session (new terminal/tab and run Hermes again).
+- Paste only a compact handoff brief (goal, constraints, changed files, open risks).
+
 Stage one-liner:
 - “Hermes done right is not one infinite context; it’s many fresh contexts plus a durable brain.”
 
@@ -555,11 +560,18 @@ Use fresh loops when:
 - throwaway experiments
 - quick probes in unknown codebases where setup knowledge won’t be reused
 
+Reset-scope version inside Hermes:
+- Treat each one-off as a separate Hermes story session anyway.
+- Do not continue from yesterday’s unrelated coding thread just because it exists.
+
 ### 7.3 When Hermes is better
 Use Hermes when:
 - project standards repeat (tests, lint flow, release steps)
 - similar bugs/feature patterns recur
 - you want the agent to stop relearning your stack every day
+
+Reset-scope rule here too:
+- Reuse durable project knowledge, but still start each story in a fresh Hermes session.
 
 ### 7.4 Anti-bloat operating pattern (practical)
 1) Run one session per story or milestone.
@@ -567,6 +579,13 @@ Use Hermes when:
 3) Save stable facts to memory (preferences, environment truths).
 4) Save repeatable procedures as skills (not ad-hoc chat logs).
 5) Start the next story fresh, loading only what matters.
+
+5-line handoff brief when you reset scope:
+- Story goal
+- Constraints / acceptance criteria
+- Files touched or areas in scope
+- Current status (done vs pending)
+- Known risks/questions
 
 This gives you:
 - fresh local context quality
@@ -583,9 +602,13 @@ Pattern B (capture only durable value):
 Pattern C (parallel for complex stories):
 - “Split this story into backend/frontend/tests workers, keep contexts isolated, then merge outputs with integration risks and final checklist.”
 
+Pattern D (explicit scope reset command to self):
+- “Close this story now. Produce a 5-line handoff brief. I will start a fresh Hermes session for the next story.”
+
 ### 7.6 Bottom-line framing
 - Fresh Claude loop every time optimizes for local cleanliness.
 - Hermes optimizes for cleanliness plus cumulative operational learning.
+- The control knob is scope resets: one story, one session.
 - If you treat Hermes like a never-ending chat, you lose.
 - If you treat it like scoped runs + curated persistence, you win.
 
