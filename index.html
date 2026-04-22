@@ -333,7 +333,7 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Native Memory + History DB" data-notes="Answer clearly: yes, Hermes has both file memory and a chat-history DB.||Files: MEMORY.md + USER.md hold curated durable facts.||DB: state.db stores sessions/messages and FTS5 powers session_search.||Prompt uses frozen memory snapshot per session; session_search is on-demand recall.||Default is not always-on vector RAG.">
+        <section class="slide w-full" data-title="Native Memory + History DB" data-notes="Explain two lanes with usage triggers.||Lane 1 (memory files): stable facts loaded every session.||Lane 2 (state.db): full transcript history searched on demand via session_search.||Decision rule: if it's always useful and stable, write memory; if it's only relevant when asked, retrieve from DB.||Default is not always-on vector RAG.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Native Memory + History DB</h1>
             <p class="mt-stack-sm text-white/65">Hermes has two memory lanes: curated facts in files, and full chat history in SQLite.</p>
@@ -368,9 +368,28 @@ hermes</pre>
               </div>
             </div>
 
-            <div class="mt-stack-lg l-bracket-cyan p-stack-lg">
-              <p class="mono text-primary">YES, THERE IS A DB</p>
-              <p class="mt-stack-sm text-white/75"><span class="mono">~/.hermes/state.db</span> stores sessions/messages. SQLite FTS5 indexes message text, and <span class="mono">session_search</span> pulls + summarizes relevant past sessions on demand.</p>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHEN FILE MEMORY IS USED</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• injected at start of every session (baseline context)</li>
+                  <li>• use for stable facts: preferences, conventions, environment quirks</li>
+                  <li>• write via <span class="mono">memory</span> tool when fact should persist broadly</li>
+                </ul>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">WHEN DB HISTORY IS USED</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• <span class="mono">~/.hermes/state.db</span> stores full sessions/messages automatically</li>
+                  <li>• queried on demand via <span class="mono">session_search</span> (not auto-injected every turn)</li>
+                  <li>• use when user asks “what did we do before?” or references past work</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket p-stack-lg">
+              <p class="mono text-primary">DECISION RULE</p>
+              <p class="mt-stack-sm text-white/75">Always-needed, stable truth → file memory. Historical details tied to old chats → state.db recall.</p>
             </div>
           </div>
         </section>

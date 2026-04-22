@@ -75,10 +75,19 @@ Two memory lanes (default):
   - `~/.hermes/state.db` (SQLite) stores sessions + messages
   - FTS5 index powers `session_search` over past transcripts
 
-How it works in-session:
-- Memory files are injected as a frozen snapshot at session start.
-- Mid-session memory writes persist immediately on disk but don’t mutate the current prompt snapshot.
-- `session_search` is on-demand: query DB history, summarize relevant sessions, inject recap when needed.
+When each lane is used:
+- File memory lane:
+  - loaded into prompt at session start (baseline context)
+  - use for stable truths needed often
+  - write via `memory` tool when fact should persist broadly
+- DB history lane:
+  - queried on demand via `session_search` (not always injected)
+  - use for historical details tied to prior chats
+  - best when user asks “what did we do before?” or references old work
+
+Decision rule:
+- Always-needed stable truth → file memory
+- Historical details from old sessions → DB recall (`session_search`)
 
 Why this design:
 - Stable prompt prefix = better cache behavior and predictable runs.
