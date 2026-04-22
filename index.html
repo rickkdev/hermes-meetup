@@ -333,10 +333,10 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Native Memory (Built-in)" data-notes="Native memory is explicit and file-backed, not hidden magic.||Built-in stores are memories/MEMORY.md + memories/USER.md.||These are injected as a frozen snapshot at session start; mid-session writes persist but don't mutate cached system prompt.||No default vector RAG for built-in memory; retrieval is direct entries + explicit tools.">
+        <section class="slide w-full" data-title="Native Memory + History DB" data-notes="Answer clearly: yes, Hermes has both file memory and a chat-history DB.||Files: MEMORY.md + USER.md hold curated durable facts.||DB: state.db stores sessions/messages and FTS5 powers session_search.||Prompt uses frozen memory snapshot per session; session_search is on-demand recall.||Default is not always-on vector RAG.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Native Memory: How It Actually Works</h1>
-            <p class="mt-stack-sm text-white/65">Hermes uses explicit durable stores, then injects a stable snapshot into the system prompt.</p>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Native Memory + History DB</h1>
+            <p class="mt-stack-sm text-white/65">Hermes has two memory lanes: curated facts in files, and full chat history in SQLite.</p>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
@@ -360,12 +360,17 @@ hermes</pre>
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
                 <p class="mono text-primary">DEFAULT: NOT VECTOR RAG</p>
-                <p class="mt-stack-sm text-white/75">Built-in memory is curated markdown facts, not automatic embedding retrieval.</p>
+                <p class="mt-stack-sm text-white/75">Default retrieval is file snapshots + SQLite FTS recall, not always-on embeddings.</p>
               </div>
               <div class="l-bracket-cyan p-stack-lg">
                 <p class="mono text-primary">EXTENSIONS</p>
                 <p class="mt-stack-sm text-white/75">You can attach external memory providers (e.g. Honcho/Mem0/Hindsight) for richer retrieval, but that is optional.</p>
               </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg">
+              <p class="mono text-primary">YES, THERE IS A DB</p>
+              <p class="mt-stack-sm text-white/75"><span class="mono">~/.hermes/state.db</span> stores sessions/messages. SQLite FTS5 indexes message text, and <span class="mono">session_search</span> pulls + summarizes relevant past sessions on demand.</p>
             </div>
           </div>
         </section>

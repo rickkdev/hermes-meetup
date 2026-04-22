@@ -67,22 +67,26 @@ Takeaway line:
 ## 4.5) Native Memory: How It Works (before self-improvement)
 This section should appear before the self-improvement loop.
 
-Built-in memory (default):
-- `~/.hermes/memories/MEMORY.md` → environment/project facts
-- `~/.hermes/memories/USER.md` → user profile/preferences
+Two memory lanes (default):
+- Curated facts in files:
+  - `~/.hermes/memories/MEMORY.md` → environment/project facts
+  - `~/.hermes/memories/USER.md` → user profile/preferences
+- Full conversation history in DB:
+  - `~/.hermes/state.db` (SQLite) stores sessions + messages
+  - FTS5 index powers `session_search` over past transcripts
 
-How injection works:
-- These files are loaded into the system prompt as a frozen snapshot at session start.
-- Mid-session writes persist immediately on disk but do not mutate the current prompt snapshot.
-- Updates become active on the next session.
+How it works in-session:
+- Memory files are injected as a frozen snapshot at session start.
+- Mid-session memory writes persist immediately on disk but don’t mutate the current prompt snapshot.
+- `session_search` is on-demand: query DB history, summarize relevant sessions, inject recap when needed.
 
 Why this design:
-- Stable prompt prefix = better cache behavior and more predictable runs.
-- Memory stays explicit and auditable (plain markdown files).
+- Stable prompt prefix = better cache behavior and predictable runs.
+- Knowledge remains auditable (plain files + inspectable SQLite DB).
 
 Important clarification:
-- Built-in native memory is not default vector RAG.
-- It's curated, file-backed memory with explicit writes.
+- Default is file snapshot + SQLite full-text recall.
+- Not always-on vector RAG by default.
 - Vector/graph retrieval is optional via external memory providers.
 
 ---
