@@ -336,7 +336,7 @@ hermes</pre>
         <section class="slide w-full" data-title="Native Memory + History DB" data-notes="Explain two lanes with usage triggers.||Lane 1 (memory files): stable facts loaded every session.||Lane 2 (state.db): full transcript history searched on demand via session_search.||Decision rule: if it's always useful and stable, write memory; if it's only relevant when asked, retrieve from DB.||Default is not always-on vector RAG.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Native Memory + History DB</h1>
-            <p class="mt-stack-sm text-white/65">Hermes has two memory lanes: curated facts in files, and full chat history in SQLite.</p>
+            <p class="mt-stack-sm text-white/65"><span class="text-white">Yes — Hermes has a DB.</span> <span class="mono">~/.hermes/state.db</span> stores chat history, while file memory stores durable facts.</p>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">

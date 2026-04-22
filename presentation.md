@@ -67,6 +67,9 @@ Takeaway line:
 ## 4.5) Native Memory: How It Works (before self-improvement)
 This section should appear before the self-improvement loop.
 
+Start with this explicit line for the audience:
+- Yes, Hermes has a DB: `~/.hermes/state.db` (SQLite) for chat/session history.
+
 Two memory lanes (default):
 - Curated facts in files:
   - `~/.hermes/memories/MEMORY.md` → environment/project facts
