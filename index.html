@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hermes Agent Meetup Deck</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              surface: "#131313",
+              background: "#050505",
+              primary: "#00f0ff",
+              foreground: "#e5e2e1",
+              muted: "#8a8a8a",
+              line: "#222222",
+              panel: "#101010",
+            },
+            spacing: {
+              unit: "4px",
+              "stack-sm": "8px",
+              "stack-md": "16px",
+              "stack-lg": "32px",
+              gutter: "24px",
+              margin: "40px",
+              "section-gap": "80px",
+            },
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["Space Grotesk", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #050505;
+        --fg: #e5e2e1;
+        --cyan: #00f0ff;
+        --line: #222222;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "Space Grotesk", sans-serif;
+        overflow: hidden;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+
+      .deck-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .wireframe-grid {
+        background-image:
+          linear-gradient(#202020 1px, transparent 1px),
+          linear-gradient(90deg, #202020 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      .scanline::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background: linear-gradient(
+          to bottom,
+          transparent 50%,
+          rgba(0, 240, 255, 0.07) 51%,
+          transparent 100%
+        );
+        background-size: 100% 4px;
+      }
+
+      .l-bracket {
+        border-top: 1px solid #fff;
+        border-left: 1px solid #fff;
+      }
+
+      .l-bracket-cyan {
+        border-top: 1px solid var(--cyan);
+        border-left: 1px solid var(--cyan);
+      }
+
+      .sub-bracket {
+        border-top: 1px solid var(--line);
+        border-left: 1px solid var(--line);
+      }
+
+      .slide {
+        display: none;
+      }
+
+      .slide.is-active {
+        display: flex;
+      }
+
+      .slide-canvas {
+        aspect-ratio: 16 / 9;
+        width: min(1280px, 100%);
+        margin: 0 auto;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg);
+      }
+
+      .slide-canvas:fullscreen {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto;
+        max-width: none;
+      }
+
+      .slide-canvas:-webkit-full-screen {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto;
+        max-width: none;
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .blink {
+        animation: blink 1s step-end infinite;
+      }
+
+      .pulse {
+        animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+
+      @keyframes blink {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      @media (max-width: 960px) {
+        body {
+          overflow: auto;
+        }
+
+        .slide-canvas {
+          aspect-ratio: auto;
+          min-height: calc(100vh - 112px);
+        }
+
+        .mobile-stack {
+          grid-template-columns: 1fr !important;
+        }
+
+        .mobile-half {
+          width: 100% !important;
+        }
+
+        .arch-core,
+        .arch-mesh {
+          position: static !important;
+          transform: none !important;
+        }
+
+        .arch-lines {
+          display: none;
+        }
+      }
+
+      .deck-control[disabled] {
+        opacity: 0.25;
+        cursor: not-allowed;
+      }
+    </style>
+  </head>
+  <body class="bg-background text-foreground">
+    <div class="deck-shell">
+      <header
+        class="border-b border-white bg-background px-6 py-2 text-xs uppercase tracking-tight text-primary"
+      >
+        <div class="mx-auto flex max-w-7xl items-center justify-between">
+          <div class="mono text-base font-bold tracking-[0.3em]">HERMES_AGENT</div>
+          <nav class="hidden gap-gutter md:flex">
+            <span class="border-b border-primary text-primary">root</span>
+            <span class="text-white/50">nodes</span>
+            <span class="text-white/50">core_logic</span>
+          </nav>
+          <div class="flex items-center gap-stack-md">
+            <span class="material-symbols-outlined text-sm">memory</span>
+            <span class="material-symbols-outlined text-sm">signal_cellular_alt</span>
+            <span class="material-symbols-outlined text-sm">settings_ethernet</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="flex flex-1 items-center justify-center px-4 py-6 md:px-6 md:py-8">
+        <section class="slide is-active w-full" data-title="Opening" data-notes="Goal: show Hermes as an agent runtime, not just a chat UI.||Frame the talk: setup, OpenClaw comparison, self-improvement, parallel sessions, coding flow, knowledgebase + Obsidian.">
+          <div class="slide-canvas flex flex-col justify-between p-margin">
+            <div>
+              <p class="mono text-xs uppercase tracking-[0.25em] text-primary">[01] HERMES MEETUP</p>
+              <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">
+                Hermes Agent<br /><span class="text-primary">How It Works</span>
+              </h1>
+              <p class="mt-stack-lg max-w-3xl text-xl text-white/70">
+                From coding assistant to durable agent system: setup, self-improvement,
+                parallel execution, and a compounding knowledgebase with Obsidian.
+              </p>
+            </div>
+            <div class="grid grid-cols-3 gap-gutter text-sm uppercase tracking-wider mobile-stack">
+              <div class="l-bracket p-stack-md">
+                <div class="mono text-primary">Setup</div>
+                <div class="mt-unit text-white/70">10 min to useful</div>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <div class="mono text-primary">Difference</div>
+                <div class="mt-unit text-white/70">vs OpenClaw</div>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <div class="mono text-primary">Compounding</div>
+                <div class="mt-unit text-white/70">skills + memory + wiki</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="What Hermes Is" data-notes="Key message: Hermes combines tools, memory, skills, and automation in one system.||Not just prompt-response; it executes and carries context across sessions.">
+          <div class="slide-canvas flex flex-col justify-center px-section-gap">
+            <h1 class="text-5xl uppercase tracking-tight text-white">What Hermes Actually Is</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">NOT JUST CHAT</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• not “prompt in / answer out” only</li>
+                  <li>• not reset-to-zero every session</li>
+                  <li>• not limited to one interface</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">AGENT RUNTIME</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• tools (terminal, files, web, browser, code)</li>
+                  <li>• persistent memory + reusable skills</li>
+                  <li>• CLI + Telegram/Discord/Slack + cron + webhooks</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Setup in 3 Minutes" data-notes="Demo path: install -> setup -> model -> doctor -> first run.||Mention config.yaml vs .env separation: behavior vs secrets.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Setup in 3 Minutes</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">COMMAND FLOW</p>
+                <pre class="mono mt-stack-md text-sm text-white/80">curl -fsSL ...install.sh | bash
+hermes setup
+hermes model
+hermes doctor
+hermes</pre>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">KEY PATHS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• ~/.hermes/config.yaml (settings)</li>
+                  <li>• ~/.hermes/.env (keys)</li>
+                  <li>• ~/.hermes/skills/ (procedures)</li>
+                  <li>• ~/.hermes/sessions/ (history)</li>
+                </ul>
+              </div>
+            </div>
+            <p class="mt-auto mono text-xs uppercase tracking-widest text-primary/80">Fast setup. Harden later.</p>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Hermes vs OpenClaw" data-notes="Keep this fair: OpenClaw is strong in coding sessions.||Hermes extends into operations: memory, skills, gateway, cron/webhooks, profiles, dashboard.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Hermes vs OpenClaw</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">OPENCLAW STRENGTH</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• great coding/session workflow</li>
+                  <li>• clean terminal interaction loop</li>
+                  <li>• focused single-session execution</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">HERMES ADDS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• memory + self-improving skills</li>
+                  <li>• gateway platforms + cron + webhooks</li>
+                  <li>• profiles, plugins, dashboard, MCP</li>
+                  <li>• migration path: <span class="mono">hermes claw migrate</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Self Improvement Loop" data-notes="Step 1: execute and verify real work (tests/checks).||Step 2: extract reusable procedure into a skill.||Step 3: reload skill automatically when trigger matches.||Step 4: patch skill immediately when stale.||Memory stores facts; skills store procedures.||Compounding means session N+1 starts stronger than session N.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Self-Improvement Loop</h1>
+            <p class="mt-stack-sm text-white/65">Hermes improves by turning solved work into reusable operating knowledge.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">1) EXECUTE + VERIFY</p>
+                <p class="mt-stack-sm text-white/75">Solve a real task with tools, then verify output (tests, checks, validation).</p>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">2) EXTRACT PROCEDURE</p>
+                <p class="mt-stack-sm text-white/75">If the flow is reusable, save it as a skill: trigger, steps, pitfalls, verification.</p>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">3) REUSE ON TRIGGER</p>
+                <p class="mt-stack-sm text-white/75">Later, Hermes loads that skill in context and executes faster with fewer mistakes.</p>
+              </div>
+              <div class="l-bracket p-stack-md">
+                <p class="mono text-primary">4) PATCH ON FAILURE</p>
+                <p class="mt-stack-sm text-white/75">If the skill is stale, patch immediately so the next run is better than this run.</p>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">MEMORY VS SKILLS</p>
+                <ul class="mt-stack-sm space-y-unit text-white/75">
+                  <li>• Memory = stable facts (user preferences, environment quirks)</li>
+                  <li>• Skills = how-to playbooks (repeatable workflows)</li>
+                </ul>
+              </div>
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">COMPOUNDING EFFECT</p>
+                <p class="mt-stack-sm text-white">Session N+1 starts from a stronger baseline than Session N.</p>
+                <p class="mt-unit text-white/65">Not just longer chat history. Actual operational learning.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Two modes: delegated subtasks for speed, full spawned agents for long jobs.||Use worktree mode for parallel coding to avoid git collisions.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions</h1>
+            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">FAST PATH</p>
+                <p class="mt-stack-sm text-white/75">delegate_task for short, isolated subtasks.</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">HEAVY PATH</p>
+                <p class="mt-stack-sm text-white/75">spawn full Hermes processes for long jobs.</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">SAFE CODING</p>
+                <p class="mt-stack-sm text-white/75">use worktree mode (-w) to avoid git collisions.</p>
+              </div>
+            </div>
+            <div class="mt-stack-lg l-bracket p-stack-lg">
+              <p class="mono text-primary">EXAMPLE</p>
+              <p class="mt-stack-sm text-white/75">Agent A: backend API · Agent B: frontend UI · Agent C: tests/CI · then merge results.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Coding Workflow" data-notes="Feels like Codex/Claude Code in terminal loop.||Difference: persistent skills + memory + multi-surface continuity.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">SIMILAR TO CODEX / CLAUDE CODE</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• terminal-first coding loop</li>
+                  <li>• edits + tests + iteration</li>
+                  <li>• direct command execution</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">HERMES ADVANTAGE</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• toolset controls + approvals/yolo</li>
+                  <li>• session resume/branching</li>
+                  <li>• skills + memory persistence</li>
+                  <li>• same agent across CLI + messaging</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Knowledgebase Default" data-notes="Use LLM wiki pattern: raw sources, curated pages, schema/index/log governance.||This compounds synthesis over time better than rediscovering context every query.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Knowledgebase by Default</h1>
+            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">LAYER 1</p>
+                <p class="mt-stack-sm text-white/75">raw sources (immutable)</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">LAYER 2</p>
+                <p class="mt-stack-sm text-white/75">entity/concept pages (curated)</p>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">LAYER 3</p>
+                <p class="mt-stack-sm text-white/75">schema + index + log (governance)</p>
+              </div>
+            </div>
+            <div class="mt-stack-lg l-bracket p-stack-lg">
+              <p class="text-white/75">This follows Karpathy’s LLM wiki pattern: compile once, keep current, and let synthesis compound over time.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Sync with ob sync and keep automations low-noise (no-op silent).">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Our Build)</h1>
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHAT WE RECOMMEND</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• set <span class="mono">~/wiki</span> as vault</li>
+                  <li>• agent curates markdown, Obsidian visualizes it</li>
+                  <li>• regular maintenance (ingest/lint/update)</li>
+                  <li>• sync with <span class="mono">ob sync --path ~/wiki</span></li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">SPECIAL SAUCE</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• mirror Hermes local profile snapshots into wiki notes</li>
+                  <li>• only sync when content changed (low-noise)</li>
+                  <li>• optional watcher + cron fallback</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="DIY Blueprint" data-notes="Walk audience through replication checklist.||Close line: from prompts to a compounding agent system.">
+          <div class="slide-canvas flex flex-col justify-between p-margin">
+            <div>
+              <h1 class="text-5xl uppercase tracking-tight text-white">How To Do This Yourself</h1>
+              <ol class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-white/75">
+                <li class="l-bracket p-stack-md">1. Install Hermes + choose provider</li>
+                <li class="l-bracket p-stack-md">2. Create wiki schema/index/log</li>
+                <li class="l-bracket p-stack-md">3. Connect Obsidian or obsidian-headless</li>
+                <li class="l-bracket p-stack-md">4. Add scheduled ingest + lint + sync</li>
+                <li class="l-bracket p-stack-md">5. Add profile mirror automation</li>
+                <li class="l-bracket p-stack-md">6. Enforce no-op silent runs</li>
+              </ol>
+            </div>
+            <div class="l-bracket-cyan p-stack-lg">
+              <p class="text-2xl text-white">From prompts to a compounding agent system.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside id="presenter-notes" class="hidden border-t border-line bg-[#0b0b0b] px-6 py-4">
+        <div class="mx-auto max-w-7xl">
+          <div class="mono text-[10px] uppercase tracking-widest text-primary">Presenter Notes (press N to toggle)</div>
+          <div id="presenter-notes-body" class="mt-2 whitespace-pre-line text-sm leading-relaxed text-white/80"></div>
+        </div>
+      </aside>
+
+      <footer class="border-t border-line bg-background px-6 py-2 mono text-[10px] uppercase tracking-widest text-primary">
+        <div class="mx-auto flex max-w-7xl items-center justify-between">
+          <div>SYSTEM_STABLE // 2026</div>
+          <div class="flex gap-stack-lg">
+            <button id="prev-slide" class="deck-control text-white/50 transition hover:text-white">
+              PREV
+            </button>
+            <button id="next-slide" class="deck-control text-white/50 transition hover:text-white">
+              NEXT
+            </button>
+            <button id="fullscreen-toggle" class="deck-control text-white/50 transition hover:text-white">
+              FULLSCREEN
+            </button>
+            <button id="notes-toggle" class="deck-control text-white/50 transition hover:text-white">
+              NOTES
+            </button>
+            <span id="slide-index">SLIDE_INDEX: 01</span>
+            <span id="slide-title" class="text-white/50">TITLE: INTRO</span>
+            <span id="timestamp" class="text-white/50">TIMESTAMP: 14:30:00Z</span>
+          </div>
+        </div>
+      </footer>
+    </div>
+
+    <script>
+      const slides = [...document.querySelectorAll(".slide")];
+      const canvases = [...document.querySelectorAll(".slide-canvas")];
+      const slideIndexEl = document.getElementById("slide-index");
+      const slideTitleEl = document.getElementById("slide-title");
+      const timestampEl = document.getElementById("timestamp");
+      const prevButton = document.getElementById("prev-slide");
+      const nextButton = document.getElementById("next-slide");
+      const fullscreenButton = document.getElementById("fullscreen-toggle");
+      const notesToggleButton = document.getElementById("notes-toggle");
+      const notesPanel = document.getElementById("presenter-notes");
+      const notesBody = document.getElementById("presenter-notes-body");
+      let notesVisible = false;
+      let current = 0;
+
+      function activeCanvas() {
+        return canvases[current];
+      }
+
+      function updateTimestamp() {
+        const now = new Date();
+        timestampEl.textContent = `TIMESTAMP: ${now.toISOString().slice(11, 19)}Z`;
+      }
+
+
+      function updateNotes() {
+        const raw = slides[current].dataset.notes || "No notes for this slide.";
+        const lines = raw.split("||").map((s) => `• ${s.trim()}`).join("
+");
+        notesBody.textContent = lines;
+      }
+
+      function toggleNotes(force) {
+        notesVisible = typeof force === "boolean" ? force : !notesVisible;
+        notesPanel.classList.toggle("hidden", !notesVisible);
+        notesToggleButton.classList.toggle("text-primary", notesVisible);
+      }
+
+      function renderSlide(index) {
+        current = Math.max(0, Math.min(index, slides.length - 1));
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("is-active", i === current);
+        });
+        slideIndexEl.textContent = `SLIDE_INDEX: ${String(current + 1).padStart(2, "0")}`;
+        slideTitleEl.textContent = `TITLE: ${slides[current].dataset.title.toUpperCase()}`;
+        prevButton.disabled = current === 0;
+        nextButton.disabled = current === slides.length - 1;
+        updateNotes();
+      }
+
+      function nextSlide() {
+        if (current < slides.length - 1) {
+          renderSlide(current + 1);
+        }
+      }
+
+      function prevSlide() {
+        if (current > 0) {
+          renderSlide(current - 1);
+        }
+      }
+
+      async function toggleFullscreen() {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+          return;
+        }
+
+        const canvas = activeCanvas();
+        if (canvas?.requestFullscreen) {
+          await canvas.requestFullscreen();
+        }
+      }
+
+      window.addEventListener("keydown", (event) => {
+        if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+          event.preventDefault();
+          nextSlide();
+        }
+        if (["ArrowLeft", "PageUp"].includes(event.key)) {
+          event.preventDefault();
+          prevSlide();
+        }
+        if (event.key === "Home") {
+          renderSlide(0);
+        }
+        if (event.key === "End") {
+          renderSlide(slides.length - 1);
+        }
+        if (event.key.toLowerCase() === "f") {
+          event.preventDefault();
+          toggleFullscreen();
+        }
+        if (event.key.toLowerCase() === "n") {
+          event.preventDefault();
+          toggleNotes();
+        }
+        if (event.key === "Escape" && document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+      });
+
+      prevButton.addEventListener("click", prevSlide);
+      nextButton.addEventListener("click", nextSlide);
+      fullscreenButton.addEventListener("click", toggleFullscreen);
+      notesToggleButton.addEventListener("click", toggleNotes);
+
+      updateTimestamp();
+      setInterval(updateTimestamp, 1000);
+      renderSlide(0);
+      toggleNotes(false);
+    </script>
+  </body>
+</html>
