@@ -493,14 +493,31 @@ hermes</pre>
           <div class="slide-canvas flex flex-col justify-between p-margin">
             <div>
               <h1 class="text-5xl uppercase tracking-tight text-white">How To Do This Yourself</h1>
-              <ol class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-white/75">
-                <li class="l-bracket p-stack-md">1. Install Hermes + choose provider (get baseline agent running)</li>
-                <li class="l-bracket p-stack-md">2. Run <span class="mono">llm-wiki</span> to initialize <span class="mono">~/wiki</span> (schema + index + log)</li>
-                <li class="l-bracket p-stack-md">3. Run <span class="mono">obsidian</span> to connect that same path to Obsidian Sync</li>
-                <li class="l-bracket p-stack-md">4. Schedule upkeep jobs: ingest new sources, lint wiki quality, then sync vault</li>
-                <li class="l-bracket p-stack-md">5. Mirror Hermes profile files into wiki snapshot notes automatically</li>
-                <li class="l-bracket p-stack-md">6. Quiet no-change runs: return <span class="mono">[SILENT]</span> when nothing changed</li>
-              </ol>
+              <div class="mt-stack-sm l-bracket-cyan p-stack-md text-sm text-white/80">
+                <span class="text-white">Skill availability:</span> <span class="mono">llm-wiki</span> and <span class="mono">obsidian</span> are official built-in skills in Hermes (no external link needed). If missing, update Hermes, then check with <span class="mono">/skills search llm-wiki</span>.
+              </div>
+              <div class="mt-stack-md grid grid-cols-2 gap-gutter mobile-stack text-sm text-white/75">
+                <div class="l-bracket p-stack-md">
+                  <p class="mono text-primary">2) INITIALIZE WIKI WITH LLM-WIKI</p>
+                  <p class="mt-unit">Prompt: <span class="text-white">"Use the llm-wiki skill. Initialize <span class="mono">~/wiki</span> and create <span class="mono">SCHEMA.md</span>, <span class="mono">index.md</span>, <span class="mono">log.md</span>, plus raw/entities/concepts/comparisons/queries."</span></p>
+                </div>
+                <div class="l-bracket p-stack-md">
+                  <p class="mono text-primary">3) CONNECT OBSIDIAN SYNC</p>
+                  <p class="mt-unit">Prompt: <span class="text-white">"Use the obsidian skill. Set <span class="mono">OBSIDIAN_VAULT_PATH=~/wiki</span>, run <span class="mono">ob sync-setup</span>, verify status, then run one sync."</span></p>
+                </div>
+                <div class="l-bracket p-stack-md">
+                  <p class="mono text-primary">4) SCHEDULE MAINTENANCE</p>
+                  <p class="mt-unit">Prompt: <span class="text-white">"Create cron jobs: ingest every 2h, lint daily at 09:00, sync every 30m with <span class="mono">ob sync --path ~/wiki</span>. Return job IDs."</span></p>
+                </div>
+                <div class="l-bracket p-stack-md">
+                  <p class="mono text-primary">5) PROFILE SNAPSHOT MIRROR</p>
+                  <p class="mt-unit">Prompt: <span class="text-white">"Use mirror-hermes-local-to-obsidian. Mirror <span class="mono">~/.hermes/SOUL.md</span> and <span class="mono">~/.hermes/memories/USER.md</span> into <span class="mono">~/wiki/hermes/</span> notes when changed."</span></p>
+                </div>
+                <div class="l-bracket p-stack-md col-span-2">
+                  <p class="mono text-primary">6) NO-OP SILENT MODE</p>
+                  <p class="mt-unit">Prompt: <span class="text-white">"For all scheduled wiki jobs: if no content changed, return exactly <span class="mono">[SILENT]</span>, skip log append, and skip sync."</span></p>
+                </div>
+              </div>
             </div>
             <div class="l-bracket-cyan p-stack-lg">
               <p class="text-2xl text-white">From prompts to a compounding agent system.</p>

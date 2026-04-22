@@ -226,6 +226,11 @@ Special pattern from our build:
 5. Automate profile snapshot mirroring into wiki notes
 6. Enforce quiet no-change runs (`[SILENT]`)
 
+Skill availability (important):
+- `llm-wiki` and `obsidian` are official built-in Hermes skills (normally no external URL needed).
+- Verify with `/skills` or `hermes skills list`.
+- If missing, update Hermes first, then re-check.
+
 ### 4.9.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
 What this means:
 - Ask Hermes to set up the wiki at `~/wiki` using the LLM Wiki convention.
@@ -233,6 +238,9 @@ What this means:
 
 Prompt to Hermes:
 - “Use the `llm-wiki` skill. Initialize a new wiki at `~/wiki` for Hermes operations. Create `SCHEMA.md`, `index.md`, `log.md`, and folders `raw/`, `entities/`, `concepts/`, `comparisons/`, `queries/`. Then confirm files created.”
+
+If someone asks “do I install from a link?”
+- “No in most cases — this skill is built-in. Just call it in the prompt.”
 
 ### 4.9.2 Step 3 — Connect Obsidian with `obsidian` skill
 What this means:
@@ -244,6 +252,9 @@ Prompt to Hermes:
 
 If you want both in one request:
 - “Use `llm-wiki` + `obsidian`: keep knowledge curation in `~/wiki` and keep Obsidian Sync connected.”
+
+Edge case if a skill is missing:
+- “Run `/skills search <skill-name>`. If it appears, install with `/skills install <identifier>`. If not, update Hermes.”
 
 ### 4.9.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
 What this means:
