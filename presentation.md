@@ -262,6 +262,11 @@ What this means:
 - Lint = quality checks (broken links, missing metadata, stale pages).
 - Sync = publish latest vault state to Obsidian Sync.
 
+Simple explanation for non-technical audience:
+- “Scheduled maintenance” means Hermes auto-runs routine housekeeping on a timer.
+- It’s a robot janitor+librarian: bring in new info, clean bad links/metadata, then sync.
+- Why it exists: no manual babysitting, less drift, always-current wiki.
+
 Prompt to Hermes:
 - “Create recurring jobs for `~/wiki`: ingest every 2 hours, lint daily at 09:00, and `ob sync --path ~/wiki` every 30 minutes. Keep output concise and include job IDs.”
 
@@ -271,6 +276,11 @@ What this means:
 - Typical mapping:
   - `~/.hermes/SOUL.md` → `~/wiki/hermes/soul.md`
   - `~/.hermes/memories/USER.md` → `~/wiki/hermes/user-profile-live.md`
+
+Simple explanation for non-technical audience:
+- “Snapshot mirror” means Hermes automatically copies important internal files into wiki notes.
+- Think: camera snapshots of Hermes brain/config files, saved where humans can read them.
+- Why it exists: transparency and audit trail (“what changed and when”) in Obsidian.
 
 Prompt to Hermes:
 - “Use `mirror-hermes-local-to-obsidian`. Set up automatic mirroring from `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md` into `~/wiki/hermes/` snapshot notes, updating only the `## current contents` section.”
