@@ -201,11 +201,64 @@ Special pattern from our build:
 
 ## 4.8) How To Do This Yourself (quick follow-up)
 1. Install Hermes and choose provider/model
-2. Create wiki structure (schema/index/log)
+2. Create wiki structure (`SCHEMA.md`, `index.md`, `log.md`)
 3. Use native `obsidian` skill + connect Obsidian or `obsidian-headless` sync
 4. Add scheduled ingest/lint/sync tasks
 5. Add local profile mirror automation
 6. Enforce silent no-op behavior
+
+### 4.8.1 What “wiki schema/index/log” means (plain English)
+- `SCHEMA.md` = your wiki rules: naming, tags, page format, update policy.
+- `index.md` = table of contents for all pages.
+- `log.md` = append-only changelog of what Hermes updated and when.
+
+Minimal starter:
+```text
+~/wiki/
+  SCHEMA.md
+  index.md
+  log.md
+  raw/
+  entities/
+  concepts/
+  comparisons/
+  queries/
+```
+
+### 4.8.2 How to tell Hermes to use the `obsidian` skill
+Direct prompt style:
+- “Use the obsidian skill. Create/update notes in `~/wiki` and keep wikilinks.”
+
+Cron style (explicit skills):
+- `/cron create --skill obsidian ...`
+- or API: `skills=["obsidian"]`
+
+Path alignment (important):
+- Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill actions and sync target the same vault.
+
+### 4.8.3 What “scheduled ingest/lint/sync” means
+- Ingest: pull new source material into `raw/` and update wiki pages.
+- Lint: check broken links, orphan pages, missing frontmatter/tags, stale pages.
+- Sync: run `ob sync --path ~/wiki` to push/pull with Obsidian Sync.
+
+Typical cadence:
+- Ingest every 1–4h
+- Lint daily
+- Sync every 15–60m
+
+### 4.8.4 What “profile mirror automation” means
+- Copy selected local Hermes profile files into human-readable wiki snapshot notes.
+- Example mapping:
+  - `~/.hermes/SOUL.md` → `~/wiki/hermes/soul.md`
+  - `~/.hermes/memories/USER.md` → `~/wiki/hermes/user-profile-live.md`
+- Only update the `## current contents` section, keep note structure/frontmatter.
+
+### 4.8.5 What “no-op silent runs” means
+- If a run finds no content changes, it should do nothing noisy:
+  - no new log entry
+  - no sync call
+  - no chat notification
+- In cron/chat setups, return exactly `[SILENT]` on no-op.
 
 Transition line into next section:
 - “Now that knowledge is connected, here’s how Hermes compounds capability over time.”
