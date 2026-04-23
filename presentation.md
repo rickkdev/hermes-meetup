@@ -484,6 +484,37 @@ Use this section for audiences already using Claude Code, Codex, Open Code, or C
 - Big epic overnight execution: Ralph loops (+ Hermes for memory + multi-channel control)
 - For compounding leverage over weeks/months, Hermes should be one of the layers.
 
+## 9.5) Team Profiles: Shared Hermes Agent
+Core question:
+- “Can a team share one Hermes agent?”
+- Yes, via profiles.
+
+Simple explanation:
+- A profile is an isolated Hermes instance.
+- Each profile has its own:
+  - memory (`MEMORY.md`, `USER.md`)
+  - sessions/history
+  - skills
+  - cron jobs/automation state
+  - config/auth scope
+
+How to run this for a team (single slide flow):
+1. Create a shared profile on a shared VPS (example: `team-core`).
+2. Run Hermes gateway for that profile.
+3. Pair/allowlist team members in the messaging gateway.
+4. Everyone messages the same team agent endpoint.
+5. All outcomes accumulate in shared profile memory + sessions.
+
+Why it matters:
+- You get one team “agent brain” without mixing with personal agents.
+- Team automation and memory compound in one place.
+- Personal profile remains private and separate.
+
+Practical operating pattern:
+- Keep two profiles:
+  - `personal` for private work
+  - `team-core` for shared team operations
+
 ---
 
 ## 10) Next Section: Hermes + Webhooks

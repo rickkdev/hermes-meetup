@@ -772,6 +772,41 @@
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Team Profiles: Shared Hermes Agent" data-notes="Question to answer: Can a team share one Hermes agent? Yes, via profiles.||Key idea: each profile is an isolated agent instance with its own memory, sessions, skills, and cron state.||Explain simple setup: shared VPS, shared profile, gateway allowlist.||Close with why this matters: one team brain, clean separation from personal agents.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">Can a Team Share One Hermes Agent?</h1>
+            <p class="mt-stack-sm text-white/75">Yes — via <span class="mono">profiles</span>. A profile is an isolated Hermes instance with its own memory, sessions, skills, and cron state.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">HOW IT WORKS</p>
+                <ol class="mt-stack-md space-y-stack-sm text-white/80">
+                  <li>1) Create a shared profile on your VPS (example: <span class="mono">team-core</span>).</li>
+                  <li>2) Connect messaging gateway for that profile (Telegram/Discord/etc).</li>
+                  <li>3) Allowlist team users/chats in gateway pairing rules.</li>
+                  <li>4) Team messages the same agent; all work lands in shared profile state.</li>
+                </ol>
+              </div>
+
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">WHAT STAYS ISOLATED</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/80">
+                  <li>• <span class="mono">MEMORY.md / USER.md</span> (team memory)</li>
+                  <li>• session history DB and recalls</li>
+                  <li>• installed skills and custom workflows</li>
+                  <li>• cron jobs and automations</li>
+                  <li>• config + auth scoped to that profile</li>
+                </ul>
+                <p class="mt-stack-md text-white/75">Result: one shared team agent, separate from everyone’s personal agent.</p>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket p-stack-lg text-sm text-white/75">
+              Practical pattern: keep <span class="mono">personal</span> profile for private work, and <span class="mono">team-core</span> profile for shared operations.
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Next: Hermes + Webhooks" data-notes="Transition slide into next section.||Core message: move from chat-driven usage to event-driven automation.||Use this line: stop babysitting your agent; let real-world events trigger it.">
           <div class="slide-canvas flex flex-col justify-center p-margin">
             <p class="mono text-xs uppercase tracking-[0.25em] text-primary">NEXT SECTION</p>
