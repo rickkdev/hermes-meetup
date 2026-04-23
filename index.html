@@ -20,8 +20,8 @@
           extend: {
             colors: {
               surface: "#131313",
-              background: "#050505",
-              primary: "#00f0ff",
+              background: "#121214",
+              primary: "#fc8f00",
               foreground: "#e5e2e1",
               muted: "#8a8a8a",
               line: "#222222",
@@ -47,9 +47,9 @@
     </script>
     <style>
       :root {
-        --bg: #050505;
+        --bg: #121214;
         --fg: #e5e2e1;
-        --cyan: #00f0ff;
+        --cyan: #fc8f00;
         --line: #222222;
       }
 
@@ -91,7 +91,7 @@
         background: linear-gradient(
           to bottom,
           transparent 50%,
-          rgba(0, 240, 255, 0.07) 51%,
+          rgba(252, 143, 0, 0.07) 51%,
           transparent 100%
         );
         background-size: 100% 4px;
@@ -120,6 +120,13 @@
         display: flex;
       }
 
+      .slide:fullscreen,
+      .slide:-webkit-full-screen {
+        width: 100vw;
+        height: 100vh;
+        background: var(--bg);
+      }
+
       .slide-canvas {
         aspect-ratio: 16 / 9;
         width: min(1280px, 100%);
@@ -141,6 +148,15 @@
         height: 100vh;
         aspect-ratio: auto;
         max-width: none;
+      }
+
+      .slide:fullscreen .slide-canvas,
+      .slide:-webkit-full-screen .slide-canvas {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto;
+        max-width: none;
+        margin: 0;
       }
 
       .mono {
@@ -206,6 +222,39 @@
         opacity: 0.25;
         cursor: not-allowed;
       }
+
+      .slide-image-cover {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center;
+        display: block;
+      }
+
+      body.immersive-active header,
+      body.immersive-active footer,
+      body.immersive-active #presenter-notes {
+        display: none;
+      }
+
+      body.immersive-active main {
+        padding: 0 !important;
+        align-items: stretch;
+        justify-content: stretch;
+      }
+
+      body.immersive-active .slide.is-active {
+        width: 100vw;
+        height: 100vh;
+      }
+
+      body.immersive-active .slide.is-active .slide-canvas {
+        width: 100vw;
+        height: 100vh;
+        aspect-ratio: auto;
+        max-width: none;
+        margin: 0;
+      }
     </style>
   </head>
   <body class="bg-background text-foreground">
@@ -229,36 +278,42 @@
       </header>
 
       <main class="flex flex-1 items-center justify-center px-4 py-6 md:px-6 md:py-8">
-        <section class="slide is-active w-full" data-title="Opening" data-notes="Goal: show Hermes as an agent runtime, not just a chat UI.||Frame the talk: setup, OpenClaw comparison, self-improvement, parallel sessions, coding flow, knowledgebase + Obsidian.">
-          <div class="slide-canvas flex flex-col justify-between p-margin">
-            <div>
-              <p class="mono text-xs uppercase tracking-[0.25em] text-primary">[01] HERMES MEETUP</p>
-              <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">
-                Hermes Agent<br /><span class="text-primary">How It Works</span>
-              </h1>
-              <p class="mt-stack-lg max-w-3xl text-xl text-white/70">
-                From coding assistant to durable agent system: setup, self-improvement,
-                parallel execution, and a compounding knowledgebase with Obsidian.
-              </p>
+        <section class="slide is-active w-full" data-title="Self-Sovereign AI" data-notes="Open the meetup by defining self-sovereignty in plain language: you choose where models run, where data lives, and who can access logs.||Contrast trusted hosting (self-hosted, private VPS in Germany, providers with strict privacy posture) vs default hyperscaler black-box setups.||Why it matters: fewer data leaks, compliance control, and long-term reliability for serious work.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">[01] START HERE</p>
+            <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">
+              Self-Sovereign AI
+            </h1>
+            <p class="mt-stack-md max-w-4xl text-2xl text-white/80">
+              You control the model, the infrastructure, and the data path.
+            </p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">WHAT IT MEANS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• your prompts/files don’t disappear into random third-party logs</li>
+                  <li>• you pick where workloads run: your machine, your VPS, or a trusted provider</li>
+                  <li>• you can audit and change the stack when policy or risk changes</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">HOSTING OPTIONS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• self-hosted: Mac Mini, Windows box, or old spare machine</li>
+                  <li>• private VPS in a jurisdiction you trust (ex: Germany)</li>
+                  <li>• privacy-first model providers (ex: Venice AI) on your own infra</li>
+                </ul>
+              </div>
             </div>
-            <div class="grid grid-cols-3 gap-gutter text-sm uppercase tracking-wider mobile-stack">
-              <div class="l-bracket p-stack-md">
-                <div class="mono text-primary">Setup</div>
-                <div class="mt-unit text-white/70">10 min to useful</div>
-              </div>
-              <div class="l-bracket p-stack-md">
-                <div class="mono text-primary">Difference</div>
-                <div class="mt-unit text-white/70">vs OpenClaw</div>
-              </div>
-              <div class="l-bracket p-stack-md">
-                <div class="mono text-primary">Compounding</div>
-                <div class="mt-unit text-white/70">skills + memory + wiki</div>
-              </div>
-            </div>
+
+            <p class="mt-auto text-white/70">
+              Why this matters: fewer data leaks, stronger compliance posture, and real ownership of your AI workflow.
+            </p>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="What Hermes Is" data-notes="Key message: Hermes combines tools, memory, skills, and automation in one system.||Not just prompt-response; it executes and carries context across sessions.">
+        <section class="slide w-full" data-title="What Hermes Is" data-notes="Key message: Hermes is an agent runtime. Most important capability: webhook support for event-driven automation.||Then layer in tools, memory, skills, and multi-surface delivery.||Not just prompt-response; it executes and carries context across sessions.">
           <div class="slide-canvas flex flex-col justify-center px-section-gap">
             <h1 class="text-5xl uppercase tracking-tight text-white">What Hermes Actually Is</h1>
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
@@ -273,9 +328,10 @@
               <div class="l-bracket p-stack-lg">
                 <p class="mono text-primary">AGENT RUNTIME</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• webhook support (event-driven triggers from external systems)</li>
                   <li>• tools (terminal, files, web, browser, code)</li>
                   <li>• persistent memory + reusable skills</li>
-                  <li>• CLI + Telegram/Discord/Slack + cron + webhooks</li>
+                  <li>• CLI + Telegram/Discord/Slack + cron</li>
                 </ul>
               </div>
             </div>
@@ -308,28 +364,23 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Hermes vs OpenClaw" data-notes="Keep this fair: OpenClaw is strong in coding sessions.||Hermes extends into operations: memory, skills, gateway, cron/webhooks, profiles, dashboard.">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Hermes vs OpenClaw</h1>
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">OPENCLAW STRENGTH</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• great coding/session workflow</li>
-                  <li>• clean terminal interaction loop</li>
-                  <li>• focused single-session execution</li>
-                </ul>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">HERMES ADDS</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• memory + self-improving skills</li>
-                  <li>• gateway platforms + cron + webhooks</li>
-                  <li>• profiles, plugins, dashboard, MCP</li>
-                  <li>• migration path: <span class="mono">hermes claw migrate</span></li>
-                </ul>
-              </div>
-            </div>
+        <section class="slide w-full" data-title="Hermes Blueprint" data-immersive="true" data-notes="Show the Hermes Agent blueprint full-screen. Let the architecture speak visually before the OpenClaw comparison image.">
+          <div class="slide-canvas flex items-center justify-center bg-background">
+            <img
+              src="hermes-agent-blueprint.png"
+              alt="Hermes Agent blueprint"
+              class="slide-image-cover"
+            />
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="OpenClaw Blueprint" data-immersive="true" data-notes="Next slide: show the OpenClaw blueprint full-screen with no extra text so the audience can compare the architecture directly.">
+          <div class="slide-canvas flex items-center justify-center bg-background">
+            <img
+              src="open claw.png"
+              alt="OpenClaw blueprint"
+              class="slide-image-cover"
+            />
           </div>
         </section>
 
@@ -438,7 +489,7 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="LLM Wiki + Obsidian" data-notes="Bridge slide before implementation details.||LLM Wiki = agent workflow for ingest/synthesize/link/lint.||Obsidian = human-facing interface over the same markdown vault.||Reference Karpathy tweet screenshot as origin story.">
+        <section class="slide w-full" data-title="LLM Wiki + Obsidian" data-notes="Bridge slide before implementation details.||LLM Wiki = agent workflow for ingest/synthesize/link/lint.||Obsidian = human-facing interface over the same markdown vault.||In the two-layer block, show the Obsidian second-brain image to make the architecture concrete.||Reference Karpathy tweet screenshot as origin story.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">What Is LLM Wiki + Obsidian?</h1>
             <p class="mt-stack-sm text-white/65">Agent builds and maintains the knowledge graph; humans browse/edit it in Obsidian.</p>
@@ -452,6 +503,8 @@ hermes</pre>
                   <li>• runs ingest + lint so knowledge stays current over time</li>
                   <li>• <span class="text-white">Obsidian</span>: graph/backlinks/edit UX on the exact same files</li>
                 </ul>
+                <img src="obsidian-secondbrain.jpg" alt="Obsidian second-brain view" style="margin-top: 14px; width: 100%; max-height: 26vh; object-fit: cover; border: 1px solid rgba(255,255,255,0.18);" />
+                <p class="mt-unit text-white/60 text-xs">Obsidian view of the same wiki as a human-friendly second-brain interface.</p>
               </div>
               <div class="l-bracket p-stack-lg">
                 <p class="mono text-primary">ORIGIN / INSPIRATION</p>
@@ -616,66 +669,68 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Parallel Sessions" data-notes="Clarify confusion: Hermes does have subagents via delegate_task, but they are ephemeral workers, not permanent personalities.||Second mode is full spawned Hermes processes for long-running independent jobs.||Tell audience why this matters: speed, cleaner context, and better decomposition.||Give practical prompt patterns they can use immediately.">
+        <section class="slide w-full" data-title="How a Session Works" data-notes="Bridge slide before parallel sessions.||Define session as short-term working memory with a token budget, plus compression behavior.||Clarify end/reset behavior and what persists in long-term storage.||Then connect to multiple terminals and Telegram: separate live contexts, shared durable storage.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Parallel Sessions: How It Actually Works</h1>
-            <p class="mt-stack-sm text-white/65">Two parallel models: ephemeral delegated workers and long-running full agent processes.</p>
+            <h1 class="text-5xl uppercase tracking-tight text-white">How a Hermes Session Works</h1>
+            <p class="mt-stack-sm text-white/65">One session = one live working memory window. Think: one whiteboard with a token budget.</p>
 
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">MODE A — SUBAGENT DELEGATION (<span class="mono">delegate_task</span>)</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• yes, Hermes has subagents (fresh isolated worker contexts)</li>
-                  <li>• great for short reasoning/code/research subtasks</li>
-                  <li>• lifecycle: spawn → solve specific task → return summary → end</li>
-                  <li>• not permanent, no persistent “always-on” subagent identity</li>
+                <p class="mono text-primary">LIVE SESSION (SHORT-TERM)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• each message adds context to the active window</li>
+                  <li>• token meter (ex: 45K/400K) shows how full that window is</li>
+                  <li>• near threshold, Hermes compresses older context instead of crashing</li>
+                  <li>• recent turns are protected; older turns get summarized</li>
                 </ul>
               </div>
               <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">MODE B — SPAWN FULL HERMES PROCESS</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• independent long-running agent process (minutes to hours)</li>
-                  <li>• can run in separate shell/tmux/worktree for heavy jobs</li>
-                  <li>• best for large implementation tracks and background missions</li>
-                  <li>• coordination is explicit (you relay context / merge outcomes)</li>
+                <p class="mono text-primary">LONG-TERM (PERSISTS AFTER SESSION ENDS)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
+                  <li>• chat history in <span class="mono">~/.hermes/state.db</span></li>
+                  <li>• durable memory facts + user profile</li>
+                  <li>• skills and file changes</li>
+                  <li>• retrievable later via resume/session_search</li>
                 </ul>
               </div>
             </div>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHY YOU SHOULD CARE</p>
+                <p class="mono text-primary">WHAT RESETS A SESSION</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• speed: independent chunks finish in parallel</li>
-                  <li>• cleaner thinking: each worker has focused context</li>
-                  <li>• better quality: compare multiple approaches before merge</li>
+                  <li>• <span class="mono">/new</span> or <span class="mono">/clear</span></li>
+                  <li>• closing/reopening CLI and starting a new chat</li>
+                  <li>• explicit resume can bring prior session context back</li>
                 </ul>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">HOW TO USE THIS TO WORK BETTER</p>
+                <p class="mono text-primary">PARALLEL + TELEGRAM BEHAVIOR</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• phrase requests as split tasks with clear boundaries</li>
-                  <li>• ask for one merged summary + risks + next actions</li>
-                  <li>• use worktrees when workers touch the same repo</li>
+                  <li>• 4 terminals = 4 separate live session contexts</li>
+                  <li>• they do not share live chat state automatically</li>
+                  <li>• coordination happens via DB/memory/skills/files</li>
+                  <li>• Telegram runs in gateway service: separate live context, same long-term storage</li>
+                  <li>• closing this CLI does not kill Telegram if gateway service is still running</li>
                 </ul>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Subagent Spawn Flow" data-notes="Process slide: when Hermes spawns delegate_task workers vs when it stays single-threaded.||Also explain multiple terminal behavior: separate sessions, shared profile state unless different profile is used.">
+        <section class="slide w-full" data-title="Subagent Spawn Mechanism" data-notes="Deep-dive slide replacing the older parallel overview.||Define subagent precisely: isolated worker spawned with goal/context/toolsets and bounded iterations.||Explain routing mechanism and the trigger checks Hermes applies.||Walk one concrete example end-to-end so people understand exactly what gets sent to a child and what returns.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">When Hermes Spawns Subagents (and When It Doesn't)</h1>
-            <p class="mt-stack-sm text-white/65">Think of this as a routing decision: delegate for parallel isolated work, stay local for linear/stateful work.</p>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Subagent Spawn Mechanism (Deep Dive)</h1>
+            <p class="mt-stack-sm text-white/65">Definition: a subagent is a short-lived isolated worker created via <span class="mono">delegate_task</span> with explicit scope.</p>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
               <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">SPAWN SUBAGENTS (<span class="mono">delegate_task</span>)</p>
+                <p class="mono text-primary">WHEN HERMES DECIDES TO SPAWN</p>
                 <ul class="mt-stack-md space-y-stack-sm text-white/75">
                   <li>• task can be split into independent chunks</li>
-                  <li>• parallel speedup is worth context handoff</li>
+                  <li>• expected speed/quality gain beats handoff overhead</li>
                   <li>• subtask is reasoning-heavy and would flood main context</li>
-                  <li>• isolated worker context reduces cross-task confusion</li>
+                  <li>• clear input/output contract can be written per child</li>
                 </ul>
               </div>
               <div class="l-bracket p-stack-lg">
@@ -691,12 +746,12 @@ hermes</pre>
 
             <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">FLOW</p>
-                <p class="mt-stack-sm text-white/75">Intake → can split safely? → yes: spawn workers with explicit context → collect summaries → integrate + verify. No: execute directly in main session.</p>
+                <p class="mono text-primary">MECHANISM (WHAT ACTUALLY HAPPENS)</p>
+                <p class="mt-stack-sm text-white/75">1) Parent decomposes task. 2) Parent calls <span class="mono">delegate_task(goal, context, toolsets)</span>. 3) Child starts fresh context and runs bounded turns. 4) Child returns summary only. 5) Parent merges outputs and verifies.</p>
               </div>
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">MULTIPLE TERMINALS OPEN?</p>
-                <p class="mt-stack-sm text-white/75">Each terminal is a separate Hermes session. Same profile = shared memory/skills/filesystem, but not shared live chat context. Different profiles = isolated state. Parallel edits to same files still need git/worktree discipline.</p>
+                <p class="mono text-primary">EXAMPLE: BUGFIX WITH 3 CHILDREN</p>
+                <p class="mt-stack-sm text-white/75">Parent goal: “Fix flaky login tests.” Spawn A=trace failing test path, B=inspect auth middleware, C=review recent commits. Children return findings; parent chooses fix + runs final test suite.</p>
               </div>
             </div>
           </div>
@@ -821,6 +876,7 @@ hermes</pre>
         slides.forEach((slide, i) => {
           slide.classList.toggle("is-active", i === current);
         });
+        document.body.classList.toggle("immersive-active", slides[current].dataset.immersive === "true");
         slideIndexEl.textContent = `SLIDE_INDEX: ${String(current + 1).padStart(2, "0")}`;
         slideTitleEl.textContent = `TITLE: ${slides[current].dataset.title.toUpperCase()}`;
         prevButton.disabled = current === 0;
@@ -846,9 +902,9 @@ hermes</pre>
           return;
         }
 
-        const canvas = activeCanvas();
-        if (canvas?.requestFullscreen) {
-          await canvas.requestFullscreen();
+        const target = slides[current].dataset.immersive === "true" ? slides[current] : activeCanvas();
+        if (target?.requestFullscreen) {
+          await target.requestFullscreen();
         }
       }
 

@@ -1,6 +1,26 @@
 # Hermes Meetup Presentation Notes
 
-## 1) Opening
+## 1) Self-Sovereign AI (start here)
+Definition in plain language:
+- Self-sovereign AI means you control where models run, where data is stored, and who can access logs.
+
+What “private” can mean in practice:
+- Self-hosted on your own hardware (Mac Mini, Windows PC, even an old spare machine)
+- Private VPS in a jurisdiction you trust (example: Germany)
+- Privacy-first provider setup on infrastructure you control/trust (example: Venice AI)
+
+Why this matters:
+- Lower risk of accidental data leaks to third-party logs
+- Better compliance and auditability
+- Less vendor lock-in when policy/security requirements change
+
+Talk track opener:
+- This meetup is about agent capability, but it starts with control.
+- If your data path is not under your control, your AI stack is fragile.
+
+---
+
+## 2) Opening
 Hermes Agent is not just a coding assistant. It is an agent runtime that executes with tools, keeps continuity through memory, improves with skills, and runs across interfaces (CLI + messaging + automation).
 
 Talk track:
@@ -10,7 +30,7 @@ Talk track:
 
 ---
 
-## 2) What Hermes Actually Is
+## 3) What Hermes Actually Is
 Core framing:
 - Not a plain chatbot
 - Not a single-provider wrapper
@@ -18,17 +38,19 @@ Core framing:
 
 What it is:
 - Tool-calling agent runtime
+- Webhook support for event-driven automation (most important runtime capability)
 - Multi-provider model layer
 - Persistent memory + reusable skills
 - Multi-surface interface (terminal, Telegram, Discord, etc.)
 - Automation hooks (cron, webhooks)
 
 Why this matters:
+- Webhooks let Hermes react to real events (deploys, incidents, form submissions, tickets) instead of waiting for manual prompts.
 - You can move from ad hoc prompts to repeatable systems.
 
 ---
 
-## 3) Setup in 3 Minutes (practical)
+## 4) Setup in 3 Minutes (practical)
 Fast path:
 1. Install Hermes
 2. Run setup wizard
@@ -47,24 +69,18 @@ Speaker point:
 
 ---
 
-## 4) Hermes vs OpenClaw
-Use this framing respectfully:
-- OpenClaw is strong for coding loops and single-session workflows.
-- Hermes extends into “agent operations.”
+## 5) Hermes / OpenClaw Blueprints
+Replace the prior text comparison slide with two visual slides in the same slot:
+- Slide 1: show `hermes-agent-blueprint.png` full-screen.
+- Slide 2: show `open claw.png` full-screen.
 
-Hermes differentiators:
-- Persistent memory of user/environment
-- Skill capture + patching loop
-- Multi-platform gateway integrations
-- Cron/webhooks/plugins/profiles
-- Built-in dashboard and broader operations UX
-
-Takeaway line:
-- OpenClaw is excellent copilot behavior. Hermes targets copilot + runtime + operations.
+Speaker approach:
+- Keep narration light and let the diagrams do the comparison.
+- First orient the room on the Hermes blueprint, then advance and contrast it with OpenClaw.
 
 ---
 
-## 4.5) Native Memory: How It Works (before self-improvement)
+## 5.5) Native Memory: How It Works (before self-improvement)
 This section should appear before the self-improvement loop.
 
 Start with this explicit line for the audience:
@@ -101,7 +117,7 @@ Important clarification:
 - Not always-on vector RAG by default.
 - Vector/graph retrieval is optional via external memory providers.
 
-### 4.5.1) Exactly when embeddings are used (and when they are not)
+### 5.5.1) Exactly when embeddings are used (and when they are not)
 This is the part people usually misunderstand.
 
 By default (no external memory provider enabled):
@@ -130,7 +146,7 @@ Practical trigger rule for the talk:
 
 ---
 
-## 4.6) RAG vs No-RAG (when to use vector extensions)
+## 5.6) RAG vs No-RAG (when to use vector extensions)
 Goal: give a non-technical decision framework for both individuals and employee workflows.
 
 Simple framing:
@@ -176,7 +192,7 @@ Rollout recommendation:
 
 ---
 
-## 4.7) What Is LLM Wiki + Obsidian?
+## 5.7) What Is LLM Wiki + Obsidian?
 Simple framing:
 - LLM Wiki is the agent-side knowledge workflow.
 - Obsidian is the human-side interface on the same markdown files.
@@ -191,11 +207,12 @@ Why this combo works:
 - No lock-in database: plain markdown vault.
 
 On this slide:
+- In "Works as a two-layer system", show the Obsidian second-brain image (`obsidian-secondbrain.jpg`) to make the human layer concrete.
 - Show the Karpathy tweet screenshot (`karpathy-llm-wiki-tweet.png`) as origin/inspiration.
 
 ---
 
-## 4.8) Obsidian Integration (what we built)
+## 5.8) Obsidian Integration (what we built)
 Practical setup:
 - Use `~/wiki` as the working knowledgebase path.
 - Keep it markdown-native so both humans and agent can operate on it.
@@ -218,7 +235,7 @@ Special pattern from our build:
 
 ---
 
-## 4.9) How To Do This Yourself (with copy/paste prompts)
+## 5.9) How To Do This Yourself (with copy/paste prompts)
 1. Install Hermes and choose provider/model
 2. Run `llm-wiki` to initialize `~/wiki` (schema/index/log)
 3. Run `obsidian` to connect `~/wiki` to Obsidian Sync
@@ -231,7 +248,7 @@ Skill availability (important):
 - Verify with `/skills` or `hermes skills list`.
 - If missing, update Hermes first, then re-check.
 
-### 4.9.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
+### 5.9.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
 What this means:
 - Ask Hermes to set up the wiki at `~/wiki` using the LLM Wiki convention.
 - That includes `SCHEMA.md`, `index.md`, `log.md`, and standard folders.
@@ -242,7 +259,7 @@ Prompt to Hermes:
 If someone asks “do I install from a link?”
 - “No in most cases — this skill is built-in. Just call it in the prompt.”
 
-### 4.9.2 Step 3 — Connect Obsidian with `obsidian` skill
+### 5.9.2 Step 3 — Connect Obsidian with `obsidian` skill
 What this means:
 - `llm-wiki` manages the knowledge workflow.
 - `obsidian` connects and operates the vault UX/sync side.
@@ -256,7 +273,7 @@ If you want both in one request:
 Edge case if a skill is missing:
 - “Run `/skills search <skill-name>`. If it appears, install with `/skills install <identifier>`. If not, update Hermes.”
 
-### 4.9.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
+### 5.9.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
 What this means:
 - Ingest = add/update knowledge from new sources.
 - Lint = quality checks (broken links, missing metadata, stale pages).
@@ -270,7 +287,7 @@ Simple explanation for non-technical audience:
 Prompt to Hermes:
 - “Create recurring jobs for `~/wiki`: ingest every 2 hours, lint daily at 09:00, and `ob sync --path ~/wiki` every 30 minutes. Keep output concise and include job IDs.”
 
-### 4.9.4 Step 5 — Profile mirror automation (what gets mirrored)
+### 5.9.4 Step 5 — Profile mirror automation (what gets mirrored)
 What this means:
 - Keep human-readable snapshots of core Hermes profile files inside the wiki.
 - Typical mapping:
@@ -285,7 +302,7 @@ Simple explanation for non-technical audience:
 Prompt to Hermes:
 - “Use `mirror-hermes-local-to-obsidian`. Set up automatic mirroring from `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md` into `~/wiki/hermes/` snapshot notes, updating only the `## current contents` section.”
 
-### 4.9.5 Step 6 — No-op silent runs (how it works)
+### 5.9.5 Step 6 — No-op silent runs (how it works)
 What this means:
 - If a scheduled run detects no content change, it should not spam.
 - Behavior on no-change:
@@ -301,10 +318,10 @@ Transition line into next section:
 
 ---
 
-## 5) Self-Improvement Loop (in-depth)
+## 6) Self-Improvement Loop (in-depth)
 This is the core “why Hermes” section.
 
-### 5.1 The Loop
+### 6.1 The Loop
 1) Execute a real task with tools
 - Hermes does actual work (commands, file edits, checks), not only text generation.
 - Verification is part of completion: tests pass, outputs validated.
@@ -325,7 +342,7 @@ This is the core “why Hermes” section.
 - If reality changed (CLI flags, API behavior, OS quirks), patch the skill immediately.
 - This prevents “knowledge rot” and keeps performance compounding.
 
-### 5.2 Memory vs Skills (important distinction)
+### 6.2 Memory vs Skills (important distinction)
 Memory stores facts:
 - user preferences
 - environment details
@@ -339,7 +356,7 @@ Skills store procedures:
 Simple line for audience:
 - Memory is “what is true.” Skills are “how to do it.”
 
-### 5.3 Why this compounds
+### 6.3 Why this compounds
 Without this loop:
 - Every session starts near zero.
 
@@ -347,7 +364,7 @@ With this loop:
 - Session N+1 inherits a stronger operating baseline than session N.
 - Errors become updates, not recurring failures.
 
-### 5.4 Quality control in the loop
+### 6.4 Quality control in the loop
 Compounding only works with discipline:
 - Save skills after real success, not speculation.
 - Include verification in every skill.
@@ -357,7 +374,7 @@ Compounding only works with discipline:
 Good one-liner:
 - “Hermes improves by operationalizing lessons, not by hoping the model remembers.”
 
-### 5.5 Prompt → Result → Improvement (decision flow)
+### 6.5 Prompt → Result → Improvement (decision flow)
 Direct answer to the audience question: yes, improvement is mostly custom skills + targeted memory updates.
 
 Flow:
@@ -396,139 +413,116 @@ What should NOT be written:
 
 ---
 
-## 6) Parallel Sessions and Multi-Agent Execution
-This section should remove confusion clearly:
-- Hermes does support subagents.
-- But Hermes subagents are task-scoped workers, not permanent side-agent personalities.
+## 6.9) How a Session Works (bridge before parallel)
+Use this as the transition slide before “Parallel Sessions”.
 
-### 6.1 Two parallel models in Hermes
+Core definition:
+- A session is one live short-term working context (one “whiteboard”).
+- The token meter (example: `45K / 400K`) shows current load vs context capacity.
 
-Model A — `delegate_task` subagents (ephemeral workers)
-- Spawned for a specific subtask with isolated context.
-- Return a summary/result to the parent agent.
-- Lifecycle: create -> run bounded turns -> return -> terminate.
-- Best for:
-  - parallel research questions
-  - code review chunks
-  - isolated debugging branches
+How it behaves:
+- Every turn adds to the live context window.
+- Near threshold, Hermes compresses older context instead of hard-failing.
+- Recent turns are protected; older turns are summarized.
 
-Model B — spawned full Hermes processes (long-running agents)
-- Separate Hermes process/session (often tmux + optional worktree mode).
-- Can run much longer and act like an independent project track.
-- Best for:
-  - heavy implementation streams
-  - long background jobs
-  - multi-hour autonomous runs
+What resets the live session:
+- `/new` or `/clear`
+- closing/reopening CLI and starting a new chat
+- (unless explicitly resumed)
 
-Simple line for audience:
-- Subagent = short-lived specialist.
-- Spawned process = long-lived independent worker.
+What persists beyond session reset:
+- history in `~/.hermes/state.db`
+- durable memory facts (`MEMORY.md` / `USER.md`)
+- skills
+- filesystem changes
 
-### 6.2 Myth busting (OpenClaw comparison confusion)
-Common confusion: “Hermes has no subagents.”
-- Incorrect.
-- Hermes has subagent delegation via `delegate_task`.
-- What Hermes does NOT do by default is keep a permanent named subagent alive forever inside one parent turn loop.
+What Telegram adds (important):
+- Telegram is handled by the gateway service, not your current CLI tab.
+- So closing one CLI session does not stop Telegram handling if gateway is still running.
+- Telegram has its own live session context(s), but writes to the same long-term stores (`state.db`, memory, skills).
+- If the host machine/WSL is down, gateway is down too (unless you run it on a VPS/server).
 
-So both statements can sound true unless you separate them:
-- “Has subagents?” -> Yes (ephemeral delegated workers).
-- “Has permanent always-on child agents by default?” -> No.
-
-### 6.3 Practical orchestration pattern
-Typical coding split:
-- Agent A: backend/API
-- Agent B: frontend/UI
-- Agent C: tests/CI
-- Parent orchestrator merges decisions and final outputs.
-
-Coordinator responsibilities:
-- define scope per worker (avoid overlap)
-- pass only needed context to each worker
-- collect outputs and resolve conflicts
-- run final integration checks
-
-### 6.4 Guardrails and limits to mention
-For delegated subagents (`delegate_task`):
-- fresh context per task (good for focus)
-- bounded iteration budget
-- returns summary, not full raw transcript
-- no user clarification from child itself (parent handles that)
-
-For long-running spawned agents:
-- process isolation is stronger, but coordination overhead is higher
-- needs explicit context relays between agents
-- use git worktree isolation (`-w`) for parallel coding to avoid branch/file collisions
-
-### 6.5 Decision rule (easy to present)
-- Need quick parallel thinking/execution on isolated tasks? -> use `delegate_task`.
-- Need long-running independent tracks? -> spawn full Hermes processes.
-- For most teams: start with `delegate_task`, escalate to spawned agents only when runtime/scope demands it.
-
-### 6.6 Why people should care about subagents
-This is the practical value, not architecture trivia:
-- Speed: independent chunks run in parallel instead of waiting in one long queue.
-- Cleaner context: each worker stays focused, so the parent session is less noisy.
-- Better decisions: you can compare competing approaches before committing.
-
-Simple stage line:
-- “Subagents let you trade one overloaded brain for a coordinated specialist team.”
-
-### 6.7 How to use this knowledge to get better Hermes results
-Tell people to change how they prompt:
-- Ask for decomposition explicitly: “Split this into 3 independent workers with clear scope.”
-- Ask for bounded outputs: “Return one merged summary with risks and next actions.”
-- Ask for comparison when useful: “Worker A and B propose alternatives, parent picks.”
-
-Good default prompt pattern:
-- “Decompose this task into independent chunks, delegate with isolated contexts, then merge outputs with a final recommendation and verification checklist.”
-
-### 6.8 Subagent spawn process flow (exact decision logic)
-Use this verbal flow on stage:
-1) Intake the task.
-2) Ask: can this be split into independent chunks without tight shared state?
-3) Ask: does splitting produce real speed/quality gain?
-4) Ask: does any chunk need isolation because it would flood context?
-
-If answers are mostly yes -> spawn `delegate_task` workers.
-If no -> keep execution in the main session.
-
-“Spawn” triggers (good candidates):
-- independent subtasks (A/B/C) with clear boundaries
-- reasoning-heavy analysis that would bloat parent context
-- comparative/research workstreams that can run in parallel
-
-“Don’t spawn” triggers (bad candidates):
-- one fast linear tool call
-- work that depends on continuously shared in-memory state
-- high-turn interactive loops needing constant user clarification
-
-Execution path when spawned:
-- Parent builds explicit context packet per child (`goal` + `context` + toolsets)
-- Child runs in isolated conversation
-- Child returns final summary only
-- Parent integrates summaries and performs final verification
-
-### 6.9 If I open multiple Hermes terminals and do separate things
-Important behavior:
-- Each terminal window is a separate Hermes session.
-- They do not share live chat context turn-by-turn.
-- If both use the same profile, they still share profile-level state over time:
-  - same memory files
-  - same installed skills
-  - same underlying filesystem access
-- If they use different profiles, state is isolated (separate sessions/memory/config/state DB).
-
-Practical implications:
-- Two terminals can work on unrelated tasks safely.
-- Two terminals editing the same repo/files can conflict unless you isolate branches/worktrees.
-- For parallel coding, use `hermes -w` per terminal to reduce collisions.
-
-Simple audience line:
-- “Two terminals = two independent brains in separate conversations; same profile means shared long-term house, not shared live thoughts.”
+Bridge line into next slide:
+- “Parallel sessions are separate live whiteboards that share the same long-term notebook.”
 
 ---
 
-## 7) Coding Workflow: the context-bloat objection (start here)
+## 7) Subagent Spawn Mechanism (deep dive)
+This replaces the old “How it actually works” parallel overview.
+
+Core definition:
+- A subagent is an isolated short-lived worker spawned via `delegate_task`.
+- The parent sends a scoped packet: `goal` + `context` + `toolsets` (+ limits).
+- The child runs in fresh context and returns a final summary (not full transcript).
+
+### 7.1 The actual mechanism (plain engineering view)
+Yes — your intuition is right. There is no separate magical scheduler function with hidden planning logic.
+
+What actually happens inside the normal agent loop:
+1) Parent session receives your prompt.
+2) Parent calls the main LLM with:
+   - current conversation context
+   - system/developer instructions
+   - available tool schemas (including `delegate_task`)
+3) The LLM chooses one of two actions:
+   - continue in the parent session, or
+   - emit a tool call to `delegate_task`.
+4) If it emits `delegate_task`, Hermes runtime executes that tool call:
+   - creates one or more child agents in isolated contexts
+   - passes explicit payload (`goal`, `context`, `toolsets`, limits)
+   - each child runs independently and returns summary output only
+5) Parent receives child summaries as tool results, then continues reasoning:
+   - merge findings
+   - choose final action
+   - run verification/tools
+   - return final answer
+
+Important: the “decomposition” is mostly the model deciding to call `delegate_task` with specific child tasks. Hermes runtime then enforces guardrails (iteration limits, spawn depth, allowed toolsets, concurrency limits).
+
+Practical line:
+- “Subagent spawning is an LLM tool-call decision plus runtime guardrails: decide → dispatch → summarize → merge → verify.”
+
+### 7.2 Concrete example (bugfix workflow)
+Example prompt to parent:
+- “Fix flaky login tests. Use subagents where helpful.”
+
+What the parent LLM may emit (conceptually):
+- `delegate_task(tasks=[{goal: "trace failing test path"}, {goal: "inspect auth middleware"}, {goal: "review recent auth commits"}])`
+
+This is the key point:
+- The parent does not manually fork OS processes itself in your prompt.
+- It asks the Hermes runtime to execute the `delegate_task` tool with structured arguments.
+- Runtime then spawns isolated child agent runs and returns their summaries to the parent.
+
+What parent spawns:
+- Child A: trace failing test path + stack traces
+- Child B: inspect auth middleware/session handling
+- Child C: review recent commits touching login/auth
+
+What comes back:
+- A: failure trigger location
+- B: likely state/race bug in middleware
+- C: suspect regression commit range
+
+What parent does next:
+- chooses fix strategy
+- applies patch
+- runs full test suite
+- returns one merged explanation + verification result
+
+### 7.3 When NOT to spawn
+- one linear tool call is faster in parent
+- tasks requiring constant shared in-memory state
+- high-frequency user clarification loops
+
+### 7.4 Parallel terminals reminder
+- Multiple terminal windows are separate live sessions.
+- Same profile shares long-term state (DB/memory/skills/files), not live turn-by-turn thoughts.
+- Use worktrees when concurrent workers touch same repo.
+
+---
+
+## 8) Coding Workflow: the context-bloat objection (start here)
 Main concern to lead with:
 - “If I code in Hermes continuously, won’t context bloat beat me vs starting fresh Claude Code loops per story?”
 
@@ -536,7 +530,7 @@ Short honest answer:
 - Yes, bloat is real if you keep one giant thread forever.
 - No, if you operate Hermes correctly: fresh execution scopes + selective persistence.
 
-### 7.1 Fresh-loop model vs Hermes model
+### 8.1 Fresh-loop model vs Hermes model
 Fresh-loop model (Claude/Codex style per story):
 - Pro: very clean context window per task.
 - Con: repeated onboarding every single time (repo conventions, test commands, architecture constraints).
@@ -554,7 +548,7 @@ How to reset scope in Hermes (say this explicitly):
 Stage one-liner:
 - “Hermes done right is not one infinite context; it’s many fresh contexts plus a durable brain.”
 
-### 7.2 When fresh loops are genuinely better
+### 8.2 When fresh loops are genuinely better
 Use fresh loops when:
 - tiny one-off changes with no continuity value
 - throwaway experiments
@@ -564,7 +558,7 @@ Reset-scope version inside Hermes:
 - Treat each one-off as a separate Hermes story session anyway.
 - Do not continue from yesterday’s unrelated coding thread just because it exists.
 
-### 7.3 When Hermes is better
+### 8.3 When Hermes is better
 Use Hermes when:
 - project standards repeat (tests, lint flow, release steps)
 - similar bugs/feature patterns recur
@@ -573,7 +567,7 @@ Use Hermes when:
 Reset-scope rule here too:
 - Reuse durable project knowledge, but still start each story in a fresh Hermes session.
 
-### 7.4 Anti-bloat operating pattern (practical)
+### 8.4 Anti-bloat operating pattern (practical)
 1) Run one session per story or milestone.
 2) End with a clean summary (what changed, what remains, risks).
 3) Save stable facts to memory (preferences, environment truths).
@@ -592,7 +586,7 @@ This gives you:
 - less repeated prompting
 - better long-term throughput
 
-### 7.5 Prompt patterns to teach audience
+### 8.5 Prompt patterns to teach audience
 Pattern A (scoped story):
 - “Treat this as one isolated story. Do not drag prior irrelevant context. Complete implementation + tests + concise wrap-up.”
 
@@ -605,7 +599,7 @@ Pattern C (parallel for complex stories):
 Pattern D (explicit scope reset command to self):
 - “Close this story now. Produce a 5-line handoff brief. I will start a fresh Hermes session for the next story.”
 
-### 7.6 Bottom-line framing
+### 8.6 Bottom-line framing
 - Fresh Claude loop every time optimizes for local cleanliness.
 - Hermes optimizes for cleanliness plus cumulative operational learning.
 - The control knob is scope resets: one story, one session.
