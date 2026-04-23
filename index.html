@@ -338,32 +338,6 @@
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Setup in 3 Minutes" data-notes="Demo path: install -> setup -> model -> doctor -> first run.||Mention config.yaml vs .env separation: behavior vs secrets.">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Setup in 3 Minutes</h1>
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">COMMAND FLOW</p>
-                <pre class="mono mt-stack-md text-sm text-white/80">curl -fsSL ...install.sh | bash
-hermes setup
-hermes model
-hermes doctor
-hermes</pre>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">KEY PATHS</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• ~/.hermes/config.yaml (settings)</li>
-                  <li>• ~/.hermes/.env (keys)</li>
-                  <li>• ~/.hermes/skills/ (procedures)</li>
-                  <li>• ~/.hermes/sessions/ (history)</li>
-                </ul>
-              </div>
-            </div>
-            <p class="mt-auto mono text-xs uppercase tracking-widest text-primary/80">Fast setup. Harden later.</p>
-          </div>
-        </section>
-
         <section class="slide w-full" data-title="Hermes Blueprint" data-immersive="true" data-notes="Show the Hermes Agent blueprint full-screen. Let the architecture speak visually before the OpenClaw comparison image.">
           <div class="slide-canvas flex items-center justify-center bg-background">
             <img
@@ -510,33 +484,6 @@ hermes</pre>
                 <p class="mono text-primary">ORIGIN / INSPIRATION</p>
                 <img src="karpathy-llm-wiki-tweet.png" alt="Karpathy introducing LLM Wiki" style="margin-top: 12px; width: 100%; max-height: 56vh; object-fit: contain; border: 1px solid rgba(255,255,255,0.18);" />
                 <p class="mt-stack-sm text-white/65 text-sm">Karpathy tweet introducing the LLM Wiki pattern.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="slide w-full" data-title="Obsidian Integration" data-notes="Recommended setup: ~/wiki as source of truth, Obsidian for human UX.||Hermes already has native Obsidian support via the obsidian skill + markdown/wiki conventions.||Sync with ob sync and keep automations low-noise (no-op silent).">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Obsidian Integration (Native + Our Build)</h1>
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">NATIVE HERMES SUPPORT</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• built-in <span class="mono">obsidian</span> skill (read/search/create notes)</li>
-                  <li>• wiki markdown works as Obsidian vault out of the box</li>
-                  <li>• keep <span class="mono">OBSIDIAN_VAULT_PATH=~/wiki</span> for shared path</li>
-                  <li>• sync with <span class="mono">ob sync --path ~/wiki</span></li>
-                </ul>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHAT WE RECOMMEND ON TOP</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• set <span class="mono">~/wiki</span> as vault</li>
-                  <li>• agent curates markdown, Obsidian visualizes it</li>
-                  <li>• regular maintenance (ingest/lint/update)</li>
-                  <li>• mirror Hermes local profile snapshots into wiki notes</li>
-                  <li>• only sync when content changed (low-noise no-op)</li>
-                </ul>
               </div>
             </div>
           </div>
@@ -795,6 +742,280 @@ hermes</pre>
                   <li>• fast fresh-loop execution beats setup complexity</li>
                 </ul>
                 <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: VERY LOW</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Next: Hermes + Webhooks" data-notes="Transition slide into next section.||Core message: move from chat-driven usage to event-driven automation.||Use this line: stop babysitting your agent; let real-world events trigger it.">
+          <div class="slide-canvas flex flex-col justify-center p-margin">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">NEXT SECTION</p>
+            <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">
+              Hermes + Webhooks
+            </h1>
+            <p class="mt-stack-md max-w-4xl text-2xl text-white/80">
+              Unlocking real agentic workflow potential.
+            </p>
+            <p class="mt-stack-lg max-w-4xl text-xl text-white/70">
+              Stop babysitting your agent — let the world trigger it.
+            </p>
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg text-white/80 text-sm max-w-4xl">
+              From prompt-response chat to event-driven execution: deploy events, incident alerts, form submissions, tickets, and webhooks become autonomous triggers.
+            </div>
+          </div>
+        </section>
+
+
+        <section class="slide w-full" data-title="Hermes Integrations: Webhook Triggers" data-notes="These are practical integrations that can trigger Hermes via webhooks.||Each service emits an event; Hermes receives it as a message and runs an agent.||If one app lacks native webhooks, use Zapier/Make as bridge.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">Hermes integrations that trigger agents</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-6xl">Each one is basically a webhook source: event happens in the tool → Hermes gets POST → agent runs.</p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-3 text-white/80 text-sm">
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">TYPEFORM</p><p class="mt-stack-sm">New form response triggers qualification, routing, and follow-up draft.</p></div>
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">CONVERTKIT / BEEHIIV</p><p class="mt-stack-sm">New subscriber event triggers enrichment, tagging, and onboarding automations.</p></div>
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">STRIPE</p><p class="mt-stack-sm">Payment/subscription events trigger receipts, CRM updates, and support workflows.</p></div>
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">GITHUB</p><p class="mt-stack-sm">Push/PR/issue events trigger review summaries, triage, and release notes.</p></div>
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">CRM (ATTIO / HUBSPOT)</p><p class="mt-stack-sm">Lead/contact changes trigger enrichment, owner assignment, and follow-up actions.</p></div>
+              <div class="l-bracket p-stack-lg"><p class="mono text-primary">LINEAR / JIRA / NOTION / SLACK</p><p class="mt-stack-sm">Task or message events trigger planning, status updates, and notifications.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Webhook Adapter: Hermes as Receiver" data-notes="Make step 01 explicit: this is NOT Hermes sending webhooks, this is Hermes receiving them.||HMAC = signed proof from the sender using shared secret.||Render from payload = fill your prompt template with JSON fields from the event body.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">
+              Webhook adapter: Hermes as receiver
+            </h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-5xl">
+              This flow is for incoming webhooks: external apps call Hermes to start work.
+            </p>
+
+            <div class="mt-stack-xl l-bracket p-stack-lg max-w-6xl">
+              <ol class="space-y-stack-sm text-white/80">
+                <li><span class="mono text-primary">01</span> External service sends webhook to Hermes: <span class="mono">POST /webhooks/&lt;route-name&gt;</span></li>
+                <li><span class="mono text-primary">02</span> Hermes verifies signature (HMAC) to confirm it came from the real sender</li>
+                <li><span class="mono text-primary">03</span> Hermes builds a prompt from the JSON payload using your template</li>
+                <li><span class="mono text-primary">04</span> Hermes runs a fresh agent turn with that prompt as the user message</li>
+                <li><span class="mono text-primary">05</span> Hermes sends the result to your chosen destination (chat or API endpoint)</li>
+              </ol>
+            </div>
+
+            <p class="mt-stack-lg text-white/65 text-sm max-w-6xl">
+              Plain English: event arrives → trust check → template fill → agent run → result sent.
+            </p>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Webhook Adapter: Hermes as Sender" data-notes="As sender means Hermes initiates HTTPS calls out.||Two practical ways: scheduled cron jobs and terminal tool calls.||Also include runtime hooks: session_start/agent_step can push updates without additional inbound events.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">
+              Webhook adapter: Hermes as sender
+            </h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-5xl">
+              Hermes pushes data out via HTTPS — after start, it can keep posting updates without new inbound triggers.
+            </p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-2">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">SCHEDULED POSTS (CRON JOBS)</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/80">
+                  <li>• Run every N minutes/hours</li>
+                  <li>• Agent prepares payload</li>
+                  <li>• Send via curl or httpx</li>
+                </ul>
+              </div>
+
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">ON-DEMAND + HOOK POSTS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/80">
+                  <li>• Terminal tool runs shell commands (e.g., curl)</li>
+                  <li>• Hooks fire on session_start / agent_step</li>
+                  <li>• Hermes POSTs progress/results to your endpoint</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Webhooks Setup (No-Code)" data-notes="Telegram-first flow: user chats with Hermes for guidance and templates, then does one-time VPS setup for secrets/service/network.||Explain WEBHOOK_ENABLED/PORT/SECRET and ngrok in plain language.||Security: never share secrets in chat; require signature validation on each route.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">Webhooks setup without coding</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-6xl">You can plan everything in chat. You only log into VPS for one-time secrets + service setup.</p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-3 text-sm text-white/80">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">STEP 1: TURN IT ON</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• WEBHOOK_ENABLED=true → enable adapter</li>
+                  <li>• WEBHOOK_PORT=8644 → where Hermes listens</li>
+                  <li>• WEBHOOK_SECRET=... → global fallback auth secret</li>
+                </ul>
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">STEP 2: EXPOSE URL</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• Public VPS + HTTPS: use your domain directly</li>
+                  <li>• Local/private host: use ngrok tunnel</li>
+                  <li>• Endpoint format: <span class="mono">/webhooks/&lt;route-name&gt;</span></li>
+                </ul>
+              </div>
+
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">STEP 3: SECURE IT</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• Keep secrets in <span class="mono">~/.hermes/.env</span></li>
+                  <li>• Never paste production secrets in chat</li>
+                  <li>• Use per-route secret + rotate if leaked</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Telegram Chat vs VPS Tasks" data-notes="Make boundaries explicit for non-technical users.||Most logic work happens in chat; only host-level actions need VPS login.||Call out why ngrok/firewall/TLS may be required.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">What you do in chat vs on VPS</h1>
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-2 text-sm text-white/80">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">JUST BY TEXTING HERMES (TELEGRAM)</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• choose integration + event type</li>
+                  <li>• generate route template and prompt</li>
+                  <li>• explain payload fields and delivery mapping</li>
+                  <li>• troubleshoot failed deliveries from logs/errors</li>
+                </ul>
+              </div>
+
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">REQUIRES VPS LOGIN (ONCE / INFRA)</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• add secrets in <span class="mono">~/.hermes/.env</span></li>
+                  <li>• restart gateway service</li>
+                  <li>• ensure public reachability (TLS/domain or ngrok)</li>
+                  <li>• open firewall/proxy only if hosting public endpoint yourself</li>
+                </ul>
+              </div>
+            </div>
+
+            <p class="mt-stack-lg text-white/65 text-sm max-w-6xl">ngrok = temporary public HTTPS tunnel to your local webhook port. Use it for local/private dev; skip it on a public HTTPS VPS.</p>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Webhook Setup Master Prompt (Public VPS)" data-notes="Production pattern without ngrok.||Never expose raw webhook port directly; terminate TLS at reverse proxy/CDN.||HMAC authenticates sender, WAF/rate limits protect availability.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">Webhook setup master prompt: public VPS</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-6xl">Cloudflare/WAF → Nginx/Caddy (443 TLS) → Hermes webhook adapter (:8644) → HMAC verify → agent run.</p>
+            <div class="mt-stack-lg l-bracket p-stack-lg text-white/80 text-sm max-w-6xl">
+              Do not expose :8644 directly to internet. Keep it internal and proxy from 443.
+            </div>
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg text-white/85 text-sm max-w-6xl">
+              MASTER PROMPT #1 (PUBLIC VPS):
+              "Set up production webhook mode on this VPS: enable webhook adapter, bind local port 8644, configure reverse-proxy/TLS on 443, keep 8644 internal-only, add per-route HMAC secrets, apply rate limits, verify /health and one signed test route, then output final webhook URL + security checklist."
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Webhook Setup Master Prompt (Local/Private + ngrok)" data-notes="Dev pattern with temporary public URL.||ngrok exposes local port over HTTPS; still require HMAC secret.||Free ngrok URLs rotate, so reconfigure external webhook target when URL changes.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <h1 class="font-display text-5xl leading-none tracking-tight text-white">Webhook setup master prompt: local/private + ngrok</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-6xl">External app → ngrok HTTPS URL → local Hermes :8644 → HMAC verify → agent run.</p>
+            <div class="mt-stack-lg l-bracket p-stack-lg text-white/80 text-sm max-w-6xl">
+              ngrok gives public reachability; it is not authentication. Keep route secret required.
+            </div>
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg text-white/85 text-sm max-w-6xl">
+              MASTER PROMPT #2 (LOCAL/PRIVATE):
+              "Set up secure local webhook mode with ngrok: enable webhook adapter on 8644, create one route with per-route HMAC secret, start ngrok tunnel to 8644, return public webhook URL, run signed test POST, and output what I must paste into external service webhook settings (URL, secret, event type)."
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Takeaways" data-notes="Land this with confidence: one mental model in three blocks.||Polling in plain words: repeatedly asking 'anything new yet?'.||Use trigger in -> Hermes works -> result out framing.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">FINAL SNAPSHOT</p>
+            <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">Takeaways</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-5xl">If you remember just this: <span class="text-white">trigger in → Hermes works → result out.</span></p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-3 text-white/85 text-sm">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">01 — STOP POLLING</p>
+                <p class="mt-stack-sm">Webhooks are push events. Polling means your app keeps asking: “anything new yet?”</p>
+              </div>
+
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">02 — TWO-WAY FLOW</p>
+                <p class="mt-stack-sm">Hermes can receive a trigger and it can send updates or final results back out.</p>
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">03 — UNIVERSAL CONNECTOR</p>
+                <p class="mt-stack-sm">Webhook-capable tools can start work. API/webhook endpoints can receive results.</p>
+              </div>
+            </div>
+
+            <p class="mt-stack-lg text-white/65 text-sm max-w-6xl">Practical rule: replace “check every minute” automations with event-triggered runs whenever possible.</p>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Closing" data-notes="Final handoff slide.||Thank the audience and transition speakers clearly.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">END OF HERMES AGENT SECTION</p>
+            <h1 class="mt-stack-md font-display text-5xl leading-tight tracking-tight text-white">This is the end for Hermes Agent.</h1>
+            <p class="mt-stack-lg text-2xl text-white/80 max-w-6xl">Next up: Georg and Roman on local AI setups, GPUs, and the best models to host locally at home.</p>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Sponsors" data-notes="Thank both sponsors clearly and keep the CTA practical.||Nebius offer is $50 promo code; Mem0 is join/signup.||Point people to QR + website on each card.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">COMMUNITY SPONSORS</p>
+            <h1 class="mt-stack-md font-display text-6xl leading-none tracking-tight text-white">Big thanks to our sponsors</h1>
+            <p class="mt-stack-md text-xl text-white/70 max-w-6xl">Scan the QR code, visit the site, and claim the offer.</p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-2 text-white/85 text-sm">
+              <div class="l-bracket-cyan p-stack-lg">
+                <img src="assets/sponsors/nebius-logo.svg" alt="Nebius logo" style="height: 42px; width: auto;" />
+                <p class="mt-stack-md text-white/80">GPU cloud platform for AI workloads.</p>
+                <p class="mt-stack-sm"><span class="mono text-primary">Offer:</span> $50 promo code for attendees.</p>
+                <p class="mt-stack-sm"><span class="mono text-primary">Website:</span> <span class="mono">nebius.com</span></p>
+                <img src="qr-nebius.png" alt="Nebius QR code" style="margin-top: 14px; width: 170px; height: 170px; border: 1px solid rgba(255,255,255,0.2);" />
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <img src="assets/sponsors/mem0-logo.svg" alt="Mem0 logo" style="height: 42px; width: auto;" />
+                <p class="mt-stack-md text-white/80">Memory layer for AI applications.</p>
+                <p class="mt-stack-sm"><span class="mono text-primary">Offer:</span> join Mem0 via the link/QR.</p>
+                <p class="mt-stack-sm"><span class="mono text-primary">Website:</span> <span class="mono">mem0.ai</span></p>
+                <img src="QR-mem0.jpg" alt="Mem0 QR code" style="margin-top: 14px; width: 170px; height: 170px; border: 1px solid rgba(255,255,255,0.2); object-fit: cover;" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Join our Local AI WhatsApp Group" data-notes="This is the final CTA slide.||Ask people to scan now and join before they leave.||Emphasize beginner help + practical hardware/model guidance.">
+          <div class="slide-canvas p-margin flex flex-col justify-center">
+            <p class="mono text-xs uppercase tracking-[0.25em] text-primary">FINAL CTA</p>
+            <h1 class="mt-stack-md font-display text-5xl leading-tight tracking-tight text-white">Join our Local AI WhatsApp group</h1>
+            <p class="mt-stack-md text-xl text-white/75 max-w-6xl">For beginners, builders, teams, founders, CEOs, and employees who want a real AI assistant system — not hype.</p>
+
+            <div class="mt-stack-xl grid gap-stack-lg md:grid-cols-2 text-sm text-white/85">
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">WHAT YOU GET INSIDE</p>
+                <ul class="mt-stack-sm space-y-stack-sm">
+                  <li>• Live Hermes Agent updates</li>
+                  <li>• New tips, tricks, and setup videos for absolute beginners</li>
+                  <li>• FAQ support: ask questions, get real answers</li>
+                  <li>• Model picks for home GPUs (3090 / 4090 / 5090)</li>
+                  <li>• Hardware buying guidance: what to buy, what to skip for LLMs, and why</li>
+                  <li>• Small-model updates that actually make sense (e.g., Qwen2.5 14B, Llama 3.1 8B)</li>
+                </ul>
+                <p class="mt-stack-md text-white/70">Goal: help you build your own Jarvis-like personal assistant or deploy a strong AI workflow in your company.</p>
+              </div>
+
+              <div class="l-bracket p-stack-lg flex flex-col items-center justify-center">
+                <p class="mono text-primary">SCAN TO JOIN NOW</p>
+                <img src="local-ai-whatsapp.png" alt="Local AI WhatsApp group QR code" style="margin-top: 12px; width: 240px; height: 240px; border: 1px solid rgba(255,255,255,0.2); object-fit: cover;" />
+                <p class="mt-stack-md text-white/70 text-center">Join before you leave — this is where the follow-up happens.</p>
               </div>
             </div>
           </div>

@@ -50,25 +50,6 @@ Why this matters:
 
 ---
 
-## 4) Setup in 3 Minutes (practical)
-Fast path:
-1. Install Hermes
-2. Run setup wizard
-3. Choose model/provider
-4. Run doctor check
-5. Start chat
-
-Key files:
-- `~/.hermes/config.yaml` for behavior/config
-- `~/.hermes/.env` for keys/secrets
-- `~/.hermes/skills/` for procedural memory
-- `~/.hermes/sessions/` for transcripts and continuity
-
-Speaker point:
-- Setup is intentionally easy. Hardening and optimization can come later.
-
----
-
 ## 5) Hermes / OpenClaw Blueprints
 Replace the prior text comparison slide with two visual slides in the same slot:
 - Slide 1: show `hermes-agent-blueprint.png` full-screen.
@@ -212,30 +193,7 @@ On this slide:
 
 ---
 
-## 5.8) Obsidian Integration (what we built)
-Practical setup:
-- Use `~/wiki` as the working knowledgebase path.
-- Keep it markdown-native so both humans and agent can operate on it.
-- Sync with Obsidian (`ob sync --path ~/wiki`).
-
-Native Hermes support worth saying explicitly:
-- Hermes has a built-in `obsidian` skill (read/search/create notes in vault).
-- LLM Wiki markdown format is Obsidian-vault compatible out of the box (`[[wikilinks]]`, frontmatter, assets).
-- Set `OBSIDIAN_VAULT_PATH=~/wiki` so skill operations and wiki automation point to the same place.
-
-Recommended architecture:
-- Hermes curates and updates wiki pages.
-- Obsidian provides graph/backlinks/human editing UX.
-- Automation keeps state current with low-noise no-op runs.
-
-Special pattern from our build:
-- Mirror local Hermes profile snapshots into wiki notes.
-- Sync only on actual change.
-- Optional watcher + cron fallback for reliability.
-
----
-
-## 5.9) How To Do This Yourself (with copy/paste prompts)
+## 5.8) How To Do This Yourself (with copy/paste prompts)
 1. Install Hermes and choose provider/model
 2. Run `llm-wiki` to initialize `~/wiki` (schema/index/log)
 3. Run `obsidian` to connect `~/wiki` to Obsidian Sync
@@ -248,7 +206,7 @@ Skill availability (important):
 - Verify with `/skills` or `hermes skills list`.
 - If missing, update Hermes first, then re-check.
 
-### 5.9.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
+### 5.8.1 Step 2 — Initialize wiki with `llm-wiki` (not “skeleton”)
 What this means:
 - Ask Hermes to set up the wiki at `~/wiki` using the LLM Wiki convention.
 - That includes `SCHEMA.md`, `index.md`, `log.md`, and standard folders.
@@ -259,7 +217,7 @@ Prompt to Hermes:
 If someone asks “do I install from a link?”
 - “No in most cases — this skill is built-in. Just call it in the prompt.”
 
-### 5.9.2 Step 3 — Connect Obsidian with `obsidian` skill
+### 5.8.2 Step 3 — Connect Obsidian with `obsidian` skill
 What this means:
 - `llm-wiki` manages the knowledge workflow.
 - `obsidian` connects and operates the vault UX/sync side.
@@ -273,7 +231,7 @@ If you want both in one request:
 Edge case if a skill is missing:
 - “Run `/skills search <skill-name>`. If it appears, install with `/skills install <identifier>`. If not, update Hermes.”
 
-### 5.9.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
+### 5.8.3 Step 4 — Scheduled ingest/lint/sync (what maintenance actually is)
 What this means:
 - Ingest = add/update knowledge from new sources.
 - Lint = quality checks (broken links, missing metadata, stale pages).
@@ -287,7 +245,7 @@ Simple explanation for non-technical audience:
 Prompt to Hermes:
 - “Create recurring jobs for `~/wiki`: ingest every 2 hours, lint daily at 09:00, and `ob sync --path ~/wiki` every 30 minutes. Keep output concise and include job IDs.”
 
-### 5.9.4 Step 5 — Profile mirror automation (what gets mirrored)
+### 5.8.4 Step 5 — Profile mirror automation (what gets mirrored)
 What this means:
 - Keep human-readable snapshots of core Hermes profile files inside the wiki.
 - Typical mapping:
@@ -302,7 +260,7 @@ Simple explanation for non-technical audience:
 Prompt to Hermes:
 - “Use `mirror-hermes-local-to-obsidian`. Set up automatic mirroring from `~/.hermes/SOUL.md` and `~/.hermes/memories/USER.md` into `~/wiki/hermes/` snapshot notes, updating only the `## current contents` section.”
 
-### 5.9.5 Step 6 — No-op silent runs (how it works)
+### 5.8.5 Step 6 — No-op silent runs (how it works)
 What this means:
 - If a scheduled run detects no content change, it should not spam.
 - Behavior on no-change:
@@ -526,6 +484,334 @@ Bottom line:
 - Ralph loop = best for scripted multi-story throughput.
 - Hermes = best for long-term compounding engineering systems.
 - Standalone Claude/Codex = best for fast focused one-offs.
+
+---
+
+## 10) Next Section: Hermes + Webhooks
+Purpose: transition from coding workflow into event-driven agent operations.
+
+Suggested slide copy:
+- “Hermes + Webhooks: unlocking real agentic workflow potential.”
+- “Stop babysitting your agent — let the world trigger it.”
+
+Talking points:
+- Shift framing from chat-first to trigger-first automation.
+- External systems should initiate work: deploy events, incident alerts, tickets, form submissions, API callbacks.
+- This is where agent workflows stop being demos and become operational systems.
+
+## 10.1) Hermes Integrations: Webhook Triggers
+Goal: show concrete apps that can trigger Hermes with webhook events.
+
+Core idea:
+- Each integration is basically a webhook source.
+- Event happens in external tool -> Hermes receives POST -> agent run starts.
+
+Suggested integrations to mention:
+- Typeform: new response -> qualify lead, route to owner, draft reply.
+- ConvertKit (or Beehiiv): new subscriber/campaign event -> tag/enrich/onboarding actions.
+- Stripe: payment/subscription/invoice event -> CRM update, receipt/support workflow.
+- GitHub: push/PR/issue event -> summarize diff, triage, create follow-up tasks.
+- CRM (Attio or HubSpot): lead/contact changes -> enrich, assign owner, trigger next follow-up.
+- Extra compatible options: Linear, Jira, Notion, Slack (event-driven triggers).
+
+Bridge note:
+- If a tool has weak webhook support, bridge with Zapier or Make and still trigger Hermes.
+
+## 10.2) Webhook Adapter: Hermes as Receiver
+Goal: explain incoming webhook flow in plain language, including HMAC and payload rendering.
+
+Important clarification:
+- Step 01 is NOT Hermes sending a webhook.
+- Step 01 is another service sending a webhook TO Hermes.
+
+Core framing:
+- Hermes webhook adapter is an HTTP gateway.
+- Like Telegram/Slack adapters receive chat messages, this adapter receives event messages.
+
+Flow (easy version):
+1. External app sends POST to `/webhooks/<route-name>`
+2. Hermes checks signature (HMAC) to verify sender authenticity
+3. Hermes converts event JSON into a readable prompt via template
+4. Hermes runs a fresh agent turn with that prompt as user input
+5. Hermes sends output to a configured destination (chat/tool/API endpoint)
+
+What is HMAC signature?
+- HMAC is a cryptographic signature made with a shared secret.
+- Sender signs the payload; Hermes recalculates and compares.
+- If signatures mismatch, Hermes rejects request.
+- Purpose: stop spoofed/fake webhook calls.
+
+What does “render prompt from payload” mean?
+- Payload = JSON body sent by the external service.
+- Template = text with placeholders like `{payload.repository}` or `{payload.alert_title}`.
+- Rendering = replacing placeholders with real values from the JSON.
+- Result = a clean prompt the agent can reason on.
+
+Concrete example:
+- Incoming payload: `{ "repo": "hermes-agent", "branch": "main", "author": "rick" }`
+- Template: `Summarize this push to {payload.repo} on {payload.branch} by {payload.author}.`
+- Rendered prompt: `Summarize this push to hermes-agent on main by rick.`
+
+Speaker line:
+- “This is just message translation: event JSON in, trusted + templated, then treated as a user message for the agent.”
+
+## 10.3) Webhook Adapter: Hermes as Sender
+Goal: explain outbound posting from Hermes in plain terms.
+
+Meaning of “as sender”:
+- Hermes initiates HTTPS calls to your endpoints.
+- This is outbound from Hermes.
+- No inbound webhook is required for these sends.
+
+Two practical mechanisms:
+1. Cron jobs (scheduled)
+2. Terminal tool (on-demand during agent run)
+
+### 10.3.1 Scheduled agent posts (cron jobs)
+How it works:
+- A cron schedule triggers a job (every 30m, hourly, etc.).
+- The job runs an agent prompt in a fresh session.
+- Agent composes payload and sends to endpoint.
+- Send method can be `curl` command or Python `httpx` call.
+
+Example idea:
+- Every hour: summarize system state and POST JSON to dashboard webhook.
+
+### 10.3.2 Terminal tool explained (what it is)
+- Terminal tool lets the agent run shell commands on the machine.
+- Typical use: run scripts, call APIs with curl, execute checks, parse outputs.
+- For webhook sending, agent can run:
+  - `curl -X POST https://api.example.com/hook -H 'Content-Type: application/json' -d '{...}'`
+
+### 10.3.3 What is HTTPX?
+- HTTPX is a Python HTTP client library (like `requests`, but modern + async support).
+- If you know curl: HTTPX is “curl-style HTTP calls in Python code”.
+- Useful when payload creation/logic is easier in Python than in one long shell command.
+
+Minimal Python example:
+```python
+import httpx
+payload = {"status": "ok", "source": "hermes"}
+httpx.post("https://api.example.com/hook", json=payload, timeout=10)
+```
+
+### 10.3.4 No inbound needed after start (runtime hooks)
+Goal: explain how Hermes can keep posting updates during a run.
+
+Plain-language translation of confusing terms:
+- `session_start` = “a new run just began”
+- `agent_step` = “one unit of agent work completed”
+- `get_webhooks` = “load configured endpoints/targets”
+
+How hook-based posting works:
+1. A run starts (or a step finishes)
+2. Hook code is triggered at that moment
+3. Hook builds a payload (status, result, metadata)
+4. Hermes POSTs to your endpoint
+5. Your receiver processes update (CLI, gateway, internal API, etc.)
+
+Important point:
+- After the first trigger, Hermes can keep sending HTTPS updates itself.
+- You do not need additional inbound events for each update.
+
+Simple example:
+- Session starts for "daily build monitor"
+- Each agent step posts progress to `https://ops.example.com/agent-progress`
+- Final step posts summary + success/failure to `https://ops.example.com/agent-final`
+
+Speaker line:
+- “Inbound starts the process; hooks make Hermes proactively report and integrate while it runs.”
+
+## 10.4) Webhooks Setup (No-Code) + config.yaml explained
+Goal: explain a beginner-safe webhook setup flow for Telegram-only users.
+
+### 10.4.1 Beginner flow (no Python, minimal terminal)
+1. Enable webhook adapter (`WEBHOOK_ENABLED=true`).
+2. Set listener port (`WEBHOOK_PORT=8644`).
+3. Set auth secret (`WEBHOOK_SECRET=...`) as global fallback.
+4. Expose URL:
+   - public VPS with HTTPS -> use domain directly, or
+   - local/private host -> use ngrok tunnel.
+5. Create route (`config.yaml` or `hermes webhook subscribe`).
+6. Paste webhook URL in external app and test delivery.
+
+### 10.4.2 What env vars mean
+- `WEBHOOK_ENABLED=true`
+  - turns on webhook HTTP server in Hermes gateway.
+- `WEBHOOK_PORT=8644`
+  - local port Hermes listens on for incoming POSTs.
+- `WEBHOOK_SECRET=<strong-secret>`
+  - global fallback secret for signature validation.
+  - best practice: set per-route `secret` too.
+
+### 10.4.3 Why security matters here
+- Webhook endpoints are public URLs.
+- Anyone can hit URL unless signature validation blocks them.
+- If secret is missing or weak, fake events can trigger agent runs.
+- Keep secrets local (`~/.hermes/.env`), never in chat logs.
+- Rotate leaked secrets immediately.
+
+### 10.4.4 What ngrok is (and when you need it)
+- ngrok = temporary public HTTPS tunnel to local port.
+- Example: `http://localhost:8644` -> `https://abc123.ngrok-free.app`
+- Needed when Hermes is not publicly reachable.
+- Not needed when VPS already has public HTTPS domain.
+- Free ngrok URLs change on restart; update webhook URL when that happens.
+
+### 10.4.5 How `config.yaml` route works (simple mental model)
+One route = 5 blocks:
+1. `events` (what to accept)
+2. `secret` (auth check)
+3. `prompt` (payload -> agent input)
+4. `skills` (optional preload)
+5. `deliver` + `deliver_extra` (where result goes)
+
+Minimal route example:
+```yaml
+platforms:
+  webhook:
+    enabled: true
+    extra:
+      port: 8644
+      routes:
+        github-pr:
+          events: ["pull_request"]
+          secret: "set-a-strong-secret-here"
+          prompt: |
+            Review PR #{number} in {repository.full_name}
+            Title: {pull_request.title}
+            URL: {pull_request.html_url}
+          skills: ["github-code-review"]
+          deliver: "github_comment"
+          deliver_extra:
+            repo: "{repository.full_name}"
+            pr_number: "{number}"
+```
+
+Template notes:
+- `{field.path}` = insert value from webhook JSON payload.
+- `{__raw__}` = dump full payload while discovering field names.
+
+## 10.5) Telegram Chat vs VPS Tasks (who does what)
+Goal: set clear boundary so non-technical users know what must be done manually.
+
+Can be done just by texting Hermes (Telegram):
+- choose service + event type + route behavior
+- draft prompt templates and delivery mapping
+- explain payload fields and fix template mistakes
+- debug webhook failures from logs/errors you paste
+
+Requires VPS login / host access:
+- add real secrets to `~/.hermes/.env`
+- restart gateway service
+- make endpoint publicly reachable (TLS/domain or ngrok)
+- firewall/reverse proxy only if you host endpoint directly on public VPS
+
+Still manual outside Hermes:
+- create webhook in external service UI (GitHub/Stripe/Typeform/etc.)
+- paste Hermes endpoint + matching secret there
+
+Speaker line:
+- “Think chat for logic, VPS for infrastructure, external UI for registration.”
+
+## 10.6) Webhook Setup Master Prompt: Public VPS
+Goal: give a production-safe reference pattern.
+
+Architecture chain:
+- External service -> Cloudflare/WAF -> Nginx/Caddy (HTTPS 443) -> Hermes webhook adapter (`:8644`) -> HMAC verification -> agent run.
+
+Key security rules:
+- Do NOT expose `:8644` directly to internet.
+- Keep `:8644` internal; only expose 443.
+- Enforce per-route secrets + signature validation.
+- Apply rate limiting at WAF/proxy + route-level limits in Hermes.
+
+Master Prompt #1 (Public VPS):
+```text
+Set up production webhook mode on this VPS: enable webhook adapter, bind local port 8644, configure reverse-proxy/TLS on 443, keep 8644 internal-only, add per-route HMAC secrets, apply rate limits, verify /health and one signed test route, then output final webhook URL + security checklist.
+```
+
+## 10.7) Webhook Setup Master Prompt: Local/Private + ngrok
+Goal: give a safe dev/testing pattern when host is not public.
+
+Architecture chain:
+- External service -> ngrok HTTPS URL -> local Hermes webhook adapter (`:8644`) -> HMAC verification -> agent run.
+
+Key security rules:
+- ngrok provides reachability, not authentication.
+- Keep per-route secret required.
+- Free ngrok URLs rotate; update webhook target on restart.
+
+Master Prompt #2 (Local/Private):
+```text
+Set up secure local webhook mode with ngrok: enable webhook adapter on 8644, create one route with per-route HMAC secret, start ngrok tunnel to 8644, return public webhook URL, run signed test POST, and output what I must paste into external service webhook settings (URL, secret, event type).
+```
+
+## 10.8) Takeaways
+Goal: end with one visual mental model, not a text wall.
+
+Slide structure (3 cards):
+- 01 — STOP POLLING
+  - Webhooks are push events.
+  - Polling = repeatedly asking “anything new yet?”
+- 02 — TWO-WAY FLOW
+  - Trigger comes in.
+  - Hermes can also push updates/results out.
+- 03 — UNIVERSAL CONNECTOR
+  - Any webhook-capable tool can start work.
+  - Any API/webhook endpoint can receive results.
+
+Anchor line on slide:
+- “trigger in → Hermes works → result out.”
+
+Speaker line:
+- “If you remember one thing: stop building ‘check every minute’ loops. Let events fire the workflow.”
+
+## 10.9) Closing / Speaker Handoff
+Slide copy:
+- “This is the end for Hermes Agent.”
+- “Next up: Georg and Roman on local AI setups, GPUs, and the best models to host locally at home.”
+
+Speaker line:
+- “Thanks everyone — handing over to Georg and Roman for the local AI stack deep dive.”
+
+## 10.10) Sponsors
+Goal: thank sponsors and give attendees a concrete next step.
+
+Slide structure:
+- Two cards: Nebius + Mem0
+- Each card includes logo, website, offer, and QR code
+
+Content:
+- Nebius
+  - Website: nebius.com
+  - Offer: $50 promo code for attendees
+- Mem0
+  - Website: mem0.ai
+  - Offer: join/signup via QR/link
+
+Speaker line:
+- “Huge thanks to Nebius and Mem0 for sponsoring this meetup — scan either QR now and claim the offer.”
+
+## 10.11) Final CTA — Join our Local AI WhatsApp Group
+Goal: convert audience attention into ongoing community participation.
+
+Slide content:
+- Invite everyone: beginners, builders, teams, founders, CEOs, employees.
+- Say what they get in the group:
+  - live Hermes Agent updates,
+  - new tips & tricks,
+  - setup videos for absolute beginners,
+  - FAQ support (people ask, we answer),
+  - latest model discussions (especially smaller home-runnable models),
+  - hardware guidance (what to buy for LLMs, what to avoid, and why).
+- Mention practical examples:
+  - home GPU discussion around 3090 / 4090 / 5090,
+  - small model picks like Qwen2.5 14B and Llama 3.1 8B.
+- Strong CTA: “Scan now and join before you leave.”
+
+Speaker line:
+- “If you want the real follow-up after today, this WhatsApp group is where we share everything — updates, fixes, model picks, and buying advice.”
 
 ---
 
