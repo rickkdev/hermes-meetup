@@ -447,164 +447,79 @@ Bridge line into next slide:
 
 ---
 
-## 7) Subagent Spawn Mechanism (diagram)
-Use the full-screen image: `how-subagent-works.png`.
+## 7) Ralph Loop (what it is)
+Use this before the subagent diagram.
 
-Core definition:
-- A subagent is an isolated short-lived worker spawned via `delegate_task`.
-- The parent sends a scoped packet: `goal` + `context` + `toolsets` (+ limits).
-- The child runs in fresh context and returns a final summary (not full transcript).
+Definition in your terms:
+- A Ralph loop is a scripted fresh-session coding loop.
+- Inputs are usually:
+  - `PRD.json` (project/stories)
+  - one or more agent instruction `.md` files (coding principles/rules)
+  - `progress.txt` (story progress ledger)
 
-### 7.1 The actual mechanism (plain engineering view)
-Yes — your intuition is right. There is no separate magical scheduler function with hidden planning logic.
+Execution pattern:
+1) Launcher opens a fresh Codex/Claude session.
+2) Agent reads rules + PRD + progress.
+3) Agent picks next unfinished story.
+4) Agent implements + verifies.
+5) Agent writes status back to `progress.txt`.
+6) Session closes.
+7) Script runs again for next story.
 
-What actually happens inside the normal agent loop:
-1) Parent session receives your prompt.
-2) Parent calls the main LLM with:
-   - current conversation context
-   - system/developer instructions
-   - available tool schemas (including `delegate_task`)
-3) The LLM chooses one of two actions:
-   - continue in the parent session, or
-   - emit a tool call to `delegate_task`.
-4) If it emits `delegate_task`, Hermes runtime executes that tool call:
-   - creates one or more child agents in isolated contexts
-   - passes explicit payload (`goal`, `context`, `toolsets`, limits)
-   - each child runs independently and returns summary output only
-5) Parent receives child summaries as tool results, then continues reasoning:
-   - merge findings
-   - choose final action
-   - run verification/tools
-   - return final answer
+Why teams like it:
+- predictable progress tracking
+- clean context every story
+- easy to run long multi-story builds with less drift
 
-Important: the “decomposition” is mostly the model deciding to call `delegate_task` with specific child tasks. Hermes runtime then enforces guardrails (iteration limits, spawn depth, allowed toolsets, concurrency limits).
-
-Practical line:
-- “Subagent spawning is an LLM tool-call decision plus runtime guardrails: decide → dispatch → summarize → merge → verify.”
-
-### 7.2 Concrete example (bugfix workflow)
-Example prompt to parent:
-- “Fix flaky login tests. Use subagents where helpful.”
-
-What the parent LLM may emit (conceptually):
-- `delegate_task(tasks=[{goal: "trace failing test path"}, {goal: "inspect auth middleware"}, {goal: "review recent auth commits"}])`
-
-This is the key point:
-- The parent does not manually fork OS processes itself in your prompt.
-- It asks the Hermes runtime to execute the `delegate_task` tool with structured arguments.
-- Runtime then spawns isolated child agent runs and returns their summaries to the parent.
-
-What parent spawns:
-- Child A: trace failing test path + stack traces
-- Child B: inspect auth middleware/session handling
-- Child C: review recent commits touching login/auth
-
-What comes back:
-- A: failure trigger location
-- B: likely state/race bug in middleware
-- C: suspect regression commit range
-
-What parent does next:
-- chooses fix strategy
-- applies patch
-- runs full test suite
-- returns one merged explanation + verification result
-
-### 7.3 When NOT to spawn
-- one linear tool call is faster in parent
-- tasks requiring constant shared in-memory state
-- high-frequency user clarification loops
-
-### 7.4 Parallel terminals reminder
-- Multiple terminal windows are separate live sessions.
-- Same profile shares long-term state (DB/memory/skills/files), not live turn-by-turn thoughts.
-- Use worktrees when concurrent workers touch same repo.
+Bridge line:
+- “Ralph loop externalizes planning files; Hermes can do similar decomposition internally via subagents.”
 
 ---
 
-## 8) Coding Workflow: the context-bloat objection (start here)
-Main concern to lead with:
-- “If I code in Hermes continuously, won’t context bloat beat me vs starting fresh Claude Code loops per story?”
+## 8) Subagent Spawn Mechanism (diagram)
+Use the full-screen image: `how-subagent-works.png`.
 
-Short honest answer:
-- Yes, bloat is real if you keep one giant thread forever.
-- No, if you operate Hermes correctly: fresh execution scopes + selective persistence.
+Talk track:
+- Parent LLM sees available tools and may emit a `delegate_task` tool call.
+- Hermes runtime executes that call with limits/guardrails.
+- Child agent(s) run isolated and return summaries.
+- Parent merges outputs and verifies final result.
 
-### 8.1 Fresh-loop model vs Hermes model
-Fresh-loop model (Claude/Codex style per story):
-- Pro: very clean context window per task.
-- Con: repeated onboarding every single time (repo conventions, test commands, architecture constraints).
+---
 
-Hermes model:
-- Keep execution sessions scoped (don’t run one mega-session forever).
-- Persist only durable value (skills + memory), not transient chatter.
-- Result: less repetitive setup while keeping context quality high.
+## 9) Coding Workflow Choices (replace old context-bloat slide)
+Present this as a 3-lane decision matrix.
 
-How to reset scope in Hermes (say this explicitly):
-- End the current story with a concise summary.
-- Start a new Hermes session (new terminal/tab and run Hermes again).
-- Paste only a compact handoff brief (goal, constraints, changed files, open risks).
+### 9.1 When to use Ralph loop
+- multi-story build with clear roadmap
+- deterministic story-by-story progress tracking
+- unattended batch execution with strict process files
+- ideal when you already have strong PRD discipline
 
-Stage one-liner:
-- “Hermes done right is not one infinite context; it’s many fresh contexts plus a durable brain.”
+Context bloat factor:
+- LOW (fresh session each story by design)
 
-### 8.2 When fresh loops are genuinely better
-Use fresh loops when:
-- tiny one-off changes with no continuity value
-- throwaway experiments
-- quick probes in unknown codebases where setup knowledge won’t be reused
+### 9.2 When to use Hermes
+- recurring work in same codebase where skills/memory pay off
+- workflows needing tool orchestration and verification in one place
+- project work where you want compounding automation, not just one-off runs
+- best when you still keep story-scoped sessions
 
-Reset-scope version inside Hermes:
-- Treat each one-off as a separate Hermes story session anyway.
-- Do not continue from yesterday’s unrelated coding thread just because it exists.
+Context bloat factor:
+- MEDIUM by default, LOW with good session hygiene
 
-### 8.3 When Hermes is better
-Use Hermes when:
-- project standards repeat (tests, lint flow, release steps)
-- similar bugs/feature patterns recur
-- you want the agent to stop relearning your stack every day
+### 9.3 When to use separate Claude Code/Codex sessions
+- one-off bugfixes, spikes, quick experiments
+- surgical tasks where setup overhead should be minimal
+- cases where max local focus beats orchestration complexity
 
-Reset-scope rule here too:
-- Reuse durable project knowledge, but still start each story in a fresh Hermes session.
+Context bloat factor:
+- VERY LOW (fresh loop is natural default)
 
-### 8.4 Anti-bloat operating pattern (practical)
-1) Run one session per story or milestone.
-2) End with a clean summary (what changed, what remains, risks).
-3) Save stable facts to memory (preferences, environment truths).
-4) Save repeatable procedures as skills (not ad-hoc chat logs).
-5) Start the next story fresh, loading only what matters.
-
-5-line handoff brief when you reset scope:
-- Story goal
-- Constraints / acceptance criteria
-- Files touched or areas in scope
-- Current status (done vs pending)
-- Known risks/questions
-
-This gives you:
-- fresh local context quality
-- less repeated prompting
-- better long-term throughput
-
-### 8.5 Prompt patterns to teach audience
-Pattern A (scoped story):
-- “Treat this as one isolated story. Do not drag prior irrelevant context. Complete implementation + tests + concise wrap-up.”
-
-Pattern B (capture only durable value):
-- “After finishing, save only durable lessons: one memory entry for stable project facts and one skill patch for repeatable workflow improvements.”
-
-Pattern C (parallel for complex stories):
-- “Split this story into backend/frontend/tests workers, keep contexts isolated, then merge outputs with integration risks and final checklist.”
-
-Pattern D (explicit scope reset command to self):
-- “Close this story now. Produce a 5-line handoff brief. I will start a fresh Hermes session for the next story.”
-
-### 8.6 Bottom-line framing
-- Fresh Claude loop every time optimizes for local cleanliness.
-- Hermes optimizes for cleanliness plus cumulative operational learning.
-- The control knob is scope resets: one story, one session.
-- If you treat Hermes like a never-ending chat, you lose.
-- If you treat it like scoped runs + curated persistence, you win.
+Bottom line:
+- Ralph loop = best for scripted multi-story throughput.
+- Hermes = best for long-term compounding engineering systems.
+- Standalone Claude/Codex = best for fast focused one-offs.
 
 ---
 

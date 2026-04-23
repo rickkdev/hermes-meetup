@@ -718,6 +718,38 @@ hermes</pre>
           </div>
         </section>
 
+        <section class="slide w-full" data-title="Ralph Loop" data-notes="Define Ralph loop in the user's practical terms: PRD JSON + agent rules + progress log + fresh session per story.||Call out why this works for big builds: clean context, deterministic progress, easy resumability.||Then transition: inside Hermes, similar decomposition can be done via subagents.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">What Is a Ralph Loop?</h1>
+            <p class="mt-stack-sm text-white/65">A scripted fresh-session loop for building large projects story by story.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">LOOP INPUTS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• <span class="mono">PRD.json</span> defines project + stories</li>
+                  <li>• agent instruction <span class="mono">.md</span> defines coding rules/style</li>
+                  <li>• <span class="mono">progress.txt</span> tracks done vs next story</li>
+                </ul>
+              </div>
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">LOOP EXECUTION</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• launcher opens a fresh Codex/Claude session</li>
+                  <li>• agent reads rules + picks next unfinished story</li>
+                  <li>• implements + verifies + writes status to <span class="mono">progress.txt</span></li>
+                  <li>• session closes, loop starts again for next story</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-stack-lg l-bracket p-stack-lg text-sm">
+              <p class="mono text-primary">WHY IT'S POWERFUL</p>
+              <p class="mt-stack-sm text-white/75">Each story starts with clean context, but overall project state stays consistent through shared planning files.</p>
+            </div>
+          </div>
+        </section>
+
         <section class="slide w-full" data-title="Subagent Spawn Mechanism" data-immersive="true" data-notes="Show this diagram full-screen.||Walk it left-to-right: parent LLM decides tool call, runtime executes delegate_task, child agents run isolated, parent merges and verifies.">
           <div class="slide-canvas flex items-center justify-center bg-background">
             <img
@@ -728,46 +760,40 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Coding Workflow" data-notes="Start with the real objection: won’t Hermes bloat context vs fresh Claude Code loops?||Answer: only if you run it lazily. Use story-scoped sessions and extract durable lessons into skills/memory.||Explicitly explain HOW to reset scope in Hermes: end story, open new Hermes session, pass compact brief only.||Fresh loops are cleaner per task but pay repeated setup cost. Hermes wins when continuity and reuse matter.">
+        <section class="slide w-full" data-title="Coding Workflow Choices" data-notes="Replace the old context-bloat objection slide with a clearer decision matrix.||Compare Ralph loop vs Hermes sessions vs separate Claude/Codex runs.||For each lane: when to use, strengths, and bottom-line context-bloat factor.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow: The Context-Bloat Question</h1>
-            <p class="mt-stack-sm text-white/65">Concern: “If I keep coding in Hermes, won’t context bloat vs fresh Claude Code per story?”</p>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow: Which Mode To Use?</h1>
+            <p class="mt-stack-sm text-white/65">Pick based on scope, repeatability, and context hygiene requirements.</p>
 
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">SHORT ANSWER</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• yes, bloat happens if you never reset scope</li>
-                  <li>• no, if you run story-scoped sessions + clean handoffs</li>
-                  <li>• reset scope = close story, start new Hermes session, pass short brief</li>
-                </ul>
-              </div>
+            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack text-sm">
               <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">FRESH LOOP VS HERMES</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• fresh loops: minimal context, repeated onboarding every time</li>
-                  <li>• Hermes: keep reusable knowledge, discard transient noise</li>
-                  <li>• same cleanliness if you reset each story into a new session</li>
+                <p class="mono text-primary">WHEN TO USE RALPH LOOP</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• multi-story builds with clear roadmap</li>
+                  <li>• you want deterministic progress tracking</li>
+                  <li>• you want fresh context every story by design</li>
                 </ul>
+                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: LOW</p>
               </div>
-            </div>
 
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHEN FRESH LOOPS WIN</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• tiny one-off fixes with zero continuity needs</li>
-                  <li>• throwaway experiments</li>
-                  <li>• unknown repo where setup cost is trivial</li>
+                <p class="mono text-primary">WHEN TO USE HERMES</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• recurring engineering work in same codebase</li>
+                  <li>• you benefit from tools + memory + skills compounding</li>
+                  <li>• you still run story-scoped sessions (not mega-chats)</li>
                 </ul>
+                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: MEDIUM (LOW WITH DISCIPLINE)</p>
               </div>
+
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">HOW TO AVOID BLOAT IN HERMES</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75 text-sm">
-                  <li>• one session per story, not one mega-thread forever</li>
-                  <li>• reset scope in practice: new terminal tab, run Hermes again, give 5-line brief</li>
-                  <li>• promote repeated fixes into skills, not chat history</li>
+                <p class="mono text-primary">WHEN TO USE CLAUDE/CODEX SEPARATELY</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• one-off tasks, spikes, or small surgical fixes</li>
+                  <li>• max focus with minimal orchestration overhead</li>
+                  <li>• fast fresh-loop execution beats setup complexity</li>
                 </ul>
+                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: VERY LOW</p>
               </div>
             </div>
           </div>
