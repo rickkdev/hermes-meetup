@@ -708,41 +708,70 @@
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Coding Workflow Choices" data-notes="Replace the old context-bloat objection slide with a clearer decision matrix.||Compare Ralph loop vs Hermes sessions vs separate Claude/Codex runs.||For each lane: when to use, strengths, and bottom-line context-bloat factor.">
+        <section class="slide w-full" data-title="Coding Workflow Choices" data-notes="Audience likely already knows Claude Code, Cursor, or OpenClaw.||Positioning line: Claude Code = in-repo coding agent; Cursor = in-editor pair programmer; OpenClaw = config-driven task runner; Hermes = self-improving autonomous agent outside all of them.||Most power users run 2-3 together, not one.||Then walk quick pick-rules for each tool.">
           <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">Coding Workflow: Which Mode To Use?</h1>
-            <p class="mt-stack-sm text-white/65">Pick based on scope, repeatability, and context hygiene requirements.</p>
+            <h1 class="text-5xl uppercase tracking-tight text-white">Where Hermes Fits In A Coding Stack</h1>
+            <p class="mt-stack-sm text-white/70">Claude Code = in-repo coding agent. Cursor = in-editor pair programmer. OpenClaw = config-driven task runner. Hermes = self-improving autonomous agent outside all of them.</p>
+            <p class="mt-stack-sm text-white/60">Most power users run two or three together, not one.</p>
 
-            <div class="mt-stack-lg grid grid-cols-3 gap-gutter mobile-stack text-sm">
+            <div class="mt-stack-lg grid grid-cols-4 gap-gutter mobile-stack text-[12.5px] leading-relaxed">
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">CLAUDE CODE</p>
+                <p class="mt-stack-sm text-white/80">CLI in repo</p>
+                <ul class="mt-stack-sm space-y-stack-sm text-white/72">
+                  <li>• memory: session-scoped</li>
+                  <li>• learning: none</li>
+                  <li>• jobs/channels: terminal only</li>
+                  <li>• model lock-in: Anthropic</li>
+                  <li>• best for: read/edit/test/commit in one repo</li>
+                </ul>
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">CURSOR</p>
+                <p class="mt-stack-sm text-white/80">IDE pair programmer</p>
+                <ul class="mt-stack-sm space-y-stack-sm text-white/72">
+                  <li>• memory: project-scoped</li>
+                  <li>• learning: none</li>
+                  <li>• jobs/channels: editor only</li>
+                  <li>• model lock-in: multiple</li>
+                  <li>• best for: inline completions and fast refactors</li>
+                </ul>
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">OPENCLAW</p>
+                <p class="mt-stack-sm text-white/80">CLI + configs</p>
+                <ul class="mt-stack-sm space-y-stack-sm text-white/72">
+                  <li>• memory: config/plugin based</li>
+                  <li>• learning: none by default</li>
+                  <li>• jobs/channels: terminal workflows</li>
+                  <li>• model lock-in: multiple</li>
+                  <li>• best for: declarative task-runner flows</li>
+                </ul>
+              </div>
+
               <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">WHEN TO USE RALPH LOOP</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• multi-story builds with clear roadmap</li>
-                  <li>• you want deterministic progress tracking</li>
-                  <li>• you want fresh context every story by design</li>
+                <p class="mono text-primary">HERMES AGENT</p>
+                <p class="mt-stack-sm text-white/85">CLI + chat + cron + Telegram</p>
+                <ul class="mt-stack-sm space-y-stack-sm text-white/78">
+                  <li>• memory: cross-session bounded (`MEMORY.md`, `USER.md`)</li>
+                  <li>• learning: auto-skills after repeated patterns</li>
+                  <li>• jobs/channels: cron + terminal + messaging + webhooks</li>
+                  <li>• model lock-in: 18+ providers, swap with one command</li>
+                  <li>• best for: long-running autonomous tasks that compound</li>
                 </ul>
-                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: LOW</p>
               </div>
+            </div>
 
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHEN TO USE HERMES</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• recurring engineering work in same codebase</li>
-                  <li>• you benefit from tools + memory + skills compounding</li>
-                  <li>• you still run story-scoped sessions (not mega-chats)</li>
-                </ul>
-                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: MEDIUM (LOW WITH DISCIPLINE)</p>
-              </div>
-
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">WHEN TO USE CLAUDE/CODEX SEPARATELY</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• one-off tasks, spikes, or small surgical fixes</li>
-                  <li>• max focus with minimal orchestration overhead</li>
-                  <li>• fast fresh-loop execution beats setup complexity</li>
-                </ul>
-                <p class="mt-stack-md mono text-primary">CONTEXT BLOAT FACTOR: VERY LOW</p>
-              </div>
+            <div class="mt-stack-lg l-bracket-cyan p-stack-lg text-sm text-white/80">
+              <p class="mono text-primary">WHEN TO PICK WHICH</p>
+              <ul class="mt-stack-md space-y-stack-sm">
+                <li>• Pick Claude Code for deep repo execution: read/edit/test/commit loops.</li>
+                <li>• Pick Cursor for real-time editor guidance and quick code iteration.</li>
+                <li>• Pick OpenClaw for declarative shell/workflow orchestration.</li>
+                <li>• Pick Hermes when you want memory across sessions, multi-channel operation, and compounding improvements over time.</li>
+              </ul>
             </div>
           </div>
         </section>

@@ -1,34 +1,35 @@
-# Coding Workflow Choices — Hermes vs OpenClaw (researched)
+# Coding Workflow Choices — Where Hermes Fits
 
 Slide 14 of 26
 
-Focus
-- Agent orchestration
+## One-liner
+Claude Code is an in-repo coding agent. Cursor is an in-editor pair programmer. OpenClaw is a configuration-driven task runner. Hermes is a self-improving autonomous agent that lives outside all of them.
 
-Core differentiation
-- Both support session-based orchestration/sub-agent style flows; Hermes emphasizes persistent skills/memory compounding in this deck context.
+Most power users run two or three together, not one.
 
-What is confirmed about OpenClaw
-- OpenClaw does not expose one single hardcoded memory engine; memory is plugin-based.
-- Docs explicitly describe an "active memory plugin" owning recall, promotion, indexing, and dreaming.
-- Memory Wiki is a bundled plugin that adds a compiled knowledge vault and does not replace the active memory plugin.
-- Session/history state is managed in the gateway state directory (OPENCLAW_STATE_DIR) and accessed through session tooling.
+## Comparison at a glance
+| Feature | Claude Code | Cursor | OpenClaw | Hermes Agent |
+|---|---|---|---|---|
+| Primary surface | CLI in a repo | IDE | CLI + configs | CLI + chat + cron + Telegram |
+| Persistent memory | Session-scoped | Project-scoped | Config/plugin based | Cross-session bounded (`MEMORY.md`, `USER.md`) |
+| Learning | None | None | None (default) | Auto-generates skills after repeated patterns |
+| Channels | Terminal | Editor | Terminal | Terminal, Telegram, Discord, email, webhooks |
+| Scheduled jobs | No | No | No | Built-in cron |
+| Self-improvement | No | No | No | Yes (skills + memory) |
+| Model lock-in | Anthropic | Multiple | Multiple | 18+ providers, swap with one command |
+| Best for | Coding in a repo | Inline code work | Shell workflow orchestration | Long-running autonomous tasks that compound |
 
-What Hermes does in this setup
-- In this Hermes setup, stable user/profile facts are stored in markdown memory files and injected each session.
-- Conversation history is stored in a state DB and retrieved on demand via session search.
-- So Hermes presents an explicit two-lane mental model by default: always-on memory vs searchable history.
+## When to pick which
+- Pick Claude Code when you want deep in-repo read/edit/test/commit loops.
+- Pick Cursor when you want real-time editor completions and fast inline fixes.
+- Pick OpenClaw when you want declarative, configuration-first task running.
+- Pick Hermes when you want:
+  - cross-session continuity,
+  - multi-channel operation,
+  - and compounding improvement over recurring work.
 
-Bottom line for this slide
-- Choose by operating style: modular gateway/plugin ecosystem (OpenClaw) vs tighter built-in memory+skills loop (Hermes).
-
-Evidence URLs
-- https://docs.openclaw.ai/plugins/memory-wiki
-- https://docs.openclaw.ai/concepts/session
-- https://docs.openclaw.ai/concepts/session-tool
-- https://docs.openclaw.ai/tools
-- https://docs.openclaw.ai/plugins/webhooks
-- https://docs.openclaw.ai/automation/hooks
-
-Note
-- This comparison is now grounded in OpenClaw docs and avoids the earlier oversimplification that OpenClaw lacks webhook/memory features.
+## Practical stack recommendation
+- Repo-heavy build loop: Claude Code + Hermes
+- IDE-heavy coding loop: Cursor + Hermes
+- Ops/workflow automation: OpenClaw or Hermes
+- If your priority is long-term compounding leverage, include Hermes in the stack.
