@@ -452,6 +452,7 @@ Use this before the subagent diagram.
 
 Definition in your terms:
 - A Ralph loop is a scripted fresh-session coding loop.
+- Tool link: https://github.com/rickkdev/ralph
 - Inputs are usually:
   - `PRD.json` (project/stories)
   - one or more agent instruction `.md` files (coding principles/rules)
