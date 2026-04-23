@@ -708,22 +708,21 @@
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Coding Workflow Choices" data-notes="Audience likely already knows Claude Code, Cursor, or OpenClaw.||Positioning line: Claude Code = in-repo coding agent; Cursor = in-editor pair programmer; OpenClaw = config-driven task runner; Hermes = self-improving autonomous agent outside all of them.||Most power users run 2-3 together, not one.||Then walk quick pick-rules for each tool.">
+        <section class="slide w-full" data-title="Coding Workflow Choices" data-notes="Audience probably already uses Claude Code, Codex, Open Code, or Cursor.||Positioning: coding specialists inside repo, editor specialist, overnight loop runner, and autonomous cross-channel agent.||Replace OpenClaw with Ralph loops here.||Use exact pick-rules wording requested.">
           <div class="slide-canvas flex flex-col p-margin">
             <h1 class="text-5xl uppercase tracking-tight text-white">Where Hermes Fits In A Coding Stack</h1>
-            <p class="mt-stack-sm text-white/70">Claude Code = in-repo coding agent. Cursor = in-editor pair programmer. OpenClaw = config-driven task runner. Hermes = self-improving autonomous agent outside all of them.</p>
+            <p class="mt-stack-sm text-white/70">Claude Code / Codex / Open Code are coding specialists inside a repo. Cursor is your in-editor pair programmer. Ralph loops are for one-shot epic runs. Hermes is the autonomous layer that compounds.</p>
             <p class="mt-stack-sm text-white/60">Most power users run two or three together, not one.</p>
 
             <div class="mt-stack-lg grid grid-cols-4 gap-gutter mobile-stack text-[12.5px] leading-relaxed">
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">CLAUDE CODE</p>
+                <p class="mono text-primary">CLAUDE CODE / CODEX / OPEN CODE</p>
                 <p class="mt-stack-sm text-white/80">CLI in repo</p>
                 <ul class="mt-stack-sm space-y-stack-sm text-white/72">
-                  <li>• memory: session-scoped</li>
+                  <li>• memory: mostly session-scoped</li>
                   <li>• learning: none</li>
-                  <li>• jobs/channels: terminal only</li>
-                  <li>• model lock-in: Anthropic</li>
-                  <li>• best for: read/edit/test/commit in one repo</li>
+                  <li>• jobs/channels: terminal</li>
+                  <li>• best for: read/edit/test/commit loops</li>
                 </ul>
               </div>
 
@@ -731,23 +730,21 @@
                 <p class="mono text-primary">CURSOR</p>
                 <p class="mt-stack-sm text-white/80">IDE pair programmer</p>
                 <ul class="mt-stack-sm space-y-stack-sm text-white/72">
-                  <li>• memory: project-scoped</li>
+                  <li>• memory: project/editor scoped</li>
                   <li>• learning: none</li>
                   <li>• jobs/channels: editor only</li>
-                  <li>• model lock-in: multiple</li>
-                  <li>• best for: inline completions and fast refactors</li>
+                  <li>• best for: real-time completions + fixes</li>
                 </ul>
               </div>
 
               <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">OPENCLAW</p>
-                <p class="mt-stack-sm text-white/80">CLI + configs</p>
+                <p class="mono text-primary">RALPH LOOPS</p>
+                <p class="mt-stack-sm text-white/80">Looped overnight runner</p>
                 <ul class="mt-stack-sm space-y-stack-sm text-white/72">
-                  <li>• memory: config/plugin based</li>
-                  <li>• learning: none by default</li>
-                  <li>• jobs/channels: terminal workflows</li>
-                  <li>• model lock-in: multiple</li>
-                  <li>• best for: declarative task-runner flows</li>
+                  <li>• memory: file/process driven</li>
+                  <li>• learning: none</li>
+                  <li>• jobs/channels: scheduled batch runs</li>
+                  <li>• best for: bigger epics + overnight tasks</li>
                 </ul>
               </div>
 
@@ -758,7 +755,6 @@
                   <li>• memory: cross-session bounded (`MEMORY.md`, `USER.md`)</li>
                   <li>• learning: auto-skills after repeated patterns</li>
                   <li>• jobs/channels: cron + terminal + messaging + webhooks</li>
-                  <li>• model lock-in: 18+ providers, swap with one command</li>
                   <li>• best for: long-running autonomous tasks that compound</li>
                 </ul>
               </div>
@@ -767,10 +763,10 @@
             <div class="mt-stack-lg l-bracket-cyan p-stack-lg text-sm text-white/80">
               <p class="mono text-primary">WHEN TO PICK WHICH</p>
               <ul class="mt-stack-md space-y-stack-sm">
-                <li>• Pick Claude Code for deep repo execution: read/edit/test/commit loops.</li>
-                <li>• Pick Cursor for real-time editor guidance and quick code iteration.</li>
-                <li>• Pick OpenClaw for declarative shell/workflow orchestration.</li>
-                <li>• Pick Hermes when you want memory across sessions, multi-channel operation, and compounding improvements over time.</li>
+                <li>• Pick Claude Code/ Codex/ Open Code when you're inside a repo and want the agent to read code, edit code, run tests, commit. It's a coding specialist.</li>
+                <li>• Pick Cursor when you want AI completions and fixes inside your editor in real time.</li>
+                <li>• Pick Ralph loops for bigger epics you want to one shot and generall tasks you want to run over night.</li>
+                <li>• Pick Hermes when you want an agent that (a) lives beyond any single session, (b) talks to you from any channel, (c) gets better at your recurring work over time.</li>
               </ul>
             </div>
           </div>

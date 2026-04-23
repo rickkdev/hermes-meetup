@@ -452,40 +452,36 @@ Bridge line:
 ---
 
 ## 9) Coding Workflow Choices (expanded comparison)
-Use this section for audiences already using Claude Code, Cursor, or OpenClaw and asking where Hermes fits.
+Use this section for audiences already using Claude Code, Codex, Open Code, or Cursor and asking where Hermes fits.
 
 ### 9.1 One-liner positioning
-- Claude Code is an in-repo coding agent.
+- Claude Code / Codex / Open Code are coding specialists inside a repo.
 - Cursor is an in-editor pair programmer.
-- OpenClaw is a configuration-driven task runner.
+- Ralph loops are for bigger one-shot epic runs and overnight execution.
 - Hermes is a self-improving autonomous agent that lives outside all of them.
 - Most power users run 2-3 together, not one.
 
 ### 9.2 Comparison at a glance
-| Feature | Claude Code | Cursor | OpenClaw | Hermes Agent |
+| Feature | Claude Code / Codex / Open Code | Cursor | Ralph loops | Hermes Agent |
 |---|---|---|---|---|
-| Primary surface | CLI in a repo | IDE | CLI + configs | CLI + chat + cron + Telegram |
-| Persistent memory | Session-scoped | Project-scoped | Config/plugin based | Cross-session, bounded (`MEMORY.md`, `USER.md`) |
-| Learning | None | None | None (by default) | Auto-generates skills after repeated patterns |
-| Channels | Terminal | Editor | Terminal | Terminal, Telegram, Discord, email, webhooks |
-| Scheduled jobs | No | No | No | Built-in cron |
+| Primary surface | CLI in a repo | IDE | Loop scripts + terminal | CLI + chat + cron + Telegram |
+| Persistent memory | Mostly session-scoped | Project/editor-scoped | File/process-driven | Cross-session, bounded (`MEMORY.md`, `USER.md`) |
+| Learning | None | None | None | Auto-generates skills after repeated patterns |
+| Channels | Terminal | Editor | Terminal / scheduled runs | Terminal, Telegram, Discord, email, webhooks |
+| Scheduled jobs | No | No | Yes (overnight loops) | Built-in cron |
 | Self-improvement | No | No | No | Yes (skills + memory loop) |
-| Model lock-in | Anthropic | Multiple | Multiple | 18+ providers, swap with one command |
-| Best for | Coding in a repo | Writing code inline | Running shell workflows | Long-running autonomous tasks that compound |
+| Best for | Read/edit/test/commit loops | Writing/fixing code inline | Bigger epics + overnight task runs | Long-running autonomous tasks that compound |
 
 ### 9.3 When to pick which
-- Pick Claude Code when you're deep inside one repo and want read/edit/test/commit loops fast.
-- Pick Cursor when you want real-time editor completions and inline fix/refactor speed.
-- Pick OpenClaw when you want declarative, config-first shell/task orchestration.
-- Pick Hermes when you want an agent that:
-  - lives beyond a single session,
-  - talks to you from multiple channels,
-  - and gets better at recurring work over time.
+- Pick Claude Code/ Codex/ Open Code when you're inside a repo and want the agent to read code, edit code, run tests, commit. It's a coding specialist.
+- Pick Cursor when you want AI completions and fixes inside your editor in real time.
+- Pick Ralph loops for bigger epics you want to one shot and generall tasks you want to run over night.
+- Pick Hermes when you want an agent that (a) lives beyond any single session, (b) talks to you from any channel, (c) gets better at your recurring work over time.
 
 ### 9.4 Practical stack recommendation
-- Repo-heavy dev loop: Claude Code + Hermes
+- Repo-heavy dev loop: Claude Code/Codex/Open Code + Hermes
 - IDE-heavy daily coding: Cursor + Hermes
-- Ops/workflow automation: OpenClaw or Hermes (choose by whether you need self-improvement + multi-channel runtime)
+- Big epic overnight execution: Ralph loops (+ Hermes for memory + multi-channel control)
 - For compounding leverage over weeks/months, Hermes should be one of the layers.
 
 ---
