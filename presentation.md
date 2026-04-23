@@ -447,8 +447,8 @@ Bridge line into next slide:
 
 ---
 
-## 7) Subagent Spawn Mechanism (deep dive)
-This replaces the old “How it actually works” parallel overview.
+## 7) Subagent Spawn Mechanism (diagram)
+Use the full-screen image: `how-subagent-works.png`.
 
 Core definition:
 - A subagent is an isolated short-lived worker spawned via `delegate_task`.
