@@ -447,12 +447,28 @@ Bridge line into next slide:
 
 ---
 
-## 7) Ralph Loop (what it is)
-Use this before the subagent diagram.
+## 7) Subagent Spawn Mechanism (diagram)
+Use the full-screen image: `how-subagent-works.png`.
+
+Talk track:
+- Parent LLM sees available tools and may emit a `delegate_task` tool call.
+- Hermes runtime executes that call with limits/guardrails.
+- Child agent(s) run isolated and return summaries.
+- Parent merges outputs and verifies final result.
+
+---
+
+## 8) Ralph Loop (what it is)
+Use this right after the subagent diagram.
+
+Slide layout:
+- Left side: explain Ralph loop mechanism.
+- Right side: photo of Geoffrey Huntley (`ghuntley.jpg`) + links.
 
 Definition in your terms:
 - A Ralph loop is a scripted fresh-session coding loop.
-- Tool link: https://github.com/rickkdev/ralph
+- Geoffrey Huntley website: https://ghuntley.com/
+- Ralph tool: https://github.com/rickkdev/ralph
 - Inputs are usually:
   - `PRD.json` (project/stories)
   - one or more agent instruction `.md` files (coding principles/rules)
@@ -474,17 +490,6 @@ Why teams like it:
 
 Bridge line:
 - “Ralph loop externalizes planning files; Hermes can do similar decomposition internally via subagents.”
-
----
-
-## 8) Subagent Spawn Mechanism (diagram)
-Use the full-screen image: `how-subagent-works.png`.
-
-Talk track:
-- Parent LLM sees available tools and may emit a `delegate_task` tool call.
-- Hermes runtime executes that call with limits/guardrails.
-- Child agent(s) run isolated and return summaries.
-- Parent merges outputs and verifies final result.
 
 ---
 

@@ -718,39 +718,6 @@ hermes</pre>
           </div>
         </section>
 
-        <section class="slide w-full" data-title="Ralph Loop" data-notes="Define Ralph loop in the user's practical terms: PRD JSON + agent rules + progress log + fresh session per story.||Call out why this works for big builds: clean context, deterministic progress, easy resumability.||Then transition: inside Hermes, similar decomposition can be done via subagents.">
-          <div class="slide-canvas flex flex-col p-margin">
-            <h1 class="text-5xl uppercase tracking-tight text-white">What Is a Ralph Loop?</h1>
-            <p class="mt-stack-sm text-white/65">A scripted fresh-session loop for building large projects story by story.</p>
-            <p class="mt-stack-sm text-white/75 text-sm">Tool: <a href="https://github.com/rickkdev/ralph" target="_blank" rel="noopener noreferrer" class="text-primary underline">github.com/rickkdev/ralph</a></p>
-
-            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
-              <div class="l-bracket-cyan p-stack-lg">
-                <p class="mono text-primary">LOOP INPUTS</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• <span class="mono">PRD.json</span> defines project + stories</li>
-                  <li>• agent instruction <span class="mono">.md</span> defines coding rules/style</li>
-                  <li>• <span class="mono">progress.txt</span> tracks done vs next story</li>
-                </ul>
-              </div>
-              <div class="l-bracket p-stack-lg">
-                <p class="mono text-primary">LOOP EXECUTION</p>
-                <ul class="mt-stack-md space-y-stack-sm text-white/75">
-                  <li>• launcher opens a fresh Codex/Claude session</li>
-                  <li>• agent reads rules + picks next unfinished story</li>
-                  <li>• implements + verifies + writes status to <span class="mono">progress.txt</span></li>
-                  <li>• session closes, loop starts again for next story</li>
-                </ul>
-              </div>
-            </div>
-
-            <div class="mt-stack-lg l-bracket p-stack-lg text-sm">
-              <p class="mono text-primary">WHY IT'S POWERFUL</p>
-              <p class="mt-stack-sm text-white/75">Each story starts with clean context, but overall project state stays consistent through shared planning files.</p>
-            </div>
-          </div>
-        </section>
-
         <section class="slide w-full" data-title="Subagent Spawn Mechanism" data-immersive="true" data-notes="Show this diagram full-screen.||Walk it left-to-right: parent LLM decides tool call, runtime executes delegate_task, child agents run isolated, parent merges and verifies.">
           <div class="slide-canvas flex items-center justify-center bg-background">
             <img
@@ -758,6 +725,39 @@ hermes</pre>
               alt="How subagent spawning works in Hermes"
               class="slide-image-cover"
             />
+          </div>
+        </section>
+
+        <section class="slide w-full" data-title="Ralph Loop" data-notes="Define Ralph loop in practical terms: PRD JSON + agent rules + progress log + fresh session per story.||Mention the tool repo and Geoffrey Huntley website.||Right side shows Geoffrey Huntley image + links; left side keeps the workflow definition.">
+          <div class="slide-canvas flex flex-col p-margin">
+            <h1 class="text-5xl uppercase tracking-tight text-white">What Is a Ralph Loop?</h1>
+            <p class="mt-stack-sm text-white/65">A scripted fresh-session loop for building large projects story by story.</p>
+
+            <div class="mt-stack-lg grid grid-cols-2 gap-gutter mobile-stack text-sm">
+              <div class="l-bracket-cyan p-stack-lg">
+                <p class="mono text-primary">HOW THE LOOP WORKS</p>
+                <ul class="mt-stack-md space-y-stack-sm text-white/75">
+                  <li>• inputs: <span class="mono">PRD.json</span>, agent rules <span class="mono">.md</span>, <span class="mono">progress.txt</span></li>
+                  <li>• open fresh Codex/Claude session per story</li>
+                  <li>• pick next unfinished story from <span class="mono">progress.txt</span></li>
+                  <li>• implement + verify + write status, then close session</li>
+                  <li>• rerun the script for the next story</li>
+                </ul>
+                <p class="mt-stack-md text-white/75">Why it works: clean context each run + deterministic project progress.</p>
+              </div>
+
+              <div class="l-bracket p-stack-lg">
+                <p class="mono text-primary">GEOFFREY HUNTLEY</p>
+                <img
+                  src="ghuntley.jpg"
+                  alt="Geoffrey Huntley"
+                  class="mt-stack-sm w-full rounded border border-line object-cover"
+                  style="max-height: 280px;"
+                />
+                <p class="mt-stack-md text-white/80">Website: <a href="https://ghuntley.com/" target="_blank" rel="noopener noreferrer" class="text-primary underline">ghuntley.com</a></p>
+                <p class="mt-stack-sm text-white/80">Ralph tool: <a href="https://github.com/rickkdev/ralph" target="_blank" rel="noopener noreferrer" class="text-primary underline">github.com/rickkdev/ralph</a></p>
+              </div>
+            </div>
           </div>
         </section>
 
